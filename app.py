@@ -244,6 +244,9 @@ if page == "📋 候选人列表":
 elif page == "➕ 新增评估":
     st.markdown('<div class="main-header">新增候选人评估</div>', unsafe_allow_html=True)
     
+    # 初始化 AI 分析器
+    analyzer = get_analyzer()
+    
     # AI 设置
     render_ai_settings()
     
