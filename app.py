@@ -40,6 +40,20 @@ QUICK_CHECKLIST = [
     "候选人有没有'AI焦虑'（积极意义上怕掉队，持续关注前沿）"
 ]
 
+# 预设职位类别
+JOB_CATEGORIES = [
+    "产品",
+    "运营", 
+    "算法",
+    "工程",
+    "设计",
+    "市场",
+    "销售",
+    "人力资源",
+    "财务",
+    "其他"
+]
+
 def load_candidates():
     """加载候选人数据"""
     if CANDIDATES_FILE.exists():
@@ -255,17 +269,56 @@ elif page == "➕ 新增评估":
     # 基本信息
     st.subheader("1️⃣ 基本信息")
     
-    # 获取 AI 检测到的姓名和职位（如果有）
+    # 获取 AI 检测到的信息（如果有）
     default_name = st.session_state.get("ai_detected_name", "")
     default_position = st.session_state.get("ai_detected_position", "")
+    default_email = st.session_state.get("ai_detected_email", "")
+    default_phone = st.session_state.get("ai_detected_phone", "")
     
     col1, col2 = st.columns(2)
     with col1:
         name = st.text_input("候选人姓名 *", value=default_name, key="input_name")
-        position = st.text_input("应聘职位 *", value=default_position, key="input_position")
+        
+        # 职位选择：下拉选择 + 手动输入
+        st.write("**应聘职位 ***")
+        position_col1, position_col2 = st.columns([1, 1])
+        with position_col1:
+            # 检查是否有AI检测到的职位，如果有且不在预设列表中，选择"其他"
+            detected_position = default_position if default_position else ""
+            position_options = JOB_CATEGORIES.copy()
+            if detected_position and detected_position not in position_options:
+                position_options.append(detected_position)
+            
+            selected_category = st.selectbox(
+                "选择类别",
+                options=position_options,
+                index=position_options.index(detected_position) if detected_position in position_options else 0,
+                key="position_category",
+                label_visibility="collapsed"
+            )
+        with position_col2:
+            # 如果是"其他"或需要自定义，显示手动输入框
+            if selected_category == "其他":
+                custom_position = st.text_input(
+                    "自定义职位",
+                    value=detected_position if detected_position not in JOB_CATEGORIES else "",
+                    key="position_custom",
+                    label_visibility="collapsed"
+                )
+                position = custom_position
+            else:
+                position = selected_category
+                # 保留手动输入框但隐藏，用于存储值
+                st.text_input(
+                    "职位",
+                    value=position,
+                    key="position_custom",
+                    label_visibility="collapsed",
+                    disabled=True
+                )
     with col2:
-        email = st.text_input("邮箱", key="input_email")
-        phone = st.text_input("电话", key="input_phone")
+        email = st.text_input("邮箱", value=default_email, key="input_email")
+        phone = st.text_input("电话", value=default_phone, key="input_phone")
     
     # 简历上传和 AI 分析
     st.subheader("2️⃣ 简历上传与 AI 分析")
@@ -310,13 +363,17 @@ elif page == "➕ 新增评估":
                     result = analyzer.analyze_resume(resume_text)
                     st.session_state.ai_analysis_result = result
                     
-                    # 如果 AI 识别出姓名和职位，存储到临时变量，后续填充
+                    # 如果 AI 识别出信息，存储到临时变量，后续自动填充表单
                     if "basic_info" in result:
                         basic_info = result.get("basic_info", {})
                         if basic_info.get("name"):
                             st.session_state["ai_detected_name"] = basic_info.get("name", "")
                         if basic_info.get("position"):
                             st.session_state["ai_detected_position"] = basic_info.get("position", "")
+                        if basic_info.get("email"):
+                            st.session_state["ai_detected_email"] = basic_info.get("email", "")
+                        if basic_info.get("phone"):
+                            st.session_state["ai_detected_phone"] = basic_info.get("phone", "")
             else:
                 st.warning("⚠️ 请先上传简历文件")
         

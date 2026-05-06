@@ -119,6 +119,8 @@ class AIResumeAnalyzer:
   "basic_info": {{
     "name": "姓名",
     "position": "应聘职位",
+    "email": "邮箱地址",
+    "phone": "电话号码",
     "ai_tools": ["使用的AI工具列表"],
     "key_projects": ["关键项目经验"]
   }},
