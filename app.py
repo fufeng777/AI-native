@@ -254,10 +254,15 @@ elif page == "➕ 新增评估":
     
     # 基本信息
     st.subheader("1️⃣ 基本信息")
+    
+    # 获取 AI 检测到的姓名和职位（如果有）
+    default_name = st.session_state.get("ai_detected_name", "")
+    default_position = st.session_state.get("ai_detected_position", "")
+    
     col1, col2 = st.columns(2)
     with col1:
-        name = st.text_input("候选人姓名 *", key="input_name")
-        position = st.text_input("应聘职位 *", key="input_position")
+        name = st.text_input("候选人姓名 *", value=default_name, key="input_name")
+        position = st.text_input("应聘职位 *", value=default_position, key="input_position")
     with col2:
         email = st.text_input("邮箱", key="input_email")
         phone = st.text_input("电话", key="input_phone")
@@ -305,13 +310,13 @@ elif page == "➕ 新增评估":
                     result = analyzer.analyze_resume(resume_text)
                     st.session_state.ai_analysis_result = result
                     
-                    # 如果 AI 识别出姓名和职位，自动填充
+                    # 如果 AI 识别出姓名和职位，存储到临时变量，后续填充
                     if "basic_info" in result:
                         basic_info = result.get("basic_info", {})
                         if basic_info.get("name"):
-                            st.session_state.input_name = basic_info.get("name", "")
+                            st.session_state["ai_detected_name"] = basic_info.get("name", "")
                         if basic_info.get("position"):
-                            st.session_state.input_position = basic_info.get("position", "")
+                            st.session_state["ai_detected_position"] = basic_info.get("position", "")
             else:
                 st.warning("⚠️ 请先上传简历文件")
         
