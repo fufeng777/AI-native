@@ -13,32 +13,38 @@ AI_NATIVE_DIMENSIONS = {
     "ai_first_mindset": {
         "name": "AI 优先思维",
         "description": "接到任务后，第一反应是'AI可以怎么帮我解'而不是'我以前怎么做'",
-        "signals": ["描述中频繁出现'用AI重建了...'", "提到自己搭建的提示词库、AI工作流", "有跨领域快速产出的案例"]
+        "signals": ["描述中频繁出现'用AI重建了...'", "提到自己搭建的提示词库、AI工作流", "有跨领域快速产出的案例"],
+        "weight": 1.0
     },
     "deep_collaboration": {
         "name": "深度协作能力",
         "description": "将AI当成思维伙伴、执行团队，能进行多轮、分层、批判性的深度协作",
-        "signals": ["多步骤、多工具的AI工作流", "有纠错回路和验证机制", "与AI进行批判性对话的案例"]
+        "signals": ["多步骤、多工具的AI工作流", "有纠错回路和验证机制", "与AI进行批判性对话的案例"],
+        "weight": 1.0
     },
     "problem_reframing": {
         "name": "问题重构能力",
         "description": "不仅用AI提效，更用AI重新定义'这个问题应该是什么'",
-        "signals": ["质疑任务本身的案例", "用AI找到更优路径的经历", "重新定义工作流程"]
+        "signals": ["质疑任务本身的案例", "用AI找到更优路径的经历", "重新定义工作流程"],
+        "weight": 1.0
     },
     "learning_mode": {
         "name": "学习模式",
         "description": "'用中学、边跑边造'，面对新领域时本能地用AI搭建脚手架快速进入",
-        "signals": ["用AI学习新领域的案例", "快速掌握新技能的经历", "持续迭代学习方法"]
+        "signals": ["用AI学习新领域的案例", "快速掌握新技能的经历", "持续迭代学习方法"],
+        "weight": 0.8
     },
     "iteration_agility": {
         "name": "迭代敏捷度",
         "description": "每天用AI的习惯在持续进化，关注前沿并积极尝试",
-        "signals": ["AI使用习惯有明显变化", "关注并尝试新工具", "主动分享AI方法论"]
+        "signals": ["AI使用习惯有明显变化", "关注并尝试新工具", "主动分享AI方法论"],
+        "weight": 0.8
     },
     "boundary_awareness": {
         "name": "边界认知",
         "description": "清楚AI的能力边界，能精准指出AI不靠谱之处",
-        "signals": ["能具体指出AI的错误", "有修复AI错误的案例", "对AI能力有理性认知"]
+        "signals": ["能具体指出AI的错误", "有修复AI错误的案例", "对AI能力有理性认知"],
+        "weight": 0.8
     }
 }
 
