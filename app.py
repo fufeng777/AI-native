@@ -8,8 +8,8 @@ import base64
 
 # 页面配置
 st.set_page_config(
-    page_title="AI Native 人才简历分析看板",
-    page_icon="🎯",
+    page_title="AI Native Talent Assessment Platform",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -103,64 +103,142 @@ if 'candidates' not in st.session_state:
 if 'current_candidate' not in st.session_state:
     st.session_state.current_candidate = None
 
+if 'editing_candidate' not in st.session_state:
+    st.session_state.editing_candidate = None
+
 if 'ai_analysis_result' not in st.session_state:
     st.session_state.ai_analysis_result = None
 
-# CSS 样式
+# CSS 样式 - 专业商务风格
 st.markdown("""
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    * {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    
     .main-header {
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: #1f77b4;
+        font-size: 2.2rem;
+        font-weight: 600;
+        color: #1a1a2e;
         margin-bottom: 0.5rem;
+        letter-spacing: -0.02em;
     }
     .sub-header {
-        font-size: 1.1rem;
-        color: #666;
+        font-size: 1rem;
+        color: #64748b;
         margin-bottom: 2rem;
+        font-weight: 400;
     }
     .score-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 1.5rem;
-        border-radius: 10px;
+        background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+        padding: 2rem;
+        border-radius: 12px;
         color: white;
         text-align: center;
         margin: 1rem 0;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
     .score-value {
-        font-size: 3rem;
-        font-weight: bold;
+        font-size: 2.8rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
     }
     .level-badge {
         display: inline-block;
-        padding: 0.5rem 1rem;
-        border-radius: 20px;
-        font-weight: bold;
+        padding: 0.6rem 1.2rem;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.9rem;
         color: white;
         margin: 0.5rem 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     .dimension-card {
-        background: #f8f9fa;
-        padding: 1rem;
+        background: #ffffff;
+        padding: 1.25rem;
         border-radius: 8px;
-        margin: 0.5rem 0;
-        border-left: 4px solid #1f77b4;
+        margin: 0.75rem 0;
+        border-left: 4px solid #1e3a5f;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        border: 1px solid #e2e8f0;
     }
     .signal-item {
-        background: #e9ecef;
-        padding: 0.3rem 0.6rem;
+        background: #f1f5f9;
+        padding: 0.4rem 0.8rem;
         border-radius: 4px;
         font-size: 0.85rem;
-        margin: 0.2rem;
+        margin: 0.25rem;
         display: inline-block;
+        color: #475569;
+        border: 1px solid #e2e8f0;
     }
     .checklist-item {
-        padding: 0.8rem;
-        margin: 0.5rem 0;
-        background: #f8f9fa;
+        padding: 1rem;
+        margin: 0.75rem 0;
+        background: #ffffff;
         border-radius: 8px;
-        border-left: 3px solid #28a745;
+        border-left: 3px solid #059669;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        border: 1px solid #e2e8f0;
+    }
+    .section-header {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #1a1a2e;
+        margin: 1.5rem 0 1rem 0;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #e2e8f0;
+    }
+    .info-card {
+        background: #ffffff;
+        padding: 1.5rem;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        margin: 1rem 0;
+    }
+    .metric-label {
+        font-size: 0.875rem;
+        color: #64748b;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .metric-value {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #1a1a2e;
+    }
+    .btn-primary {
+        background: #1e3a5f;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .btn-primary:hover {
+        background: #2d5a87;
+    }
+    .status-indicator {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+    .status-active {
+        background: #dcfce7;
+        color: #166534;
+    }
+    .status-inactive {
+        background: #f1f5f9;
+        color: #64748b;
     }
     .ai-analysis-section {
         background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
@@ -173,25 +251,27 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # 侧边栏导航
-st.sidebar.title("🎯 导航菜单")
-page = st.sidebar.radio("", ["📋 候选人列表", "➕ 新增评估", "📊 候选人对比", "📖 评分标准"])
+st.sidebar.title("导航菜单")
+page = st.sidebar.radio("", ["候选人列表", "新增评估", "候选人对比", "评分标准"])
 
 # 主内容区
-if page == "📋 候选人列表":
-    st.markdown('<div class="main-header">AI Native 人才简历分析看板</div>', unsafe_allow_html=True)
-    st.markdown('<div class="sub-header">基于 AI Native 人才标准的候选人评估系统（支持 AI 智能分析）</div>', unsafe_allow_html=True)
+if page == "候选人列表":
+    st.markdown('<div class="main-header">AI Native Talent Assessment Platform</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sub-header">基于 AI Native 人才标准的候选人评估系统</div>', unsafe_allow_html=True)
+    
+    # 初始化 AI 分析器
+    analyzer = get_analyzer()
     
     # AI 状态指示
-    analyzer = get_analyzer()
     if analyzer.is_available():
-        st.success("🤖 AI 分析功能已启用 - 可使用 AI 辅助简历分析")
+        st.success("AI 分析功能已启用 - 可使用 AI 辅助简历分析")
     else:
-        st.info("💡 如需启用 AI 分析功能，请在「➕ 新增评估」页面配置 API Key")
+        st.info("如需启用 AI 分析功能，请在「新增评估」页面配置 API Key")
     
     candidates = st.session_state.candidates
     
     if not candidates:
-        st.info("👋 欢迎使用！目前还没有候选人数据，请点击左侧'➕ 新增评估'开始添加。")
+        st.info("欢迎使用！目前还没有候选人数据，请点击左侧「新增评估」开始添加。")
     else:
         # 统计卡片
         col1, col2, col3, col4 = st.columns(4)
@@ -213,12 +293,12 @@ if page == "📋 候选人列表":
         st.divider()
         
         # 候选人列表
-        st.subheader("📋 候选人列表")
+        st.subheader("候选人列表")
         
         # 搜索和筛选
         col1, col2 = st.columns([2, 1])
         with col1:
-            search = st.text_input("🔍 搜索候选人姓名", "")
+            search = st.text_input("搜索候选人姓名", "")
         with col2:
             level_filter = st.multiselect("筛选等级", ["L0", "L1", "L2", "L3"], default=[])
         
@@ -255,7 +335,7 @@ if page == "📋 候选人列表":
                 
                 st.divider()
 
-elif page == "➕ 新增评估":
+elif page == "新增评估":
     st.markdown('<div class="main-header">新增候选人评估</div>', unsafe_allow_html=True)
     
     # 初始化 AI 分析器
@@ -270,7 +350,7 @@ elif page == "➕ 新增评估":
     st.divider()
     
     # 基本信息
-    st.subheader("1️⃣ 基本信息")
+    st.subheader("1. 基本信息")
     
     # 获取 AI 检测到的信息（如果有）
     default_name = st.session_state.get("ai_detected_name", "")
@@ -332,7 +412,7 @@ elif page == "➕ 新增评估":
         resume_file = st.file_uploader("上传简历 (PDF, DOCX, TXT)", type=["pdf", "docx", "txt"], key="resume_upload")
         
         if resume_file:
-            st.success(f"✅ 已上传: {resume_file.name}")
+            st.success(f"已上传: {resume_file.name}")
             # 尝试读取简历内容
             try:
                 if resume_file.type == "text/plain":
@@ -360,7 +440,7 @@ elif page == "➕ 新增评估":
         st.write("**🤖 AI 智能分析**")
         
         # AI 分析按钮
-        if st.button("🔍 使用 AI 分析简历", type="primary", disabled=not analyzer.is_available()):
+        if st.button("使用 AI 分析简历", type="primary", disabled=not analyzer.is_available()):
             if resume_file and resume_text:
                 with st.spinner("🤖 AI 正在分析简历，请稍候..."):
                     result = analyzer.analyze_resume(resume_text)
@@ -378,7 +458,7 @@ elif page == "➕ 新增评估":
                         if basic_info.get("phone"):
                             st.session_state["ai_detected_phone"] = basic_info.get("phone", "")
             else:
-                st.warning("⚠️ 请先上传简历文件")
+                st.warning("请先上传简历文件")
         
         # 显示 AI 分析结果
         if st.session_state.ai_analysis_result:
@@ -386,7 +466,7 @@ elif page == "➕ 新增评估":
     
     # 简历内容（可编辑）
     if resume_text and resume_text != "[PDF文件内容]":
-        with st.expander("📄 查看简历内容"):
+        with st.expander("查看简历内容"):
             st.text_area("简历文本", value=resume_text, height=200, key="resume_text_display")
     
     # AI Native 六维评分（人工评分）
@@ -397,7 +477,7 @@ elif page == "➕ 新增评估":
     dimension_scores = {}
     
     for dim_key, dim_info in AI_NATIVE_DIMENSIONS.items():
-        with st.expander(f"📊 {dim_info['name']} (权重: {dim_info['weight']})"):
+        with st.expander(f"{dim_info['name']} (权重: {dim_info['weight']})"):
             st.write(f"**定义:** {dim_info['description']}")
             st.write("**关键信号:**")
             for signal in dim_info['signals']:
@@ -457,12 +537,12 @@ elif page == "➕ 新增评估":
     overall_notes = st.text_area("综合评价与建议", value=default_overall, placeholder="请记录对该候选人的整体评价、优势和顾虑...", key="overall_notes")
     
     # 计算并保存
-    if st.button("💾 保存评估", type="primary"):
+    if st.button("保存评估", type="primary"):
         name = st.session_state.get("input_name", name)
         position = st.session_state.get("input_position", position)
         
         if not name or not position:
-            st.error("❌ 请填写候选人姓名和应聘职位")
+            st.error("请填写候选人姓名和应聘职位")
         else:
             # 计算分数
             scores_only = {k: v["score"] for k, v in dimension_scores.items()}
@@ -500,7 +580,7 @@ elif page == "➕ 新增评估":
             st.session_state.candidates[candidate_id] = candidate_data
             save_candidates(st.session_state.candidates)
             
-            st.success(f"✅ 评估已保存！候选人 {name} 的 AI Native 等级为: {LEVEL_DEFINITIONS[level]['name']} ({total_score}分)")
+            st.success(f"评估已保存！候选人 {name} 的 AI Native 等级为: {LEVEL_DEFINITIONS[level]['name']} ({total_score}分)")
             
             # 清除 AI 分析结果
             st.session_state.ai_analysis_result = None
@@ -515,13 +595,13 @@ elif page == "➕ 新增评估":
                 color = get_level_color(level)
                 st.markdown(f'<div class="score-card" style="background: {color}"><div class="score-value">{level}</div><div>{LEVEL_DEFINITIONS[level]["name"]}</div></div>', unsafe_allow_html=True)
 
-elif page == "📊 候选人对比":
+elif page == "候选人对比":
     st.markdown('<div class="main-header">候选人对比分析</div>', unsafe_allow_html=True)
     
     candidates = st.session_state.candidates
     
     if len(candidates) < 2:
-        st.info("📊 请至少添加2个候选人后才能使用对比功能")
+        st.info("请至少添加2个候选人后才能使用对比功能")
     else:
         # 选择要对比的候选人
         candidate_names = {cid: f"{c['name']} ({c.get('level', 'L0')})" for cid, c in candidates.items()}
@@ -529,7 +609,7 @@ elif page == "📊 候选人对比":
         
         if len(selected) >= 2:
             # 对比表格
-            st.subheader("📊 综合对比")
+            st.subheader("综合对比")
             
             comparison_data = []
             for cid in selected:
@@ -552,7 +632,7 @@ elif page == "📊 候选人对比":
             st.dataframe(df, use_container_width=True)
             
             # 雷达图对比
-            st.subheader("🕸️ 六维能力雷达图对比")
+            st.subheader("六维能力雷达图对比")
             
             import plotly.graph_objects as go
             
@@ -589,11 +669,10 @@ elif page == "📊 候选人对比":
             st.plotly_chart(fig, use_container_width=True)
             
             # 详细对比
-            st.subheader("📝 详细评估对比")
-            
+            st.subheader("详细评估对比")
             for cid in selected:
                 c = candidates[cid]
-                with st.expander(f"📋 {c['name']} - {LEVEL_DEFINITIONS[c.get('level', 'L0')]['name']}"):
+                with st.expander(f"{c['name']} - {LEVEL_DEFINITIONS[c.get('level', 'L0')]['name']}"):
                     st.write(f"**总分:** {c.get('total_score', 0)}分")
                     st.write(f"**综合评价:** {c.get('overall_notes', '无')}")
                     
@@ -604,13 +683,13 @@ elif page == "📊 候选人对比":
                         notes = dim_data.get('notes', '')
                         st.write(f"- {dim_info['name']}: {score}分 - {notes}")
         else:
-            st.info("👆 请选择至少2个候选人进行对比")
+            st.info("请选择至少2个候选人进行对比")
 
-elif page == "📖 评分标准":
+elif page == "评分标准":
     st.markdown('<div class="main-header">AI Native 人才评分标准</div>', unsafe_allow_html=True)
     
     # 等级定义
-    st.subheader("🎯 等级定义")
+    st.subheader("等级定义")
     
     for level, info in LEVEL_DEFINITIONS.items():
         with st.container():
@@ -623,10 +702,10 @@ elif page == "📖 评分标准":
             st.divider()
     
     # 六维评分标准
-    st.subheader("📊 六维评分标准")
+    st.subheader("六维评分标准")
     
     for dim_key, dim_info in AI_NATIVE_DIMENSIONS.items():
-        with st.expander(f"📈 {dim_info['name']} (权重: {dim_info['weight']})"):
+        with st.expander(f"{dim_info['name']} (权重: {dim_info['weight']})"):
             st.write(f"**定义:** {dim_info['description']}")
             st.write("**关键信号:**")
             for signal in dim_info['signals']:
@@ -640,7 +719,7 @@ elif page == "📖 评分标准":
             st.write("- 81-100分: 该特征的典范，能输出方法论")
     
     # 快速判断清单
-    st.subheader("✅ 快速判断清单")
+    st.subheader("快速判断清单")
     st.write("面试结束后，回答以下5个问题，即可快速判定:")
     
     for i, item in enumerate(QUICK_CHECKLIST, 1):
@@ -659,7 +738,7 @@ if st.session_state.current_candidate:
         c = st.session_state.candidates[cid]
         
         st.markdown("---")
-        st.subheader(f"📋 {c['name']} - 详细评估报告")
+        st.subheader(f"{c['name']} - 详细评估报告")
         
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -708,7 +787,7 @@ if st.session_state.current_candidate:
                 render_ai_analysis_result(ai_analysis)
         
         # 各维度详情
-        st.subheader("📊 各维度评分详情")
+        st.subheader("各维度评分详情")
         for dim_key, dim_info in AI_NATIVE_DIMENSIONS.items():
             dim_data = c.get('dimensions', {}).get(dim_key, {})
             score = dim_data.get('score', 0)
@@ -724,31 +803,167 @@ if st.session_state.current_candidate:
                 st.divider()
         
         # 快速判断清单结果
-        st.subheader("✅ 快速判断清单")
+        st.subheader("快速判断清单")
         checklist = c.get('checklist', {})
         passed = sum(1 for v in checklist.values() if v)
         st.write(f"通过项目: {passed}/5")
         
         for i, item in enumerate(QUICK_CHECKLIST, 1):
             checked = checklist.get(f"check_{i}", False)
-            icon = "✅" if checked else "❌"
+            icon = "[是]" if checked else "[否]"
             st.write(f"{icon} {item}")
         
         # 综合评价
-        st.subheader("📝 综合评价")
+        st.subheader("综合评价")
         st.write(c.get('overall_notes', '无综合评价'))
         
         # 操作按钮
-        col1, col2 = st.columns(2)
+        col1, col2, col3 = st.columns(3)
         with col1:
             if st.button("关闭详情"):
                 st.session_state.current_candidate = None
+                st.session_state.editing_candidate = None
                 st.rerun()
         with col2:
-            if st.button("🗑️ 删除此候选人", type="secondary"):
+            if st.button("编辑评估"):
+                st.session_state.editing_candidate = cid
+                st.rerun()
+        with col3:
+            if st.button("删除此候选人", type="secondary"):
                 del st.session_state.candidates[cid]
                 save_candidates(st.session_state.candidates)
                 st.session_state.current_candidate = None
+                st.session_state.editing_candidate = None
                 st.rerun()
     else:
         st.session_state.current_candidate = None
+
+# 候选人编辑页面
+if st.session_state.editing_candidate:
+    cid = st.session_state.editing_candidate
+    if cid in st.session_state.candidates:
+        c = st.session_state.candidates[cid]
+        
+        st.markdown("---")
+        st.subheader(f"编辑候选人评估 - {c['name']}")
+        
+        # 基本信息编辑
+        st.write("**基本信息**")
+        col1, col2 = st.columns(2)
+        with col1:
+            edit_name = st.text_input("姓名", value=c.get('name', ''), key="edit_name")
+            
+            # 职位选择
+            current_position = c.get('position', '')
+            position_options = JOB_CATEGORIES.copy()
+            if current_position and current_position not in position_options:
+                position_options.append(current_position)
+            
+            edit_position_category = st.selectbox(
+                "职位类别",
+                options=position_options,
+                index=position_options.index(current_position) if current_position in position_options else 0,
+                key="edit_position_category"
+            )
+            
+            if edit_position_category == "其他":
+                edit_position = st.text_input("自定义职位", value=current_position if current_position not in JOB_CATEGORIES else "", key="edit_position_custom")
+            else:
+                edit_position = edit_position_category
+                
+        with col2:
+            edit_email = st.text_input("邮箱", value=c.get('email', ''), key="edit_email")
+            edit_phone = st.text_input("电话", value=c.get('phone', ''), key="edit_phone")
+        
+        st.divider()
+        
+        # 六维评分编辑
+        st.write("**AI Native 六维评分**")
+        edit_dimensions = {}
+        
+        for dim_key, dim_info in AI_NATIVE_DIMENSIONS.items():
+            dim_data = c.get('dimensions', {}).get(dim_key, {})
+            current_score = dim_data.get('score', 50)
+            current_notes = dim_data.get('notes', '')
+            
+            with st.expander(f"{dim_info['name']} (当前: {current_score}分)"):
+                st.write(f"**定义:** {dim_info['description']}")
+                st.write(f"**关键信号:** {', '.join(dim_info['signals'])}")
+                
+                new_score = st.slider(
+                    f"评分",
+                    min_value=0,
+                    max_value=100,
+                    value=current_score,
+                    key=f"edit_score_{dim_key}"
+                )
+                
+                new_notes = st.text_area(
+                    f"评分说明",
+                    value=current_notes,
+                    key=f"edit_notes_{dim_key}",
+                    height=100
+                )
+                
+                edit_dimensions[dim_key] = {
+                    "score": new_score,
+                    "notes": new_notes
+                }
+        
+        st.divider()
+        
+        # 快速判断清单编辑
+        st.write("**快速判断清单**")
+        edit_checklist = {}
+        current_checklist = c.get('checklist', {})
+        
+        for i, item in enumerate(QUICK_CHECKLIST, 1):
+            checked = current_checklist.get(f"check_{i}", False)
+            edit_checklist[f"check_{i}"] = st.checkbox(item, value=checked, key=f"edit_check_{i}")
+        
+        st.divider()
+        
+        # 综合评价编辑
+        st.write("**综合评价**")
+        edit_overall_notes = st.text_area(
+            "综合评价",
+            value=c.get('overall_notes', ''),
+            key="edit_overall_notes",
+            height=150
+        )
+        
+        # 保存和取消按钮
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("保存修改", type="primary"):
+                # 计算新的总分和等级
+                total_score = calculate_score(edit_dimensions)
+                level = calculate_level(total_score)
+                
+                # 更新候选人数据
+                st.session_state.candidates[cid].update({
+                    "name": edit_name,
+                    "position": edit_position,
+                    "email": edit_email,
+                    "phone": edit_phone,
+                    "dimensions": edit_dimensions,
+                    "checklist": edit_checklist,
+                    "overall_notes": edit_overall_notes,
+                    "total_score": total_score,
+                    "level": level,
+                    "eval_date": datetime.now().strftime("%Y-%m-%d %H:%M")
+                })
+                
+                # 保存到文件
+                save_candidates(st.session_state.candidates)
+                
+                st.success("评估已更新！")
+                st.session_state.editing_candidate = None
+                st.rerun()
+                
+        with col2:
+            if st.button("取消编辑"):
+                st.session_state.editing_candidate = None
+                st.rerun()
+    else:
+        st.session_state.editing_candidate = None

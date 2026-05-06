@@ -306,15 +306,15 @@ def render_ai_settings():
         
         col1, col2 = st.columns(2)
         with col1:
-            if st.button("💾 保存设置"):
+            if st.button("保存设置"):
                 st.session_state.dashscope_api_key = api_key
                 st.session_state.ai_model = model
                 # 重新创建分析器
                 st.session_state.ai_analyzer = AIResumeAnalyzer(api_key=api_key, model=model)
-                st.success("✅ 设置已保存！")
+                st.success("设置已保存！")
         
         with col2:
-            if st.button("🧪 测试连接"):
+            if st.button("测试连接"):
                 analyzer = AIResumeAnalyzer(api_key=api_key, model=model)
                 if analyzer.is_available():
                     try:
@@ -324,11 +324,11 @@ def render_ai_settings():
                             messages=[{"role": "user", "content": "你好"}],
                             max_tokens=10
                         )
-                        st.success("✅ 连接成功！")
+                        st.success("连接成功！")
                     except Exception as e:
-                        st.error(f"❌ 连接失败: {e}")
+                        st.error(f"连接失败: {e}")
                 else:
-                    st.error("❌ 分析器初始化失败，请检查 API Key")
+                    st.error("分析器初始化失败，请检查 API Key")
         
         st.info("""
         **如何获取 API Key：**
@@ -343,10 +343,10 @@ def render_ai_analysis_result(result: Dict[str, Any], on_apply: callable = None)
     """渲染 AI 分析结果"""
     
     if "error" in result:
-        st.error(f"❌ {result['error']}")
+        st.error(f"{result['error']}")
         return
     
-    st.success("✅ AI 分析完成！")
+    st.success("AI 分析完成！")
     
     # 基本信息
     basic_info = result.get("basic_info", {})
@@ -370,9 +370,20 @@ def render_ai_analysis_result(result: Dict[str, Any], on_apply: callable = None)
     st.divider()
     
     # 六维评分
-    st.subheader("📊 AI 评分结果")
+    st.subheader("AI 评分结果")
     
     dimension_scores = result.get("dimension_scores", {})
+    
+    # 添加评分解读说明
+    with st.expander("评分标准说明"):
+        st.write("""
+        **评分等级说明：**
+        - **0-20分**: 未表现出该特征 - 候选人在这方面没有明显表现
+        - **21-40分**: 偶尔表现出该特征 - 有初步意识但不够系统
+        - **41-60分**: 基本具备该特征 - 能够常规性地运用
+        - **61-80分**: 深度具备该特征 - 形成了自己的工作方式
+        - **81-100分**: 卓越表现 - 具备方法论输出能力，能指导他人
+        """)
     
     for dim_key, dim_info in AI_NATIVE_DIMENSIONS.items():
         dim_data = dimension_scores.get(dim_key, {})
@@ -380,10 +391,38 @@ def render_ai_analysis_result(result: Dict[str, Any], on_apply: callable = None)
         evidence = dim_data.get("evidence", "")
         reasoning = dim_data.get("reasoning", "")
         
-        with st.expander(f"📈 {dim_info['name']}: {score}分"):
-            st.write(f"**评分理由:** {reasoning}")
+        # 根据分数生成评价等级
+        if score >= 81:
+            level_desc = "卓越"
+            level_color = "#4CAF50"
+        elif score >= 61:
+            level_desc = "深度具备"
+            level_color = "#2196F3"
+        elif score >= 41:
+            level_desc = "基本具备"
+            level_color = "#FF9800"
+        elif score >= 21:
+            level_desc = "初步意识"
+            level_color = "#9E9E9E"
+        else:
+            level_desc = "待发展"
+            level_color = "#757575"
+        
+        with st.expander(f"{dim_info['name']}: {score}分 - {level_desc}"):
+            st.markdown(f"**维度定义:** {dim_info['description']}")
+            st.markdown(f"**关键信号:** {', '.join(dim_info['signals'])}")
+            st.markdown(f"**评价等级:** <span style='color:{level_color};font-weight:bold'>{level_desc}</span>", unsafe_allow_html=True)
+            st.markdown(f"**评分理由:** {reasoning}")
             if evidence:
-                st.write(f"**证据:** {evidence}")
+                st.markdown(f"**具体证据:** {evidence}")
+            
+            # 添加改进建议
+            if score < 40:
+                st.info(f"**发展建议:** 建议候选人加强对「{dim_info['name']}」的关注，可以通过学习相关案例和实践来提升这方面的能力。")
+            elif score < 70:
+                st.info(f"**提升建议:** 候选人已具备基础，建议进一步系统化「{dim_info['name']}」的工作方法，形成可复用的经验。")
+            else:
+                st.success(f"**优势领域:** 「{dim_info['name']}」是候选人的强项，可以在面试中深入了解其方法论，并考虑如何发挥其优势。")
     
     # 雷达图
     import plotly.graph_objects as go
@@ -409,7 +448,7 @@ def render_ai_analysis_result(result: Dict[str, Any], on_apply: callable = None)
     st.plotly_chart(fig, use_container_width=True)
     
     # 快速判断清单
-    st.subheader("✅ 快速判断清单")
+    st.subheader("快速判断清单")
     checklist = result.get("quick_checklist", {})
     checklist_items = [
         ("ai_first_response", "候选人第一反应是'AI'而不是'人'"),
@@ -424,36 +463,78 @@ def render_ai_analysis_result(result: Dict[str, Any], on_apply: callable = None)
         checked = checklist.get(key, False)
         if checked:
             passed += 1
-            st.markdown(f"✅ {label}")
+            st.markdown(f"[是] {label}")
         else:
-            st.markdown(f"❌ {label}")
+            st.markdown(f"[否] {label}")
     
     st.write(f"**通过项目: {passed}/5**")
     
+    # 根据通过数量给出评价
+    if passed >= 4:
+        st.success("**快速判断结果:** 候选人展现出强烈的 AI Native 特征，建议优先考虑！")
+    elif passed >= 2:
+        st.info("**快速判断结果:** 候选人具备一定的 AI Native 基础，值得进一步深入了解。")
+    else:
+        st.warning("**快速判断结果:** 候选人在 AI Native 方面的表现较弱，需要谨慎评估。")
+    
     # 综合评价
-    st.subheader("📝 AI 综合评价")
-    st.write(result.get("overall_assessment", "无"))
+    st.subheader("AI 综合评价")
+    overall = result.get("overall_assessment", "")
+    if overall:
+        st.markdown(f"**总体评价:** {overall}")
+        
+        # 添加等级解读
+        level = result.get("level", "L0")
+        total_score = result.get("total_score", 0)
+        
+        level_descriptions = {
+            "L0": "偶尔使用者 - 仅停留在偶尔使用AI工具，没有系统性的AI工作方式",
+            "L1": "工具使用者 - 能熟练使用AI工具提效，但尚未形成系统性的AI Native工作方式",
+            "L2": "深度协作者 - 将AI作为默认操作系统，能进行深度协作，持续迭代自己的工作方式",
+            "L3": "模式重构者 - 能系统性重构工作流程，用AI改写工作边界，具备方法论输出能力"
+        }
+        
+        st.markdown(f"**等级解读 ({level} - {total_score}分):** {level_descriptions.get(level, '')}")
+    else:
+        st.write("暂无综合评价")
     
     # 优势和顾虑
+    st.subheader("优劣势分析")
     col1, col2 = st.columns(2)
     with col1:
-        st.write("**优势:**")
-        for strength in result.get("strengths", []):
-            st.markdown(f"✓ {strength}")
+        st.write("**核心优势:**")
+        strengths = result.get("strengths", [])
+        if strengths:
+            for strength in strengths:
+                st.markdown(f"- {strength}")
+        else:
+            st.write("未识别出明显优势")
     
     with col2:
-        st.write("**顾虑:**")
-        for concern in result.get("concerns", []):
-            st.markdown(f"⚠ {concern}")
+        st.write("**需要关注的点:**")
+        concerns = result.get("concerns", [])
+        if concerns:
+            for concern in concerns:
+                st.markdown(f"- {concern}")
+        else:
+            st.write("未识别出明显顾虑")
     
     # 面试建议
-    st.subheader("💡 面试建议")
-    for suggestion in result.get("interview_suggestions", []):
-        st.markdown(f"• {suggestion}")
+    st.subheader("面试建议")
+    suggestions = result.get("interview_suggestions", [])
+    if suggestions:
+        st.write("基于AI分析，建议在面试中重点关注以下方面：")
+        for i, suggestion in enumerate(suggestions, 1):
+            st.markdown(f"{i}. {suggestion}")
+    else:
+        st.write("建议从以下维度深入了解候选人：")
+        st.markdown("1. 询问候选人使用AI解决复杂问题的具体案例")
+        st.markdown("2. 了解候选人对AI能力边界的认知")
+        st.markdown("3. 探讨候选人如何持续学习和迭代AI使用方法")
     
     # 应用按钮
     if on_apply:
         st.divider()
-        if st.button("✅ 应用 AI 分析结果到表单", type="primary"):
+        if st.button("应用 AI 分析结果到表单", type="primary"):
             on_apply(result)
             st.success("已应用！请检查并调整评分。")
