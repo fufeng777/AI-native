@@ -43,10 +43,10 @@ AI_NATIVE_DIMENSIONS = {
 }
 
 LEVEL_DEFINITIONS = {
-    "L0": {"name": "L0 - 偶尔使用者", "description": "仅停留在偶尔使用AI工具，没有系统性的AI工作方式", "score_range": (0, 40)},
-    "L1": {"name": "L1 - 工具使用者", "description": "能熟练使用AI工具提效，但尚未形成系统性的AI Native 工作方式", "score_range": (40, 60)},
-    "L2": {"name": "L2 - 深度协作者", "description": "将AI作为默认操作系统，能进行深度协作，持续迭代自己的工作方式", "score_range": (60, 80)},
-    "L3": {"name": "L3 - 模式重构者", "description": "能系统性重构工作流程，用AI改写工作边界，具备方法论输出能力", "score_range": (80, 100)}
+    "L0": {"name": "L0 - 偶尔使用者", "description": "仅停留在偶尔使用AI工具，没有系统性的AI工作方式", "score_range": (0, 40), "color": "#9E9E9E"},
+    "L1": {"name": "L1 - 工具使用者", "description": "能熟练使用AI工具提效，但尚未形成系统性的AI Native 工作方式", "score_range": (40, 60), "color": "#4CAF50"},
+    "L2": {"name": "L2 - 深度协作者", "description": "将AI作为默认操作系统，能进行深度协作，持续迭代自己的工作方式", "score_range": (60, 80), "color": "#2196F3"},
+    "L3": {"name": "L3 - 模式重构者", "description": "能系统性重构工作流程，用AI改写工作边界，具备方法论输出能力", "score_range": (80, 100), "color": "#FF9800"}
 }
 
 class AIResumeAnalyzer:
