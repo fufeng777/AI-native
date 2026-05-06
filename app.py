@@ -264,6 +264,9 @@ elif page == "➕ 新增评估":
     # AI 设置
     render_ai_settings()
     
+    # 重新获取分析器（用户可能在设置中配置了API Key）
+    analyzer = get_analyzer(force_refresh=True)
+    
     st.divider()
     
     # 基本信息

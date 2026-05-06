@@ -261,11 +261,25 @@ class AIResumeAnalyzer:
         return result
 
 
-def get_analyzer() -> AIResumeAnalyzer:
-    """获取分析器实例（从 session state 或创建新的）"""
-    if 'ai_analyzer' not in st.session_state:
-        api_key = st.session_state.get('dashscope_api_key', os.getenv('DASHSCOPE_API_KEY', ''))
-        model = st.session_state.get('ai_model', 'qwen-turbo')
+def get_analyzer(force_refresh: bool = False) -> AIResumeAnalyzer:
+    """获取分析器实例（从 session state 或创建新的）
+    
+    Args:
+        force_refresh: 是否强制重新创建实例（当配置可能已更改时使用）
+    """
+    api_key = st.session_state.get('dashscope_api_key', os.getenv('DASHSCOPE_API_KEY', ''))
+    model = st.session_state.get('ai_model', 'qwen-turbo')
+    
+    # 检查是否需要重新创建分析器
+    need_refresh = force_refresh or 'ai_analyzer' not in st.session_state
+    
+    if not need_refresh and 'ai_analyzer' in st.session_state:
+        # 检查现有分析器的配置是否匹配当前设置
+        existing = st.session_state.ai_analyzer
+        if existing.api_key != api_key or existing.model != model:
+            need_refresh = True
+    
+    if need_refresh:
         st.session_state.ai_analyzer = AIResumeAnalyzer(api_key=api_key, model=model)
     
     return st.session_state.ai_analyzer
