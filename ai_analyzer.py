@@ -364,8 +364,12 @@ def render_ai_analysis_result(result: Dict[str, Any], on_apply: callable = None)
     ai_tools = basic_info.get("ai_tools", [])
     if ai_tools:
         st.write("**识别的 AI 工具:**")
-        for tool in ai_tools:
-            st.markdown(f'<span style="background:#e3f2fd;padding:2px 8px;border-radius:4px;margin:2px;display:inline-block">{tool}</span>', unsafe_allow_html=True)
+        # 每行显示4个工具
+        for i in range(0, len(ai_tools), 4):
+            cols = st.columns(4)
+            for j, tool in enumerate(ai_tools[i:i+4]):
+                with cols[j]:
+                    st.markdown(f'<div style="background:#e3f2fd;padding:6px 12px;border-radius:6px;text-align:center;font-size:0.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{tool}</div>', unsafe_allow_html=True)
     
     st.divider()
     
