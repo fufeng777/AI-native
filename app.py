@@ -714,23 +714,41 @@ st.markdown("""
     .info-card { background: #ffffff; padding: 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin: 1rem 0; }
     .metric-label { font-size: 0.875rem; color: #64748b; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
     .metric-value { font-size: 1.5rem; font-weight: 600; color: #1a1a2e; }
-    /* Fun/Personal version styles */
-    .fun-header { text-align: center; padding: 2rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; color: white; margin-bottom: 2rem; }
-    .fun-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .fun-subtitle { font-size: 1.1rem; opacity: 0.9; }
-    .quiz-card { background: white; border-radius: 12px; padding: 1.5rem; margin: 1rem 0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid #e2e8f0; }
-    .result-hero { text-align: center; padding: 3rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; color: white; }
+    /* Fun/Personal version styles - 极简奢华风格 */
+    .fun-header { display:none; } /* 不再使用 */
+    .quiz-card { background:transparent; box-shadow:none; border:none; padding:0; }
+    .result-hero { text-align: center; padding: 4rem 2rem; background: linear-gradient(135deg, #1d1d1f 0%, #424245 100%); border-radius: 24px; color: white; margin: 2rem 0; }
     .result-emoji { font-size: 5rem; margin-bottom: 1rem; }
-    .result-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .result-score { font-size: 4rem; font-weight: 700; margin: 1rem 0; }
-    .dimension-bar { height: 24px; background: #e2e8f0; border-radius: 12px; overflow: hidden; margin: 0.5rem 0; }
-    .dimension-fill { height: 100%; border-radius: 12px; transition: width 0.5s ease; }
-    .share-card { background: white; border-radius: 12px; padding: 1.5rem; text-align: center; border: 1px solid #e2e8f0; }
-    .mode-card { background: white; border-radius: 12px; padding: 2rem; text-align: center; border: 2px solid #e2e8f0; cursor: pointer; transition: all 0.3s; }
-    .mode-card:hover { border-color: #667eea; transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-    .mode-card.active { border-color: #667eea; background: #f8f4ff; }
-</style>
-""", unsafe_allow_html=True)
+    .result-title { font-size: 2.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+    .result-score { font-size: 4rem; font-weight: 700; margin: 1.5rem 0; letter-spacing: -0.02em; }
+    .dimension-bar { height: 6px; background: #e5e5e7; border-radius: 3px; overflow: hidden; margin: 0.5rem 0; }
+    .dimension-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+    .share-card { background: #ffffff; border-radius: 16px; padding: 2rem; text-align: center; border: 1px solid #e5e5e7; }
+    .mode-card { background: white; border-radius: 16px; padding: 2rem; text-align: center; border: 1px solid #e5e5e7; cursor: pointer; transition: all 0.3s; }
+    .mode-card:hover { border-color: #007AFF; transform: translateY(-2px); box-shadow: 0 8px 16px rgba(0,0,0,0.08); }
+    .mode-card.active { border-color: #007AFF; background: #f5f5f7; }
+    /* 极简风格滚动条 */
+    .minimal-scroll::-webkit-scrollbar { height: 4px; }
+    .minimal-scroll::-webkit-scrollbar-track { background: #f5f5f7; }
+    .minimal-scroll::-webkit-scrollbar-thumb { background: #d2d2d7; border-radius: 2px; }
+    /* 极简按钮样式 */
+    .minimal-btn { background: #007AFF; color: white; border: none; border-radius: 12px; padding: 1rem 2rem; font-size: 1rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+    .minimal-btn:hover { background: #0056CC; transform: translateY(-1px); }
+    /* 极简选项卡片 */
+    .minimal-option { padding: 1rem 1.25rem; background: #f5f5f7; border-radius: 12px; margin: 0.5rem 0; border: 2px solid transparent; transition: all 0.2s; cursor: pointer; }
+    .minimal-option:hover { background: #e8e8ed; }
+    .minimal-option.selected { background: #e8f2ff; border-color: #007AFF; }
+    /* 极简问题卡片 */
+    .minimal-question { background: #ffffff; border-radius: 20px; padding: 2rem; margin: 1.5rem 0; border: 1px solid #e5e5e7; }
+    /* 极简人格卡片 */
+    .minimal-personality { flex: 0 0 auto; width: 160px; padding: 1.5rem; background: #ffffff; border-radius: 16px; border: 1px solid #e5e5e7; text-align: center; transition: all 0.2s; }
+    .minimal-personality:hover { border-color: #007AFF; transform: translateY(-2px); }
+    /* 极简进度条 */
+    .minimal-progress { margin: 2rem 0 3rem; }
+    .minimal-progress-label { display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; color: #86868b; margin-bottom: 0.75rem; }
+    .minimal-progress-bar { height: 2px; background: #e5e5e7; border-radius: 1px; overflow: hidden; }
+    .minimal-progress-fill { height: 100%; background: #007AFF; border-radius: 1px; transition: width 0.3s; }
+</style>""", unsafe_allow_html=True)
 
 # ==================== HR招聘版本 ====================
 def render_hr_version():
@@ -1279,35 +1297,41 @@ def render_personal_version():
     if st.session_state.personal_step == 0:
         # 添加锚点
         st.markdown('<div id="quiz_start"></div>', unsafe_allow_html=True)
+        
+        # 极简奢华风格欢迎页面
         st.markdown('''
-        <div class="fun-header">
-            <div class="fun-title">AI 人格进化论</div>
-            <div class="fun-subtitle">你是AI原始人，还是AI大师？20道题揭示你的AI人格</div>
-            <div style="margin-top:1rem;opacity:0.8;font-size:0.95rem;">
-                测试时间 约5分钟 | 20道趣味场景题 | 8种AI人格类型 | 12个成就解锁
+        <div style="text-align:center;padding:6rem 2rem;min-height:80vh;display:flex;flex-direction:column;justify-content:center;">
+            <div style="font-size:0.875rem;font-weight:500;color:#86868b;text-transform:uppercase;letter-spacing:0.2em;margin-bottom:1.5rem;">AI Personality Assessment</div>
+            <h1 style="font-size:3.5rem;font-weight:700;color:#1d1d1f;letter-spacing:-0.03em;line-height:1.1;margin-bottom:1rem;">AI 人格进化论</h1>
+            <p style="font-size:1.125rem;color:#86868b;max-width:500px;margin:0 auto 3rem;">20道趣味场景题，发现你的AI使用风格</p>
+            <div style="display:flex;gap:2rem;justify-content:center;margin-bottom:4rem;font-size:0.875rem;color:#86868b;">
+                <span>20题趣味测试</span>
+                <span style="width:1px;background:#d2d2d7;"></span>
+                <span>8种人格类型</span>
+                <span style="width:1px;background:#d2d2d7;"></span>
+                <span>约5分钟</span>
             </div>
         </div>
         ''', unsafe_allow_html=True)
         
-        # 8种人格预览
-        st.markdown("### 你可能是什么AI人格？")
-        personality_cols = st.columns(4)
+        # 8种人格预览 - 极简水平滚动卡片
+        st.markdown('''
+        <div style="display:flex;gap:1rem;overflow-x:auto;padding:1rem 0;margin-bottom:3rem;-webkit-overflow-scrolling:touch;" class="minimal-scroll">
+        ''', unsafe_allow_html=True)
+        
         personalities = list(AI_PERSONALITIES.items())
-        for i, (key, p) in enumerate(personalities):
-            with personality_cols[i % 4]:
-                st.markdown(f'''
-                <div style="text-align:center;padding:1rem;background:white;border-radius:12px;
-                     border:1px solid #e2e8f0;margin:0.5rem 0;">
-                    <div style="font-size:2rem;">{p["emoji"]}</div>
-                    <div style="font-weight:600;font-size:0.9rem;color:#1a1a2e;">{p["name"]}</div>
-                    <div style="font-size:0.75rem;color:#64748b;">{p["trait"]}</div>
-                </div>
-                ''', unsafe_allow_html=True)
+        for key, p in personalities:
+            st.markdown(f'''
+            <div class="minimal-personality">
+                <div style="font-size:2rem;margin-bottom:0.75rem;">{p["emoji"]}</div>
+                <div style="font-size:0.875rem;font-weight:600;color:#1d1d1f;">{p["name"]}</div>
+            </div>
+            ''', unsafe_allow_html=True)
         
-        st.markdown("---")
+        st.markdown('</div>', unsafe_allow_html=True)
         
-        # 开始按钮
-        if st.button("开始测试", type="primary", use_container_width=True):
+        # 极简开始按钮
+        if st.button("开始测试 →", type="primary", use_container_width=True):
             st.session_state.personal_step = 1
             st.rerun()
     
@@ -1317,16 +1341,16 @@ def render_personal_version():
         categories = ["AI本能反应", "AI社交风格", "AI生活场景", "AI哲学思考"]
         category = categories[step - 1]
         
-        # 进度条
+        # 极简进度条
         progress = step / 5
         st.markdown(f'''
-        <div style="margin-bottom:1.5rem;">
-            <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">
-                <span style="font-weight:600;">第{step}/4部分：{category}</span>
-                <span style="color:#64748b;">{progress*100:.0f}%</span>
+        <div class="minimal-progress">
+            <div class="minimal-progress-label">
+                <span>第{step}/4部分 · {category}</span>
+                <span>{progress*100:.0f}%</span>
             </div>
-            <div style="height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden;">
-                <div style="height:100%;width:{progress*100}%;background:linear-gradient(90deg,#667eea,#764ba2);border-radius:4px;transition:width 0.3s;"></div>
+            <div class="minimal-progress-bar">
+                <div class="minimal-progress-fill" style="width:{progress*100}%;"></div>
             </div>
         </div>
         ''', unsafe_allow_html=True)
@@ -1335,9 +1359,10 @@ def render_personal_version():
         step_questions = [q for q in FUN_QUESTIONS if q.get("category") == category]
         
         for q in step_questions:
+            # 极简问题卡片
             st.markdown(f'''
-            <div class="quiz-card">
-                <div style="font-weight:600;margin-bottom:0.75rem;">{q["question"]}</div>
+            <div class="minimal-question">
+                <div style="font-size:1.125rem;font-weight:500;color:#1d1d1f;line-height:1.6;">{q["question"]}</div>
             </div>
             ''', unsafe_allow_html=True)
             
@@ -1394,14 +1419,14 @@ def render_personal_version():
                             del st.session_state.personal_other_answers[q["id"]]
                     break
         
-        # 下一阶段按钮
+        # 极简导航按钮
         col1, col2 = st.columns(2)
         with col1:
-            if st.button("上一部分"):
+            if st.button("← 上一部分"):
                 st.session_state.personal_step = max(0, step - 1)
                 st.rerun()
         with col2:
-            btn_text = "下一部分" if step < 4 else "进入工具选择"
+            btn_text = "下一部分 →" if step < 4 else "选择工具 →"
             if st.button(btn_text, type="primary"):
                 # 检查当前板块的所有题目是否都已选择
                 unanswered = []
@@ -1540,10 +1565,12 @@ def render_personal_version():
 
     # ===== Step 6: Prompt挑战 =====
     elif st.session_state.personal_step == 6:
+        # 极简风格标题
         st.markdown('''
-        <div style="text-align:center;padding:1.5rem;margin-bottom:1.5rem;">
-            <div style="font-size:1.5rem;font-weight:700;">Prompt挑战关卡</div>
-            <div style="color:#64748b;">测试你的Prompt Engineering技能，学习如何更好地与AI对话</div>
+        <div style="text-align:center;padding:3rem 2rem;margin-bottom:2rem;">
+            <div style="font-size:0.875rem;font-weight:500;color:#86868b;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:1rem;">Step 5</div>
+            <h2 style="font-size:2rem;font-weight:700;color:#1d1d1f;letter-spacing:-0.02em;margin-bottom:0.5rem;">Prompt挑战</h2>
+            <p style="font-size:1rem;color:#86868b;max-width:500px;margin:0 auto;">测试你的Prompt Engineering技能</p>
         </div>
         ''', unsafe_allow_html=True)
 
@@ -1552,51 +1579,66 @@ def render_personal_version():
             st.session_state.prompt_challenge_score = 0
 
         for challenge in PROMPT_CHALLENGES:
-            with st.expander(f"{challenge['title']} (+{challenge['points']}分)"):
-                st.write(f"**任务：** {challenge['task']}")
-                st.write(f"*{challenge['desc']}*")
+            # 极简风格挑战卡片
+            st.markdown(f'''
+            <div class="minimal-question">
+                <div style="font-size:1rem;font-weight:600;color:#1d1d1f;margin-bottom:0.5rem;">{challenge["title"]} <span style="color:#007AFF;font-weight:500;">+{challenge["points"]}分</span></div>
+                <div style="font-size:0.875rem;color:#86868b;margin-bottom:1rem;">{challenge["desc"]}</div>
+                <div style="font-size:0.9375rem;color:#1d1d1f;margin-bottom:1.5rem;">{challenge["task"]}</div>
+            </div>
+            ''', unsafe_allow_html=True)
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                st.markdown('''
+                <div style="background:#f5f5f7;padding:1rem;border-radius:12px;">
+                    <div style="font-size:0.75rem;color:#86868b;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;">示例</div>
+                    <div style="font-size:0.875rem;color:#86868b;text-decoration:line-through;">''' + challenge['example_bad'] + '''</div>
+                </div>
+                ''', unsafe_allow_html=True)
+            with col2:
+                st.markdown('''
+                <div style="background:#e8f2ff;padding:1rem;border-radius:12px;border:1px solid #007AFF20;">
+                    <div style="font-size:0.75rem;color:#007AFF;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;">推荐</div>
+                    <div style="font-size:0.875rem;color:#1d1d1f;">''' + challenge['example_good'] + '''</div>
+                </div>
+                ''', unsafe_allow_html=True)
 
-                col1, col2 = st.columns(2)
-                with col1:
-                    st.markdown("**示例（差）**")
-                    st.info(challenge['example_bad'])
-                with col2:
-                    st.markdown("**示例（好）**")
-                    st.success(challenge['example_good'])
+            # 用户输入自己的Prompt
+            user_prompt = st.text_area(
+                "写下你的Prompt：",
+                key=f"prompt_input_{challenge['id']}",
+                placeholder="尝试写一个比示例更好的Prompt..."
+            )
 
-                # 用户输入自己的Prompt
-                user_prompt = st.text_area(
-                    "写下你的Prompt：",
-                    key=f"prompt_input_{challenge['id']}",
-                    placeholder=f"尝试写一个比'{challenge['example_bad']}'更好的Prompt..."
-                )
-
-                if user_prompt:
-                    if len(user_prompt) > len(challenge['example_bad']) + 10:
-                        st.success(f"不错！你的Prompt很详细，可以获得+{challenge['points']}分！")
-                        if f"completed_{challenge['id']}" not in st.session_state:
-                            st.session_state.prompt_challenge_score += challenge['points']
-                            st.session_state[f"completed_{challenge['id']}"] = True
-                    else:
-                        st.warning("试着写得更详细一些，比如加入角色设定、背景信息或格式要求~")
+            if user_prompt:
+                if len(user_prompt) > len(challenge['example_bad']) + 10:
+                    st.success(f"不错！你的Prompt很详细，可以获得+{challenge['points']}分！")
+                    if f"completed_{challenge['id']}" not in st.session_state:
+                        st.session_state.prompt_challenge_score += challenge['points']
+                        st.session_state[f"completed_{challenge['id']}"] = True
+                else:
+                    st.warning("试着写得更详细一些~")
 
         st.markdown("---")
         col1, col2 = st.columns(2)
         with col1:
-            if st.button("返回工具选择"):
+            if st.button("← 返回工具选择"):
                 st.session_state.personal_step = 5
                 st.rerun()
         with col2:
-            if st.button("继续：AI对话模拟", type="primary"):
+            if st.button("继续 →", type="primary"):
                 st.session_state.personal_step = 7
                 st.rerun()
 
     # ===== Step 7: AI对话模拟 =====
     elif st.session_state.personal_step == 7:
+        # 极简风格标题
         st.markdown('''
-        <div style="text-align:center;padding:1.5rem;margin-bottom:1.5rem;">
-            <div style="font-size:1.5rem;font-weight:700;">AI对话模拟场景</div>
-            <div style="color:#64748b;">选择最佳策略，学习如何与AI高效协作</div>
+        <div style="text-align:center;padding:3rem 2rem;margin-bottom:2rem;">
+            <div style="font-size:0.875rem;font-weight:500;color:#86868b;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:1rem;">Step 6</div>
+            <h2 style="font-size:2rem;font-weight:700;color:#1d1d1f;letter-spacing:-0.02em;margin-bottom:0.5rem;">AI对话模拟</h2>
+            <p style="font-size:1rem;color:#86868b;max-width:500px;margin:0 auto;">选择最佳策略，学习如何与AI高效协作</p>
         </div>
         ''', unsafe_allow_html=True)
 
@@ -1607,7 +1649,13 @@ def render_personal_version():
             st.session_state.chat_scenario_count = 0
 
         for scenario in AI_CHAT_SCENARIOS:
-            st.markdown(f"**场景：** {scenario['scenario']}")
+            # 极简场景卡片
+            st.markdown(f'''
+            <div class="minimal-question">
+                <div style="font-size:1rem;font-weight:600;color:#1d1d1f;margin-bottom:0.5rem;">场景</div>
+                <div style="font-size:1.125rem;color:#1d1d1f;">{scenario['scenario']}</div>
+            </div>
+            ''', unsafe_allow_html=True)
 
             # 使用radio让用户选择
             options_text = [opt['text'] for opt in scenario['options']]
@@ -1630,25 +1678,25 @@ def render_personal_version():
                         st.session_state[f"scenario_feedback_{scenario['id']}"] = opt['feedback']
                     break
 
-            st.divider()
-
         st.markdown("---")
         col1, col2 = st.columns(2)
         with col1:
-            if st.button("返回Prompt挑战"):
+            if st.button("← 返回Prompt挑战"):
                 st.session_state.personal_step = 6
                 st.rerun()
         with col2:
-            if st.button("继续：AI知识问答", type="primary"):
+            if st.button("继续 →", type="primary"):
                 st.session_state.personal_step = 8
                 st.rerun()
 
     # ===== Step 8: AI知识问答 =====
     elif st.session_state.personal_step == 8:
+        # 极简风格标题
         st.markdown('''
-        <div style="text-align:center;padding:1.5rem;margin-bottom:1.5rem;">
-            <div style="font-size:1.5rem;font-weight:700;">AI知识问答</div>
-            <div style="color:#64748b;">测试你的AI知识储备</div>
+        <div style="text-align:center;padding:3rem 2rem;margin-bottom:2rem;">
+            <div style="font-size:0.875rem;font-weight:500;color:#86868b;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:1rem;">Step 7</div>
+            <h2 style="font-size:2rem;font-weight:700;color:#1d1d1f;letter-spacing:-0.02em;margin-bottom:0.5rem;">AI知识问答</h2>
+            <p style="font-size:1rem;color:#86868b;max-width:500px;margin:0 auto;">测试你的AI知识储备</p>
         </div>
         ''', unsafe_allow_html=True)
 
@@ -1659,7 +1707,13 @@ def render_personal_version():
             st.session_state.quiz_count = 0
 
         for i, quiz in enumerate(AI_KNOWLEDGE_QUIZ):
-            st.markdown(f"**问题 {i+1}：** {quiz['question']}")
+            # 极简问题卡片
+            st.markdown(f'''
+            <div class="minimal-question">
+                <div style="font-size:0.75rem;font-weight:500;color:#86868b;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.75rem;">问题 {i+1}/4</div>
+                <div style="font-size:1.125rem;color:#1d1d1f;">{quiz['question']}</div>
+            </div>
+            ''', unsafe_allow_html=True)
 
             # 使用radio让用户选择
             selected_idx = st.radio(
@@ -1686,25 +1740,25 @@ def render_personal_version():
                 else:
                     st.error(f"回答错误。{quiz['explanation']}")
 
-            st.divider()
-
         st.markdown("---")
         col1, col2 = st.columns(2)
         with col1:
-            if st.button("返回AI对话模拟"):
+            if st.button("← 返回AI对话模拟"):
                 st.session_state.personal_step = 7
                 st.rerun()
         with col2:
-            if st.button("继续：每日习惯测试", type="primary"):
+            if st.button("继续 →", type="primary"):
                 st.session_state.personal_step = 9
                 st.rerun()
 
     # ===== Step 9: 每日AI使用习惯测试 =====
     elif st.session_state.personal_step == 9:
+        # 极简风格标题
         st.markdown('''
-        <div style="text-align:center;padding:1.5rem;margin-bottom:1.5rem;">
-            <div style="font-size:1.5rem;font-weight:700;">每日AI使用习惯测试</div>
-            <div style="color:#64748b;">测测你的生活有多AI Native</div>
+        <div style="text-align:center;padding:3rem 2rem;margin-bottom:2rem;">
+            <div style="font-size:0.875rem;font-weight:500;color:#86868b;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:1rem;">Step 8</div>
+            <h2 style="font-size:2rem;font-weight:700;color:#1d1d1f;letter-spacing:-0.02em;margin-bottom:0.5rem;">每日习惯测试</h2>
+            <p style="font-size:1rem;color:#86868b;max-width:500px;margin:0 auto;">测测你的生活有多AI Native</p>
         </div>
         ''', unsafe_allow_html=True)
 
@@ -1713,7 +1767,12 @@ def render_personal_version():
             st.session_state.habit_answers = {}
 
         for habit in DAILY_AI_HABITS:
-            st.markdown(f"**{habit['question']}**")
+            # 极简问题卡片
+            st.markdown(f'''
+            <div class="minimal-question">
+                <div style="font-size:1.125rem;color:#1d1d1f;">{habit["question"]}</div>
+            </div>
+            ''', unsafe_allow_html=True)
 
             selected = st.radio(
                 "选择：",
@@ -1724,30 +1783,26 @@ def render_personal_version():
 
             st.session_state.habit_answers[habit['id']] = selected
 
-            # 显示AI指数
-            if selected == habit['options'][1]:  # 问AI
-                st.caption("AI指数：高")
-            elif selected == habit['options'][2]:  # 其他AI相关选项
-                st.caption("AI指数：中高")
-            else:
-                st.caption("AI指数：待提升")
-
-            st.divider()
-
         # 计算AI习惯得分
         ai_habit_count = sum(1 for ans in st.session_state.habit_answers.values()
                             if "AI" in ans or "问AI" in ans or "让AI" in ans)
 
-        st.info(f"你的AI习惯指数：{ai_habit_count}/{len(DAILY_AI_HABITS)} 个场景使用AI")
+        # 极简统计卡片
+        st.markdown(f'''
+        <div style="margin:2rem 0;padding:1.5rem;background:#f5f5f7;border-radius:16px;text-align:center;">
+            <div style="font-size:2rem;font-weight:700;color:#1d1d1f;">{ai_habit_count}<span style="font-size:1rem;font-weight:400;">/{len(DAILY_AI_HABITS)}</span></div>
+            <div style="font-size:0.875rem;color:#86868b;">个场景使用AI</div>
+        </div>
+        ''', unsafe_allow_html=True)
 
         st.markdown("---")
         col1, col2 = st.columns(2)
         with col1:
-            if st.button("返回知识问答"):
+            if st.button("← 返回知识问答"):
                 st.session_state.personal_step = 8
                 st.rerun()
         with col2:
-            if st.button("查看我的AI人格", type="primary"):
+            if st.button("查看结果 →", type="primary"):
                 st.session_state.personal_step = 10
                 st.rerun()
 
@@ -1817,56 +1872,70 @@ def render_personal_version():
                 pass
         
         # ===== 结果展示 =====
-        # 主结果卡片
+        # 极简主结果卡片 - 深色背景突出主题
         st.markdown(f'''
         <div class="result-hero">
             <div class="result-emoji">{fun_info["emoji"]}</div>
-            <div class="result-title">{fun_info["title"]}</div>
-            <div style="font-size:1.1rem;opacity:0.9;margin:0.5rem 0;">{fun_info["tagline"]}</div>
-            <div class="result-score">{total_score}分</div>
+            <h1 style="font-size:2.5rem;font-weight:700;margin-bottom:0.5rem;">{fun_info["title"]}</h1>
+            <div style="font-size:1rem;opacity:0.8;margin:0.5rem 0 1.5rem;">{fun_info["tagline"]}</div>
+            <div class="result-score">{total_score}<span style="font-size:1.5rem;font-weight:400;">分</span></div>
         </div>
         ''', unsafe_allow_html=True)
         
-        # AI人格类型
-        st.markdown("---")
-        st.markdown("### 你的AI人格类型")
+        # AI人格类型 - 极简玻璃质感卡片
+        st.markdown('''
+        <div style="margin:3rem 0;">
+            <div style="font-size:0.875rem;font-weight:500;color:#86868b;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:1rem;">你的AI人格类型</div>
+        ''', unsafe_allow_html=True)
         p = AI_PERSONALITIES[personality]
         st.markdown(f'''
-        <div style="background:white;border-radius:12px;padding:1.5rem;border:2px solid {p['color']};margin:1rem 0;">
-            <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;">
-                <div style="font-size:3rem;">{p["emoji"]}</div>
-                <div>
-                    <div style="font-size:1.5rem;font-weight:700;color:{p['color']};">{personality} - {p['name']}</div>
-                    <div style="color:#64748b;">{p['trait']}</div>
-                </div>
+        <div style="background:rgba(255,255,255,0.1);border-radius:20px;padding:2rem;margin:1rem 0;text-align:center;border:1px solid rgba(255,255,255,0.2);">
+            <div style="font-size:4rem;margin-bottom:1rem;">{p["emoji"]}</div>
+            <div style="font-size:1.5rem;font-weight:600;color:#ffffff;">{personality} · {p['name']}</div>
+            <div style="font-size:0.875rem;color:rgba(255,255,255,0.7);margin-top:0.5rem;">{p['trait']}</div>
+        </div>
+        ''', unsafe_allow_html=True)
+        
+        # 人格描述
+        st.markdown(f'''
+        <div style="background:#ffffff;border-radius:20px;padding:2rem;margin:2rem 0;border:1px solid #e5e5e7;">
+            <p style="font-size:1rem;color:#1d1d1f;line-height:1.8;margin-bottom:1.5rem;">{p['desc']}</p>
+            <div style="background:#f5f5f7;padding:1rem;border-radius:12px;margin-bottom:1rem;">
+                <div style="font-size:0.75rem;color:#86868b;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;">经典场景</div>
+                <div style="font-size:0.9375rem;color:#1d1d1f;">{p['scene']}</div>
             </div>
-            <p style="color:#475569;margin-bottom:0.75rem;">{p['desc']}</p>
-            <div style="background:#f8fafc;padding:0.75rem;border-radius:8px;font-size:0.9rem;color:#64748b;">
-                <strong>经典场景：</strong>{p['scene']}
-            </div>
-            <div style="margin-top:0.75rem;">
-                <strong>常用工具：</strong>
-                {" ".join([f'<span style="background:#e3f2fd;padding:2px 8px;border-radius:4px;margin:2px;display:inline-block;font-size:0.85rem;">{t}</span>' for t in p['tools']])}
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+                <div style="font-size:0.75rem;color:#86868b;text-transform:uppercase;letter-spacing:0.1em;width:100%;margin-bottom:0.25rem;">常用工具</div>
+                {''.join([f'<span style="background:#f5f5f7;padding:0.5rem 1rem;border-radius:8px;font-size:0.875rem;color:#1d1d1f;">{t}</span>' for t in p['tools']])}
             </div>
         </div>
         ''', unsafe_allow_html=True)
         
-        # 雷达图
-        st.subheader("AI能力雷达图")
+        # 雷达图 - 透明背景适配深色区域
         import plotly.graph_objects as go
         categories = [AI_NATIVE_DIMENSIONS[dim]["name"] for dim in AI_NATIVE_DIMENSIONS.keys()]
         values = [avg_scores.get(dim, 0) for dim in AI_NATIVE_DIMENSIONS.keys()]
         values.append(values[0])
         fig = go.Figure(data=go.Scatterpolar(r=values, theta=categories + [categories[0]], fill='toself',
-                                              fillcolor='rgba(102, 126, 234, 0.3)',
-                                              line=dict(color='rgba(102, 126, 234, 1)')))
-        fig.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 100])),
-                         showlegend=False, height=400)
+                                              fillcolor='rgba(0, 122, 255, 0.3)',
+                                              line=dict(color='#007AFF')))
+        fig.update_layout(
+            polar=dict(radialaxis=dict(visible=True, range=[0, 100], tickcolor='rgba(255,255,255,0.3)', tickfont=dict(color='rgba(255,255,255,0.6)'))),
+            showlegend=False, 
+            height=350,
+            paper_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='rgba(0,0,0,0)',
+            font=dict(color='white')
+        )
         st.plotly_chart(fig, use_container_width=True)
         
-        # 各维度进度条
-        st.subheader("各维度得分")
-        dimension_colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe']
+        # 各维度进度条 - 极简风格
+        st.markdown('''
+        <div style="margin:2rem 0;">
+            <div style="font-size:0.875rem;font-weight:500;color:#86868b;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:1.5rem;">各维度得分</div>
+        ''', unsafe_allow_html=True)
+        # 极简蓝调配色
+        dimension_colors = ['#007AFF', '#5856D6', '#AF52DE', '#FF2D55', '#FF9500', '#34C759']
         dim_names = {"ai_first_mindset": "AI优先思维", "deep_collaboration": "深度协作", 
                      "problem_reframing": "问题重构", "learning_mode": "学习模式",
                      "iteration_agility": "迭代敏捷", "boundary_awareness": "边界认知"}
@@ -1874,10 +1943,10 @@ def render_personal_version():
             color = dimension_colors[i % len(dimension_colors)]
             name = dim_names.get(dim_key, dim_key)
             st.markdown(f'''
-            <div style="margin:0.5rem 0;">
-                <div style="display:flex;justify-content:space-between;margin-bottom:0.25rem;">
-                    <span style="font-weight:500;">{name}</span>
-                    <span style="font-weight:600;color:{color};">{score:.0f}分</span>
+            <div style="margin:1rem 0;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">
+                    <span style="font-size:0.875rem;font-weight:500;color:#1d1d1f;">{name}</span>
+                    <span style="font-size:0.875rem;font-weight:600;color:{color};">{score:.0f}</span>
                 </div>
                 <div class="dimension-bar">
                     <div class="dimension-fill" style="width:{score}%;background:{color};"></div>
@@ -1885,20 +1954,22 @@ def render_personal_version():
             </div>
             ''', unsafe_allow_html=True)
         
-        # 成就解锁
-        st.markdown("---")
-        st.subheader(f"成就解锁 ({len(unlocked)}/{len(ACHIEVEMENTS)})")
-        ach_cols = st.columns(4)
-        for i, ach in enumerate(unlocked):
-            with ach_cols[i % 4]:
-                st.markdown(f'''
-                <div style="text-align:center;padding:0.75rem;background:linear-gradient(135deg,#fef3c7,#fde68a);
-                     border-radius:8px;margin:0.25rem 0;">
-                    <div style="font-size:1.5rem;">{ach["icon"]}</div>
-                    <div style="font-weight:600;font-size:0.8rem;">{ach["name"]}</div>
-                    <div style="font-size:0.7rem;color:#92400e;">{ach["desc"]}</div>
-                </div>
-                ''', unsafe_allow_html=True)
+        # 成就解锁 - 极简风格
+        st.markdown(f'''
+        <div style="margin:3rem 0;">
+            <div style="font-size:0.875rem;font-weight:500;color:#86868b;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:1.5rem;">成就解锁 ({len(unlocked)}/{len(ACHIEVEMENTS)})</div>
+        </div>
+        ''', unsafe_allow_html=True)
+        if unlocked:
+            ach_cols = st.columns(4)
+            for i, ach in enumerate(unlocked):
+                with ach_cols[i % 4]:
+                    st.markdown(f'''
+                    <div style="text-align:center;padding:1rem;background:#ffffff;border-radius:16px;border:1px solid #e5e5e7;margin:0.5rem 0;">
+                        <div style="font-size:2rem;margin-bottom:0.5rem;">{ach["icon"]}</div>
+                        <div style="font-weight:600;font-size:0.875rem;color:#1d1d1f;">{ach["name"]}</div>
+                    </div>
+                    ''', unsafe_allow_html=True)
         
         # 未解锁的成就
         locked = [a for a in ACHIEVEMENTS if a not in unlocked]
@@ -1906,71 +1977,56 @@ def render_personal_version():
             with st.expander(f"未解锁的成就 ({len(locked)}个)"):
                 for ach in locked:
                     st.markdown(f'''
-                    <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem;opacity:0.5;">
+                    <div style="display:flex;align-items:center;gap:0.75rem;padding:0.75rem;opacity:0.4;">
                         <div style="font-size:1.5rem;">{ach["icon"]}</div>
                         <div>
-                            <div style="font-weight:500;">{ach["name"]}</div>
-                            <div style="font-size:0.8rem;color:#64748b;">{ach["desc"]}</div>
+                            <div style="font-weight:500;font-size:0.875rem;">{ach["name"]}</div>
+                            <div style="font-size:0.75rem;color:#86868b;">{ach["desc"]}</div>
                         </div>
                     </div>
                     ''', unsafe_allow_html=True)
         
-        # 对话模拟详细反馈
-        if st.session_state.chat_scenario_count > 0:
-            st.markdown("---")
-            st.subheader("AI对话模拟反馈")
-            st.write(f"你在对话模拟环节获得了 **{st.session_state.chat_scenario_score}** 分")
-            
-            for scenario in AI_CHAT_SCENARIOS:
-                scenario_id = scenario['id']
-                if f"scenario_completed_{scenario_id}" in st.session_state:
-                    choice = st.session_state.get(f"scenario_choice_{scenario_id}", "")
-                    feedback = st.session_state.get(f"scenario_feedback_{scenario_id}", "")
-                    
-                    with st.container():
-                        st.markdown(f"**场景：** {scenario['scenario']}")
-                        st.markdown(f"**你的选择：** {choice}")
-                        st.markdown(f"**反馈：** {feedback}")
-                        st.divider()
-        
-        # AI给你的寄语
-        st.markdown("---")
-        st.subheader("AI给你的寄语")
+        # AI给你的寄语 - 极简深色卡片
         st.markdown(f'''
-        <div style="background:linear-gradient(135deg,#667eea,#764ba2);border-radius:12px;padding:1.5rem;color:white;">
-            <p style="font-size:1.1rem;line-height:1.8;">{fun_info["advice"]}</p>
+        <div style="background:linear-gradient(135deg, #1d1d1f 0%, #424245 100%);border-radius:20px;padding:2rem;margin:2rem 0;">
+            <div style="font-size:0.75rem;font-weight:500;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:1rem;">AI给你的寄语</div>
+            <p style="font-size:1.125rem;line-height:1.8;color:#ffffff;">{fun_info["advice"]}</p>
         </div>
         ''', unsafe_allow_html=True)
         
-        # 使用的工具统计
+        # 使用的工具统计 - 极简风格
         if st.session_state.personal_tools:
-            st.markdown("---")
-            st.subheader(f"你的AI工具箱 ({len(st.session_state.personal_tools)}个)")
+            st.markdown(f'''
+            <div style="margin:2rem 0;">
+                <div style="font-size:0.875rem;font-weight:500;color:#86868b;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:1.5rem;">你的AI工具箱 ({len(st.session_state.personal_tools)}个)</div>
+            </div>
+            ''', unsafe_allow_html=True)
             tool_cols = st.columns(5)
             for i, tool_name in enumerate(st.session_state.personal_tools):
                 tool = next((t for t in AI_TOOLS_LIST if t["name"] == tool_name), None)
-                icon = tool["icon"] if tool else "🔧"
+                icon = tool["icon"] if tool else "🤖"
                 with tool_cols[i % 5]:
                     st.markdown(f'''
-                    <div style="text-align:center;padding:0.5rem;background:#f8fafc;border-radius:8px;margin:0.25rem 0;">
-                        <div style="font-size:1.2rem;">{icon}</div>
-                        <div style="font-size:0.75rem;">{tool_name}</div>
+                    <div style="text-align:center;padding:1rem;background:#ffffff;border-radius:12px;border:1px solid #e5e5e7;">
+                        <div style="font-size:1.5rem;margin-bottom:0.5rem;">{icon}</div>
+                        <div style="font-size:0.75rem;color:#1d1d1f;">{tool_name}</div>
                     </div>
                     ''', unsafe_allow_html=True)
         
-        # 分享卡片
-        st.markdown("---")
-        st.subheader("分享你的AI人格")
-        share_text = f"我是{p['emoji']}{p['name']}，AI Native等级：{fun_info['emoji']}{fun_info['title']}({total_score}分)"
+        # 分享卡片 - 极简风格
+        st.markdown('''
+        <div style="margin:3rem 0;">
+        ''', unsafe_allow_html=True)
+        share_text = f"我是{p['emoji']}{p['name']}，{fun_info['emoji']}{fun_info['title']}({total_score}分)"
         st.markdown(f'''
         <div class="share-card">
-            <div style="font-size:1.5rem;">{p["emoji"]} {fun_info["emoji"]}</div>
-            <div style="font-size:1.1rem;font-weight:600;margin:0.5rem 0;">{share_text}</div>
-            <div style="color:#64748b;font-size:0.85rem;">来测测你的AI人格吧！</div>
+            <div style="font-size:3rem;margin-bottom:1rem;">{p["emoji"]} {fun_info["emoji"]}</div>
+            <div style="font-size:1.25rem;font-weight:600;color:#1d1d1f;margin-bottom:0.5rem;">{share_text}</div>
+            <div style="color:#86868b;font-size:0.875rem;">来测测你的AI人格吧！</div>
         </div>
         ''', unsafe_allow_html=True)
         
-        # 重新测试
+        # 重新测试 - 极简风格
         st.markdown("---")
         col1, col2 = st.columns(2)
         with col1:
