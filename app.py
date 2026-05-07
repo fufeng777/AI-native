@@ -1427,10 +1427,11 @@ def render_personal_version():
     
     # ===== AI工具选择 =====
     elif st.session_state.personal_step == 5:
+        # 苹果风格标题
         st.markdown('''
-        <div style="text-align:center;padding:1.5rem;margin-bottom:1.5rem;">
-            <div style="font-size:1.5rem;font-weight:700;">你用过哪些AI工具？</div>
-            <div style="color:#64748b;">勾选你使用过的工具，解锁隐藏成就（悬停查看工具介绍）</div>
+        <div style="text-align:center;padding:3rem 1.5rem;margin-bottom:2rem;">
+            <div style="font-size:2.5rem;font-weight:700;color:#1d1d1f;letter-spacing:-0.02em;margin-bottom:0.5rem;">AI工具箱</div>
+            <div style="font-size:1.1rem;color:#86868b;max-width:600px;margin:0 auto;">选择你使用过的AI工具，发现你的AI能力图谱</div>
         </div>
         ''', unsafe_allow_html=True)
 
@@ -1443,57 +1444,97 @@ def render_personal_version():
             tool_categories[cat].append(tool)
 
         for cat, tools in tool_categories.items():
-            st.markdown(f"**{cat}**")
+            # 苹果风格分类标题
+            st.markdown(f'''
+            <div style="margin:2rem 0 1rem 0;">
+                <div style="font-size:1.25rem;font-weight:600;color:#1d1d1f;">{cat}</div>
+                <div style="height:1px;background:linear-gradient(90deg, #d2d2d7, transparent);margin-top:0.5rem;"></div>
+            </div>
+            ''', unsafe_allow_html=True)
             
-            # 使用HTML渲染图标 + checkbox处理选择的方案
-            for i in range(0, len(tools), 4):
-                cols = st.columns(4)
-                for j, tool in enumerate(tools[i:i+4]):
+            # 苹果风格网格布局 - 每行3个，更大卡片
+            for i in range(0, len(tools), 3):
+                cols = st.columns(3)
+                for j, tool in enumerate(tools[i:i+3]):
                     with cols[j]:
-                        # 读取SVG图标并渲染
+                        # 读取SVG图标
                         icon_path = tool.get('icon', '')
-                        icon_display = ""
+                        icon_html = ""
                         if icon_path and icon_path.endswith('.svg'):
                             try:
                                 with open(icon_path, 'r', encoding='utf-8') as f:
                                     svg_content = f.read()
-                                # 调整SVG大小
-                                svg_content = svg_content.replace('<svg', '<svg width="20" height="20"')
-                                icon_display = svg_content
-                            except:
-                                icon_display = ""
+                                # 调整SVG样式 - 苹果风格大图标
+                                svg_content = svg_content.replace('<svg', '<svg width="32" height="32" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.1))"')
+                                icon_html = svg_content
+                            except Exception as e:
+                                # 使用emoji作为fallback
+                                icon_html = f'<div style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🤖</div>'
+                        else:
+                            icon_html = f'<div style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🤖</div>'
                         
-                        # 使用 help 参数显示公司和功能介绍
-                        help_text = f"【{tool.get('company', '未知')}】{tool.get('desc', '暂无介绍')}"
+                        # 检查是否已选择
+                        is_checked = tool['name'] in st.session_state.personal_tools
                         
-                        # 先渲染图标（用st.markdown），再用checkbox处理选择
-                        if icon_display:
-                            st.markdown(f'''
-                            <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px;margin-top:8px;">
-                                <span style="display:inline-block;vertical-align:middle;">{icon_display}</span>
-                                <span style="font-size:0.85rem;font-weight:500;color:#1a1a2e;">{tool["name"]}</span>
+                        # 苹果风格卡片 - 圆角、阴影、悬停效果
+                        card_style = '''
+                            background: ''' + ('linear-gradient(135deg, #007AFF 0%, #5856D6 100%)' if is_checked else '#ffffff') + ''';
+                            border-radius: 16px;
+                            padding: 1.25rem;
+                            margin: 0.5rem 0;
+                            box-shadow: 0 4px 20px rgba(0,0,0,''' + ('0.15)' if is_checked else '0.08)') + ''';
+                            border: 1px solid ''' + ('transparent' if is_checked else '#e5e5e7') + ''';
+                            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                            cursor: pointer;
+                        '''
+                        
+                        text_color = '#ffffff' if is_checked else '#1d1d1f'
+                        desc_color = 'rgba(255,255,255,0.8)' if is_checked else '#86868b'
+                        
+                        # 渲染卡片
+                        st.markdown(f'''
+                        <div style="{card_style}">
+                            <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+                                {icon_html}
+                                <div style="font-size:1rem;font-weight:600;color:{text_color};line-height:1.2;">{tool["name"]}</div>
                             </div>
-                            ''', unsafe_allow_html=True)
+                            <div style="font-size:0.75rem;color:{desc_color};line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">{tool.get('desc', '')}</div>
+                            <div style="font-size:0.7rem;color:{desc_color};margin-top:6px;opacity:0.8;">{tool.get('company', '')}</div>
+                        </div>
+                        ''', unsafe_allow_html=True)
                         
+                        # 隐藏checkbox，点击卡片即可选择
                         checked = st.checkbox(
-                            tool["name"],
+                            f"选择{tool['name']}",
+                            value=is_checked,
                             key=f"tool_{tool['name']}",
-                            help=help_text,
                             label_visibility="collapsed"
                         )
+                        
+                        # 更新选择状态
                         if checked and tool['name'] not in st.session_state.personal_tools:
                             st.session_state.personal_tools.append(tool['name'])
+                            st.rerun()
                         elif not checked and tool['name'] in st.session_state.personal_tools:
                             st.session_state.personal_tools.remove(tool['name'])
+                            st.rerun()
 
-        st.markdown("---")
+        # 苹果风格底部统计和按钮
+        selected_count = len(st.session_state.personal_tools)
+        st.markdown('''
+        <div style="margin:3rem 0;padding:1.5rem;background:linear-gradient(135deg, #f5f5f7 0%, #ffffff 100%);border-radius:20px;text-align:center;">
+            <div style="font-size:2rem;font-weight:700;color:#1d1d1f;">''' + str(selected_count) + '''</div>
+            <div style="font-size:0.9rem;color:#86868b;">已选择工具</div>
+        </div>
+        ''', unsafe_allow_html=True)
+        
         col1, col2 = st.columns(2)
         with col1:
-            if st.button("返回测试"):
+            if st.button("← 返回测试", use_container_width=True):
                 st.session_state.personal_step = 4
                 st.rerun()
         with col2:
-            if st.button("继续：Prompt挑战", type="primary"):
+            if st.button("继续 →", type="primary", use_container_width=True):
                 st.session_state.personal_step = 6
                 st.rerun()
 
@@ -1577,21 +1618,16 @@ def render_personal_version():
                 label_visibility="collapsed"
             )
 
-            # 显示反馈
+            # 只记录分数和选择，不显示即时评分
             for opt in scenario['options']:
                 if opt['text'] == selected:
-                    if opt['score'] == 100:
-                        st.success(f"{opt['feedback']} (+{opt['score']}分)")
-                    elif opt['score'] >= 50:
-                        st.info(f"{opt['feedback']} (+{opt['score']}分)")
-                    else:
-                        st.warning(f"{opt['feedback']} (+{opt['score']}分)")
-
-                    # 记录分数（只记录一次）
+                    # 记录分数和选择（只记录一次）
                     if f"scenario_completed_{scenario['id']}" not in st.session_state:
                         st.session_state.chat_scenario_score += opt['score']
                         st.session_state.chat_scenario_count += 1
                         st.session_state[f"scenario_completed_{scenario['id']}"] = True
+                        st.session_state[f"scenario_choice_{scenario['id']}"] = opt['text']
+                        st.session_state[f"scenario_feedback_{scenario['id']}"] = opt['feedback']
                     break
 
             st.divider()
@@ -1878,6 +1914,24 @@ def render_personal_version():
                         </div>
                     </div>
                     ''', unsafe_allow_html=True)
+        
+        # 对话模拟详细反馈
+        if st.session_state.chat_scenario_count > 0:
+            st.markdown("---")
+            st.subheader("AI对话模拟反馈")
+            st.write(f"你在对话模拟环节获得了 **{st.session_state.chat_scenario_score}** 分")
+            
+            for scenario in AI_CHAT_SCENARIOS:
+                scenario_id = scenario['id']
+                if f"scenario_completed_{scenario_id}" in st.session_state:
+                    choice = st.session_state.get(f"scenario_choice_{scenario_id}", "")
+                    feedback = st.session_state.get(f"scenario_feedback_{scenario_id}", "")
+                    
+                    with st.container():
+                        st.markdown(f"**场景：** {scenario['scenario']}")
+                        st.markdown(f"**你的选择：** {choice}")
+                        st.markdown(f"**反馈：** {feedback}")
+                        st.divider()
         
         # AI给你的寄语
         st.markdown("---")
