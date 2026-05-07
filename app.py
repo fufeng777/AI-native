@@ -96,8 +96,8 @@ def calculate_level(total_score):
     return "L0"
 
 def calculate_score(dimension_scores):
-    total = 0
-    max_total = 0
+    total = 0.0
+    max_total = 0.0
     weights = [1.0, 1.0, 1.0, 0.8, 0.8, 0.8]
     for i, dim_key in enumerate(AI_NATIVE_DIMENSIONS.keys()):
         dim_data = dimension_scores.get(dim_key, {})
@@ -106,6 +106,13 @@ def calculate_score(dimension_scores):
             score = dim_data.get("score", 0)
         else:
             score = dim_data if isinstance(dim_data, (int, float)) else 0
+        
+        # 确保 score 是数字类型
+        try:
+            score = float(score) if score is not None else 0.0
+        except (TypeError, ValueError):
+            score = 0.0
+            
         weight = weights[i]
         total += score * weight
         max_total += 100 * weight
@@ -442,53 +449,56 @@ def render_hr_add_page():
     
     # 简历上传和 AI 分析
     st.subheader("2. 简历上传与 AI 分析")
-    col1, col2 = st.columns([1, 1])
     
-    with col1:
-        resume_file = st.file_uploader("上传简历 (PDF, DOCX, TXT)", type=["pdf", "docx", "txt"], key="resume_upload")
-        
-        if resume_file:
-            st.success(f"已上传: {resume_file.name}")
-            try:
-                if resume_file.type == "text/plain":
-                    resume_text = resume_file.getvalue().decode('utf-8', errors='ignore')
-                elif resume_file.type == "application/pdf":
-                    try:
-                        import PyPDF2
-                        from io import BytesIO
-                        pdf_reader = PyPDF2.PdfReader(BytesIO(resume_file.getvalue()))
-                        resume_text = "\n".join([page.extract_text() for page in pdf_reader.pages])
-                    except:
-                        resume_text = "[PDF文件内容]"
-                else:
-                    resume_text = "[文档内容]"
-            except:
-                resume_text = ""
-        else:
-            resume_text = ""
+    # 上传区域
+    resume_file = st.file_uploader("上传简历 (PDF, DOCX, TXT)", type=["pdf", "docx", "txt"], key="resume_upload")
     
-    with col2:
-        st.write("**AI 智能分析**")
-        if st.button("使用 AI 分析简历", type="primary", disabled=not analyzer.is_available()):
-            if resume_file and resume_text:
-                with st.spinner("AI 正在分析简历，请稍候..."):
-                    result = analyzer.analyze_resume(resume_text)
-                    st.session_state.ai_analysis_result = result
-                    if "basic_info" in result:
-                        basic_info = result.get("basic_info", {})
-                        if basic_info.get("name"):
-                            st.session_state["ai_detected_name"] = basic_info.get("name", "")
-                        if basic_info.get("position"):
-                            st.session_state["ai_detected_position"] = basic_info.get("position", "")
-                        if basic_info.get("email"):
-                            st.session_state["ai_detected_email"] = basic_info.get("email", "")
-                        if basic_info.get("phone"):
-                            st.session_state["ai_detected_phone"] = basic_info.get("phone", "")
+    if resume_file:
+        st.success(f"已上传: {resume_file.name}")
+        try:
+            if resume_file.type == "text/plain":
+                resume_text = resume_file.getvalue().decode('utf-8', errors='ignore')
+            elif resume_file.type == "application/pdf":
+                try:
+                    import PyPDF2
+                    from io import BytesIO
+                    pdf_reader = PyPDF2.PdfReader(BytesIO(resume_file.getvalue()))
+                    resume_text = "\n".join([page.extract_text() for page in pdf_reader.pages])
+                except:
+                    resume_text = "[PDF文件内容]"
             else:
-                st.warning("请先上传简历文件")
-        
-        if st.session_state.ai_analysis_result:
-            render_ai_analysis_result(st.session_state.ai_analysis_result)
+                resume_text = "[文档内容]"
+        except:
+            resume_text = ""
+    else:
+        resume_text = ""
+    
+    # AI 分析按钮
+    st.markdown("---")
+    st.write("**AI 智能分析**")
+    
+    if st.button("使用 AI 分析简历", type="primary", disabled=not analyzer.is_available()):
+        if resume_file and resume_text:
+            with st.spinner("AI 正在分析简历，请稍候..."):
+                result = analyzer.analyze_resume(resume_text)
+                st.session_state.ai_analysis_result = result
+                if "basic_info" in result:
+                    basic_info = result.get("basic_info", {})
+                    if basic_info.get("name"):
+                        st.session_state["ai_detected_name"] = basic_info.get("name", "")
+                    if basic_info.get("position"):
+                        st.session_state["ai_detected_position"] = basic_info.get("position", "")
+                    if basic_info.get("email"):
+                        st.session_state["ai_detected_email"] = basic_info.get("email", "")
+                    if basic_info.get("phone"):
+                        st.session_state["ai_detected_phone"] = basic_info.get("phone", "")
+        else:
+            st.warning("请先上传简历文件")
+    
+    # AI 分析结果
+    if st.session_state.ai_analysis_result:
+        st.markdown("---")
+        render_ai_analysis_result(st.session_state.ai_analysis_result)
     
     # 简历内容
     if resume_text and resume_text != "[PDF文件内容]":
