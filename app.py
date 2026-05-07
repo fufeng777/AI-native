@@ -146,7 +146,7 @@ st.markdown("""
     * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
     .main-header { font-size: 2.2rem; font-weight: 600; color: #1a1a2e; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
     .sub-header { font-size: 1rem; color: #64748b; margin-bottom: 2rem; font-weight: 400; }
-    .score-card { background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%); padding: 2rem; border-radius: 12px; color: white; text-align: center; margin: 1rem 0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+    .score-card { background: linear-gradient(135deg, #86efac 0%, #ffffff 100%); padding: 2rem; border-radius: 12px; color: #166534; text-align: center; margin: 1rem 0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid #bbf7d0; }
     .score-value { font-size: 2.8rem; font-weight: 700; letter-spacing: -0.02em; }
     .level-badge { display: inline-block; padding: 0.6rem 1.2rem; border-radius: 6px; font-weight: 600; font-size: 0.9rem; color: white; margin: 0.5rem 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
     .dimension-card { background: #ffffff; padding: 1.25rem; border-radius: 8px; margin: 0.75rem 0; border-left: 4px solid #1e3a5f; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; }
