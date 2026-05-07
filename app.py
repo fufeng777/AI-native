@@ -1314,34 +1314,31 @@ def render_personal_version():
         </div>
         ''', unsafe_allow_html=True)
         
-        # 8种人格预览 - 极简水平滚动卡片
-        st.markdown('''
-        <div style="display:flex;gap:1rem;overflow-x:auto;padding:1rem 0;margin-bottom:3rem;-webkit-overflow-scrolling:touch;" class="minimal-scroll">
-        ''', unsafe_allow_html=True)
-        
+        # 8种人格预览 - 一行4个网格
         personalities = list(AI_PERSONALITIES.items())
-        for key, p in personalities:
-            # 读取专业SVG图标
-            icon_path = f"static/personality_icons/{key}.svg"
-            icon_html = ""
-            try:
-                with open(icon_path, 'r', encoding='utf-8') as f:
-                    svg_content = f.read()
-                # 调整SVG样式 - 统一尺寸和颜色
-                svg_content = svg_content.replace('<svg', '<svg width="48" height="48" style="display:block;margin:0 auto;"')
-                icon_html = svg_content
-            except:
-                # fallback到emoji
-                icon_html = f'<div style="font-size:2rem;text-align:center;">{p.get("emoji", "🤖")}</div>'
-            
-            st.markdown(f'''
-            <div class="minimal-personality">
-                <div style="margin-bottom:0.75rem;">{icon_html}</div>
-                <div style="font-size:0.875rem;font-weight:600;color:#1d1d1f;text-align:center;">{p["name"]}</div>
-            </div>
-            ''', unsafe_allow_html=True)
-        
-        st.markdown('</div>', unsafe_allow_html=True)
+        for i in range(0, len(personalities), 4):
+            cols = st.columns(4)
+            for j in range(4):
+                if i + j < len(personalities):
+                    key, p = personalities[i + j]
+                    # 读取专业SVG图标
+                    icon_path = f"static/personality_icons/{key}.svg"
+                    icon_html = ""
+                    try:
+                        with open(icon_path, 'r', encoding='utf-8') as f:
+                            svg_content = f.read()
+                        svg_content = svg_content.replace('<svg', '<svg width="36" height="36" style="display:block;margin:0 auto;"')
+                        icon_html = svg_content
+                    except:
+                        icon_html = f'<div style="font-size:1.5rem;text-align:center;">{p.get("emoji", "🤖")}</div>'
+                    
+                    with cols[j]:
+                        st.markdown(f'''
+                        <div style="text-align:center;padding:1.25rem 0.5rem;background:#ffffff;border-radius:16px;border:1px solid #e5e5e7;transition:all 0.3s;">
+                            <div style="margin-bottom:0.5rem;">{icon_html}</div>
+                            <div style="font-size:0.8rem;font-weight:600;color:#1d1d1f;">{p["name"]}</div>
+                        </div>
+                        ''', unsafe_allow_html=True)
         
         # 极简开始按钮
         if st.button("开始测试 →", type="primary", use_container_width=True):
