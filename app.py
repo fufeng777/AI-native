@@ -1543,47 +1543,58 @@ def render_personal_version():
                         # 检查是否已选择
                         is_checked = tool['name'] in st.session_state.personal_tools
                         
-                        # 苹果风格卡片 - 圆角、阴影、悬停效果
+                        # 生成唯一key
+                        tool_key = f"tool_{tool['name']}"
+                        
+                        # 卡片样式 - 选中时边框变蓝，显示勾选标记
                         card_style = '''
-                            background: ''' + ('linear-gradient(135deg, #007AFF 0%, #5856D6 100%)' if is_checked else '#ffffff') + ''';
+                            background: #ffffff;
                             border-radius: 16px;
                             padding: 1.25rem;
                             margin: 0.5rem 0;
-                            box-shadow: 0 4px 20px rgba(0,0,0,''' + ('0.15)' if is_checked else '0.08)') + ''';
-                            border: 1px solid ''' + ('transparent' if is_checked else '#e5e5e7') + ''';
-                            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                            cursor: pointer;
+                            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                            border: 2px solid ''' + ('#007AFF' if is_checked else '#e5e5e7') + ''';
+                            transition: all 0.3s ease;
+                            position: relative;
+                            min-height: 90px;
                         '''
                         
-                        text_color = '#ffffff' if is_checked else '#1d1d1f'
-                        desc_color = 'rgba(255,255,255,0.8)' if is_checked else '#86868b'
+                        # 勾选标记（选中时显示在左下角）
+                        checkmark_html = '''
+                        <div style="position:absolute;bottom:10px;left:10px;width:22px;height:22px;background:#007AFF;border-radius:6px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,122,255,0.4);">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                                <path d="M3 7L6 10L11 4" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        ''' if is_checked else ''
                         
-                        # 渲染卡片
+                        # 渲染卡片（可点击）
                         st.markdown(f'''
-                        <div style="{card_style}">
+                        <div style="{card_style}" onclick="document.querySelector('input[data-testid=\\'stCheckbox\\'][name=\\'{tool_key}\\']').click();">
                             <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
                                 {icon_html}
-                                <div style="font-size:1rem;font-weight:600;color:{text_color};line-height:1.2;">{tool["name"]}</div>
+                                <div style="font-size:1rem;font-weight:600;color:#1d1d1f;line-height:1.2;">{tool["name"]}</div>
                             </div>
-                            <div style="font-size:0.75rem;color:{desc_color};line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">{tool.get('desc', '')}</div>
-                            <div style="font-size:0.7rem;color:{desc_color};margin-top:6px;opacity:0.8;">{tool.get('company', '')}</div>
+                            <div style="font-size:0.75rem;color:#86868b;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;padding-right:30px;">{tool.get('desc', '')}</div>
+                            <div style="font-size:0.7rem;color:#86868b;margin-top:6px;opacity:0.8;">{tool.get('company', '')}</div>
+                            {checkmark_html}
                         </div>
                         ''', unsafe_allow_html=True)
                         
-                        # 隐藏checkbox，点击卡片即可选择
+                        # 隐藏的checkbox用于状态管理
                         checked = st.checkbox(
-                            f"选择{tool['name']}",
+                            "✓",
                             value=is_checked,
-                            key=f"tool_{tool['name']}",
+                            key=tool_key,
                             label_visibility="collapsed"
                         )
                         
                         # 更新选择状态
-                        if checked and tool['name'] not in st.session_state.personal_tools:
-                            st.session_state.personal_tools.append(tool['name'])
-                            st.rerun()
-                        elif not checked and tool['name'] in st.session_state.personal_tools:
-                            st.session_state.personal_tools.remove(tool['name'])
+                        if checked != is_checked:
+                            if checked:
+                                st.session_state.personal_tools.append(tool['name'])
+                            else:
+                                st.session_state.personal_tools.remove(tool['name'])
                             st.rerun()
 
         # 苹果风格底部统计和按钮
