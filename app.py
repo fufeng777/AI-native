@@ -584,8 +584,8 @@ def render_hr_add_page():
             notes = st.text_area("评分说明", value=ai_reasoning, height=80, key=f"notes_{dim_key}")
             dimension_scores[dim_key] = {"score": score, "notes": notes}
             
-            # 记录是否被人工修改过
-            manual_modified[dim_key] = (score != int(ai_score)) or (notes != ai_reasoning)
+            # 只比较分数是否被修改（不比较notes，因为text_area可能有格式差异）
+            manual_modified[dim_key] = (score != int(ai_score))
     
     # 快速判断清单
     st.divider()
@@ -616,6 +616,9 @@ def render_hr_add_page():
             total_score = calculate_score(dimension_scores)
             level = calculate_level(total_score)
             
+            # 保存AI分析结果（在清空session之前）
+            ai_analysis_to_save = st.session_state.ai_analysis_result
+            
             candidate_id = f"candidate_{datetime.now().strftime('%Y%m%d%H%M%S')}"
             st.session_state.candidates[candidate_id] = {
                 "name": name,
@@ -630,7 +633,7 @@ def render_hr_add_page():
                 "total_score": total_score,
                 "level": level,
                 "eval_date": datetime.now().strftime("%Y-%m-%d %H:%M"),
-                "ai_analysis": st.session_state.ai_analysis_result
+                "ai_analysis": ai_analysis_to_save
             }
             
             save_candidates(st.session_state.candidates)
