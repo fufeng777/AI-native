@@ -390,175 +390,7 @@ def render_hr_version():
         else:
             st.session_state.editing_candidate = None
 
-# ==================== 个人测评版本 ====================
-def render_personal_version():
-    """个人测评版本主页面"""
-    
-    # 欢迎页面
-    if not st.session_state.personal_completed:
-        st.markdown('<div class="fun-header"><div class="fun-title">AI Native 能力测试</div><div class="fun-subtitle">测测你是AI小白还是AI大师？</div></div>', unsafe_allow_html=True)
-        
-        # 介绍
-        st.markdown("""
-        <div class="info-card">
-        <h3>关于这个测试</h3>
-        <p>AI Native 是指把 AI 作为默认工作方式来思考和行动的能力。这个测试会从6个维度评估你在工作中使用AI的水平。</p>
-        <p><strong>测试时间：</strong>约3-5分钟</p>
-        <p><strong>题目数量：</strong>8道选择题</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("### 开始测试")
-        
-        # 显示问题
-        answers = {}
-        for q in FUN_QUESTIONS:
-            st.markdown(f'<div class="quiz-card"><h4>{q["question"]}</h4></div>', unsafe_allow_html=True)
-            selected = st.radio("选择你的答案", 
-                               options=[o["text"] for o in q["options"]], 
-                               key=f"q_{q['id']}",
-                               format_func=lambda x: x)
-            # 找到对应的分数
-            for o in q["options"]:
-                if o["text"] == selected:
-                    answers[q["id"]] = {"dimension": q["dimension"], "score": o["score"]}
-                    break
-        
-        if st.button("查看我的结果", type="primary", use_container_width=True):
-            # 计算各维度分数
-            dimension_scores = {}
-            for q_id, ans in answers.items():
-                dim = ans["dimension"]
-                if dim not in dimension_scores:
-                    dimension_scores[dim] = []
-                dimension_scores[dim].append(ans["score"])
-            
-            # 平均分数
-            avg_scores = {}
-            for dim, scores in dimension_scores.items():
-                avg_scores[dim] = sum(scores) / len(scores)
-            
-            # 计算总分
-            total_score = calculate_score(avg_scores)
-            level = calculate_level(total_score)
-            
-            # 保存结果
-            st.session_state.personal_answers = answers
-            st.session_state.personal_dimension_scores = avg_scores
-            st.session_state.personal_total_score = total_score
-            st.session_state.personal_level = level
-            st.session_state.personal_completed = True
-            st.rerun()
-    
-    # 结果页面
-    else:
-        level = st.session_state.personal_level
-        total_score = st.session_state.personal_total_score
-        dimension_scores = st.session_state.personal_dimension_scores
-        fun_info = FUN_TITLES[level]
-        
-        # 结果展示
-        st.markdown(f'''
-        <div class="result-hero">
-            <div class="result-emoji">{fun_info["emoji"]}</div>
-            <div class="result-title">{fun_info["title"]}</div>
-            <div class="result-score">{total_score}分</div>
-            <p>{fun_info["description"]}</p>
-        </div>
-        ''', unsafe_allow_html=True)
-        
-        # 等级说明
-        st.subheader("等级说明")
-        for lvl, info in FUN_TITLES.items():
-            color = info["color"]
-            is_current = lvl == level
-            with st.container():
-                col1, col2 = st.columns([1, 3])
-                with col1:
-                    st.markdown(f'<div class="level-badge" style="background-color: {color}">{info["emoji"]} {info["title"]}</div>', unsafe_allow_html=True)
-                with col2:
-                    if is_current:
-                        st.success(info["description"])
-                    else:
-                        st.write(info["description"])
-        
-        # 雷达图
-        st.subheader("你的AI能力雷达图")
-        import plotly.graph_objects as go
-        categories = [AI_NATIVE_DIMENSIONS[dim]["name"] for dim in AI_NATIVE_DIMENSIONS.keys()]
-        values = [dimension_scores.get(dim, 0) for dim in AI_NATIVE_DIMENSIONS.keys()]
-        values.append(values[0])
-        fig = go.Figure(data=go.Scatterpolar(r=values, theta=categories + [categories[0]], fill='toself', 
-                                              fillcolor='rgba(102, 126, 234, 0.3)',
-                                              line=dict(color='rgba(102, 126, 234, 1)')))
-        fig.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 100], tickcolor='white'), 
-                                    bgcolor='rgba(0,0,0,0)'),
-                         paper_bgcolor='rgba(0,0,0,0)',
-                         plot_bgcolor='rgba(0,0,0,0)',
-                         showlegend=False, height=400, font=dict(color='white'))
-        st.plotly_chart(fig, use_container_width=True)
-        
-        # 各维度详情
-        st.subheader("各维度详细分析")
-        dimension_colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe']
-        for i, (dim_key, dim_info) in enumerate(AI_NATIVE_DIMENSIONS.items()):
-            score = dimension_scores.get(dim_key, 0)
-            color = dimension_colors[i % len(dimension_colors)]
-            with st.container():
-                col1, col2 = st.columns([1, 2])
-                with col1:
-                    st.write(f"**{dim_info['name']}**")
-                    st.write(f"{score}分")
-                with col2:
-                    st.markdown(f'<div class="dimension-bar"><div class="dimension-fill" style="width: {score}%; background: {color}"></div></div>', unsafe_allow_html=True)
-                    st.caption(dim_info['description'])
-        
-        # 分享卡片
-        st.markdown("---")
-        st.markdown('<div class="share-card"><h3>分享你的结果</h3><p>我刚刚测试了 AI Native 能力，获得了 {level} 等级 ({total_score}分)！{emoji}</p></div>'.format(
-            level=fun_info["title"], total_score=total_score, emoji=fun_info["emoji"]), unsafe_allow_html=True)
-        
-        # 重新测试按钮
-        st.markdown("---")
-        if st.button("重新测试", use_container_width=True):
-            st.session_state.personal_answers = {}
-            st.session_state.personal_completed = False
-            st.rerun()
-
-# ==================== 主入口 ====================
-# 侧边栏模式切换
-st.sidebar.markdown("### 选择使用模式")
-
-mode_col1, mode_col2 = st.columns(2)
-with mode_col1:
-    if st.sidebar.button("HR招聘版", use_container_width=True, 
-                         type="primary" if st.session_state.app_mode == "hr" else "secondary"):
-        st.session_state.app_mode = "hr"
-        st.rerun()
-
-with mode_col2:
-    if st.sidebar.button("个人测评版", use_container_width=True,
-                         type="primary" if st.session_state.app_mode == "personal" else "secondary"):
-        st.session_state.app_mode = "personal"
-        st.rerun()
-
-st.sidebar.markdown("---")
-
-# 新增评估页面入口（HR版本）
-if st.session_state.app_mode == "hr":
-    st.sidebar.markdown("### 快捷操作")
-    if st.sidebar.button("+ 新增候选人评估", use_container_width=True):
-        st.session_state.app_mode = "hr_add"
-        st.rerun()
-
-# 根据模式渲染不同页面
-if st.session_state.app_mode == "hr":
-    render_hr_version()
-elif st.session_state.app_mode == "hr_add":
-    render_hr_add_page()
-elif st.session_state.app_mode == "personal":
-    render_personal_version()
-
+# ==================== HR版本 - 新增候选人页面 ====================
 def render_hr_add_page():
     """HR版本 - 新增候选人页面"""
     st.markdown('<div class="main-header">新增候选人评估</div>', unsafe_allow_html=True)
@@ -727,3 +559,172 @@ def render_hr_add_page():
             if st.button("返回候选人列表"):
                 st.session_state.app_mode = "hr"
                 st.rerun()
+
+# ==================== 个人测评版本 ====================
+def render_personal_version():
+    """个人测评版本主页面"""
+    
+    # 欢迎页面
+    if not st.session_state.personal_completed:
+        st.markdown('<div class="fun-header"><div class="fun-title">AI Native 能力测试</div><div class="fun-subtitle">测测你是AI小白还是AI大师？</div></div>', unsafe_allow_html=True)
+        
+        # 介绍
+        st.markdown("""
+        <div class="info-card">
+        <h3>关于这个测试</h3>
+        <p>AI Native 是指把 AI 作为默认工作方式来思考和行动的能力。这个测试会从6个维度评估你在工作中使用AI的水平。</p>
+        <p><strong>测试时间：</strong>约3-5分钟</p>
+        <p><strong>题目数量：</strong>8道选择题</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("### 开始测试")
+        
+        # 显示问题
+        answers = {}
+        for q in FUN_QUESTIONS:
+            st.markdown(f'<div class="quiz-card"><h4>{q["question"]}</h4></div>', unsafe_allow_html=True)
+            selected = st.radio("选择你的答案", 
+                               options=[o["text"] for o in q["options"]], 
+                               key=f"q_{q['id']}",
+                               format_func=lambda x: x)
+            # 找到对应的分数
+            for o in q["options"]:
+                if o["text"] == selected:
+                    answers[q["id"]] = {"dimension": q["dimension"], "score": o["score"]}
+                    break
+        
+        if st.button("查看我的结果", type="primary", use_container_width=True):
+            # 计算各维度分数
+            dimension_scores = {}
+            for q_id, ans in answers.items():
+                dim = ans["dimension"]
+                if dim not in dimension_scores:
+                    dimension_scores[dim] = []
+                dimension_scores[dim].append(ans["score"])
+            
+            # 平均分数
+            avg_scores = {}
+            for dim, scores in dimension_scores.items():
+                avg_scores[dim] = sum(scores) / len(scores)
+            
+            # 计算总分
+            total_score = calculate_score(avg_scores)
+            level = calculate_level(total_score)
+            
+            # 保存结果
+            st.session_state.personal_answers = answers
+            st.session_state.personal_dimension_scores = avg_scores
+            st.session_state.personal_total_score = total_score
+            st.session_state.personal_level = level
+            st.session_state.personal_completed = True
+            st.rerun()
+    
+    # 结果页面
+    else:
+        level = st.session_state.personal_level
+        total_score = st.session_state.personal_total_score
+        dimension_scores = st.session_state.personal_dimension_scores
+        fun_info = FUN_TITLES[level]
+        
+        # 结果展示
+        st.markdown(f'''
+        <div class="result-hero">
+            <div class="result-emoji">{fun_info["emoji"]}</div>
+            <div class="result-title">{fun_info["title"]}</div>
+            <div class="result-score">{total_score}分</div>
+            <p>{fun_info["description"]}</p>
+        </div>
+        ''', unsafe_allow_html=True)
+        
+        # 等级说明
+        st.subheader("等级说明")
+        for lvl, info in FUN_TITLES.items():
+            color = info["color"]
+            is_current = lvl == level
+            with st.container():
+                col1, col2 = st.columns([1, 3])
+                with col1:
+                    st.markdown(f'<div class="level-badge" style="background-color: {color}">{info["emoji"]} {info["title"]}</div>', unsafe_allow_html=True)
+                with col2:
+                    if is_current:
+                        st.success(info["description"])
+                    else:
+                        st.write(info["description"])
+        
+        # 雷达图
+        st.subheader("你的AI能力雷达图")
+        import plotly.graph_objects as go
+        categories = [AI_NATIVE_DIMENSIONS[dim]["name"] for dim in AI_NATIVE_DIMENSIONS.keys()]
+        values = [dimension_scores.get(dim, 0) for dim in AI_NATIVE_DIMENSIONS.keys()]
+        values.append(values[0])
+        fig = go.Figure(data=go.Scatterpolar(r=values, theta=categories + [categories[0]], fill='toself', 
+                                              fillcolor='rgba(102, 126, 234, 0.3)',
+                                              line=dict(color='rgba(102, 126, 234, 1)')))
+        fig.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 100], tickcolor='white'), 
+                                    bgcolor='rgba(0,0,0,0)'),
+                         paper_bgcolor='rgba(0,0,0,0)',
+                         plot_bgcolor='rgba(0,0,0,0)',
+                         showlegend=False, height=400, font=dict(color='white'))
+        st.plotly_chart(fig, use_container_width=True)
+        
+        # 各维度详情
+        st.subheader("各维度详细分析")
+        dimension_colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe']
+        for i, (dim_key, dim_info) in enumerate(AI_NATIVE_DIMENSIONS.items()):
+            score = dimension_scores.get(dim_key, 0)
+            color = dimension_colors[i % len(dimension_colors)]
+            with st.container():
+                col1, col2 = st.columns([1, 2])
+                with col1:
+                    st.write(f"**{dim_info['name']}**")
+                    st.write(f"{score}分")
+                with col2:
+                    st.markdown(f'<div class="dimension-bar"><div class="dimension-fill" style="width: {score}%; background: {color}"></div></div>', unsafe_allow_html=True)
+                    st.caption(dim_info['description'])
+        
+        # 分享卡片
+        st.markdown("---")
+        st.markdown('<div class="share-card"><h3>分享你的结果</h3><p>我刚刚测试了 AI Native 能力，获得了 {level} 等级 ({total_score}分)！{emoji}</p></div>'.format(
+            level=fun_info["title"], total_score=total_score, emoji=fun_info["emoji"]), unsafe_allow_html=True)
+        
+        # 重新测试按钮
+        st.markdown("---")
+        if st.button("重新测试", use_container_width=True):
+            st.session_state.personal_answers = {}
+            st.session_state.personal_completed = False
+            st.rerun()
+
+# ==================== 主入口 ====================
+# 侧边栏模式切换
+st.sidebar.markdown("### 选择使用模式")
+
+mode_col1, mode_col2 = st.columns(2)
+with mode_col1:
+    if st.sidebar.button("HR招聘版", use_container_width=True, 
+                         type="primary" if st.session_state.app_mode == "hr" else "secondary"):
+        st.session_state.app_mode = "hr"
+        st.rerun()
+
+with mode_col2:
+    if st.sidebar.button("个人测评版", use_container_width=True,
+                         type="primary" if st.session_state.app_mode == "personal" else "secondary"):
+        st.session_state.app_mode = "personal"
+        st.rerun()
+
+st.sidebar.markdown("---")
+
+# 新增评估页面入口（HR版本）
+if st.session_state.app_mode == "hr":
+    st.sidebar.markdown("### 快捷操作")
+    if st.sidebar.button("+ 新增候选人评估", use_container_width=True):
+        st.session_state.app_mode = "hr_add"
+        st.rerun()
+
+# 根据模式渲染不同页面
+if st.session_state.app_mode == "hr":
+    render_hr_version()
+elif st.session_state.app_mode == "hr_add":
+    render_hr_add_page()
+elif st.session_state.app_mode == "personal":
+    render_personal_version()
