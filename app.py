@@ -1614,37 +1614,25 @@ def render_personal_version():
             </div>
             ''', unsafe_allow_html=True)
             
-            col1, col2 = st.columns(2)
-            with col1:
-                st.markdown('''
-                <div style="background:#f5f5f7;padding:1rem;border-radius:12px;">
-                    <div style="font-size:0.75rem;color:#86868b;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;">示例</div>
-                    <div style="font-size:0.875rem;color:#86868b;text-decoration:line-through;">''' + challenge['example_bad'] + '''</div>
-                </div>
-                ''', unsafe_allow_html=True)
-            with col2:
-                st.markdown('''
-                <div style="background:#e8f2ff;padding:1rem;border-radius:12px;border:1px solid #007AFF20;">
-                    <div style="font-size:0.75rem;color:#007AFF;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;">推荐</div>
-                    <div style="font-size:0.875rem;color:#1d1d1f;">''' + challenge['example_good'] + '''</div>
-                </div>
-                ''', unsafe_allow_html=True)
-
             # 用户输入自己的Prompt
             user_prompt = st.text_area(
                 "写下你的Prompt：",
                 key=f"prompt_input_{challenge['id']}",
-                placeholder="尝试写一个比示例更好的Prompt..."
+                placeholder="发挥你的创意，写下你的Prompt..."
             )
 
             if user_prompt:
-                if len(user_prompt) > len(challenge['example_bad']) + 10:
+                # 根据Prompt长度和质量给予反馈
+                word_count = len(user_prompt)
+                if word_count >= 30:
                     st.success(f"不错！你的Prompt很详细，可以获得+{challenge['points']}分！")
                     if f"completed_{challenge['id']}" not in st.session_state:
                         st.session_state.prompt_challenge_score += challenge['points']
                         st.session_state[f"completed_{challenge['id']}"] = True
+                elif word_count >= 15:
+                    st.info("不错的开始！试着添加更多细节和约束条件~")
                 else:
-                    st.warning("试着写得更详细一些~")
+                    st.warning("试着写得更详细一些，比如加入背景、角色、输出格式等~")
 
         st.markdown("---")
         col1, col2 = st.columns(2)
