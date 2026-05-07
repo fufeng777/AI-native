@@ -1367,6 +1367,18 @@ def render_personal_version():
         categories = ["AI本能反应", "AI社交风格", "AI生活场景", "AI哲学思考"]
         category = categories[step - 1]
         
+        # 添加锚点用于滚动定位
+        st.markdown(f'<div id="part_{step}_start"></div>', unsafe_allow_html=True)
+        
+        # 检查是否需要滚动到该部分顶部
+        if st.session_state.get('scroll_to_part_top', False):
+            st.session_state.scroll_to_part_top = False
+            st.markdown(f"""
+            <script>
+                document.getElementById('part_{step}_start').scrollIntoView({{behavior: 'smooth', block: 'start'}});
+            </script>
+            """, unsafe_allow_html=True)
+        
         # 极简进度条
         progress = step / 5
         st.markdown(f'''
@@ -1472,8 +1484,8 @@ def render_personal_version():
                     st.warning(f"请回答以下问题后再继续：{', '.join(unanswered_display)}")
                 else:
                     st.session_state.personal_step = step + 1
-                    # 标记需要滚动到顶部
-                    st.session_state.scroll_to_top = True
+                    # 标记需要滚动到下一部分的第一题
+                    st.session_state.scroll_to_part_top = True
                     st.rerun()
     
     # ===== AI工具选择 =====
