@@ -101,32 +101,313 @@ ACHIEVEMENTS = [
     {"id": "master", "name": "AI大师", "desc": "综合评分达到L3级别", "icon": "👑", "condition": lambda s: s.get("total_score", 0) >= 80}
 ]
 
-# AI工具列表（用于成就解锁）
+# AI工具列表（60+工具，包含公司和功能介绍）
 AI_TOOLS_LIST = [
-    {"name": "ChatGPT", "category": "对话", "icon": "💬"},
-    {"name": "Claude", "category": "对话", "icon": "🤖"},
-    {"name": "Gemini", "category": "对话", "icon": "💎"},
-    {"name": "文心一言", "category": "对话", "icon": "🇨🇳"},
-    {"name": "通义千问", "category": "对话", "icon": "🇨🇳"},
-    {"name": "豆包", "category": "对话", "icon": "🫘"},
-    {"name": "Kimi", "category": "对话", "icon": "🌙"},
-    {"name": "DeepSeek", "category": "对话", "icon": "🔍"},
-    {"name": "Midjourney", "category": "绘画", "icon": "🎨"},
-    {"name": "Stable Diffusion", "category": "绘画", "icon": "🖼️"},
-    {"name": "DALL-E", "category": "绘画", "icon": "🎭"},
-    {"name": "Suno", "category": "音乐", "icon": "🎵"},
-    {"name": "Runway", "category": "视频", "icon": "🎬"},
-    {"name": "Cursor", "category": "编程", "icon": "💻"},
-    {"name": "GitHub Copilot", "category": "编程", "icon": "🐙"},
-    {"name": "v0.dev", "category": "编程", "icon": "⚡"},
-    {"name": "Perplexity", "category": "搜索", "icon": "🔎"},
-    {"name": "NotebookLM", "category": "学习", "icon": "📓"},
-    {"name": "Gamma", "category": "PPT", "icon": "📊"},
-    {"name": "Canva AI", "category": "设计", "icon": "🎯"},
-    {"name": "Notion AI", "category": "效率", "icon": "📝"},
-    {"name": "飞书AI", "category": "效率", "icon": "🐦"},
-    {"name": "Coze", "category": "Agent", "icon": "🤖"},
-    {"name": "Dify", "category": "Agent", "icon": "🔧"}
+    # === 对话大模型 ===
+    {"name": "ChatGPT", "category": "对话大模型", "icon": "💬",
+     "company": "OpenAI", "desc": "全球最流行的AI对话助手，支持文本、图像、语音多模态交互，具备强大的推理和创作能力"},
+    {"name": "Claude", "category": "对话大模型", "icon": "🤖",
+     "company": "Anthropic", "desc": "以安全性和长文本处理能力著称，擅长代码生成、文档分析和深度推理"},
+    {"name": "Gemini", "category": "对话大模型", "icon": "💎",
+     "company": "Google", "desc": "谷歌旗舰AI模型，原生多模态，支持超长上下文，与Google生态深度整合"},
+    {"name": "GPT-4o", "category": "对话大模型", "icon": "🎯",
+     "company": "OpenAI", "desc": "OpenAI最新旗舰模型，支持实时语音对话、图像理解，响应速度极快"},
+    {"name": "o1/o3", "category": "对话大模型", "icon": "🧠",
+     "company": "OpenAI", "desc": "OpenAI推理模型系列，擅长数学、编程、科学等需要深度思考的复杂任务"},
+
+    # === 国产大模型 ===
+    {"name": "文心一言", "category": "国产大模型", "icon": "🇨🇳",
+     "company": "百度", "desc": "百度推出的知识增强大模型，在中文理解和知识问答方面表现出色"},
+    {"name": "通义千问", "category": "国产大模型", "icon": "🇨🇳",
+     "company": "阿里云", "desc": "阿里达摩院研发，支持长文档处理，与阿里生态产品深度整合"},
+    {"name": "豆包", "category": "国产大模型", "icon": "🫘",
+     "company": "字节跳动", "desc": "字节跳动出品，语音交互体验优秀，适合日常对话和娱乐场景"},
+    {"name": "Kimi", "category": "国产大模型", "icon": "🌙",
+     "company": "月之暗面", "desc": "以200万字超长上下文处理能力闻名，适合长文档阅读和总结"},
+    {"name": "DeepSeek", "category": "国产大模型", "icon": "🔍",
+     "company": "深度求索", "desc": "开源大模型，推理能力强劲，性价比极高，深受开发者喜爱"},
+    {"name": "智谱清言", "category": "国产大模型", "icon": "📚",
+     "company": "智谱AI", "desc": "清华系AI公司出品，GLM架构，在学术和代码场景表现优秀"},
+    {"name": "腾讯元宝", "category": "国产大模型", "icon": "💎",
+     "company": "腾讯", "desc": "腾讯混元大模型，与微信、QQ等腾讯产品生态打通"},
+    {"name": "讯飞星火", "category": "国产大模型", "icon": "🔥",
+     "company": "科大讯飞", "desc": "语音识别技术领先，在语音交互和办公场景有独特优势"},
+    {"name": "天工AI", "category": "国产大模型", "icon": "⚡",
+     "company": "昆仑万维", "desc": "支持AI搜索、AI音乐、AI绘画等多功能，娱乐属性强"},
+
+    # === AI绘画 ===
+    {"name": "Midjourney", "category": "AI绘画", "icon": "🎨",
+     "company": "Midjourney", "desc": "AI绘画领域标杆，画面质量极高，艺术风格独特，适合创意设计和艺术创作"},
+    {"name": "Stable Diffusion", "category": "AI绘画", "icon": "🖼️",
+     "company": "Stability AI", "desc": "开源AI绘画模型，可本地部署，社区生态丰富，支持大量自定义模型"},
+    {"name": "DALL-E 3", "category": "AI绘画", "icon": "🎭",
+     "company": "OpenAI", "desc": "OpenAI出品，语义理解能力极强，能准确理解复杂描述生成图像"},
+    {"name": "Adobe Firefly", "category": "AI绘画", "icon": "✨",
+     "company": "Adobe", "desc": "Adobe官方AI工具，与Photoshop等设计软件无缝集成，商用安全"},
+    {"name": "即梦AI", "category": "AI绘画", "icon": "🌟",
+     "company": "字节跳动", "desc": "字节旗下AI绘画工具，中文提示词理解好，适合国内用户"},
+    {"name": "可灵AI", "category": "AI绘画", "icon": "📹",
+     "company": "快手", "desc": "快手出品，支持图生视频，在视频生成领域表现突出"},
+    {"name": "LiblibAI", "category": "AI绘画", "icon": "🎨",
+     "company": "Liblib", "desc": "国内领先的AI绘画平台，汇聚大量优质模型，社区活跃"},
+    {"name": "通义万相", "category": "AI绘画", "icon": "🖌️",
+     "company": "阿里云", "desc": "阿里出品，支持文生图、图生图，中文场景优化好"},
+
+    # === AI视频 ===
+    {"name": "Runway", "category": "AI视频", "icon": "🎬",
+     "company": "Runway", "desc": "AI视频生成先驱，Gen-3模型效果惊艳，支持文生视频、图生视频"},
+    {"name": "Pika", "category": "AI视频", "icon": "🎥",
+     "company": "Pika Labs", "desc": "专注AI视频生成，操作简单，适合快速生成短视频内容"},
+    {"name": "HeyGen", "category": "AI视频", "icon": "👤",
+     "company": "HeyGen", "desc": "AI数字人视频生成，支持多语言口型同步，适合营销视频制作"},
+    {"name": "Sora", "category": "AI视频", "icon": "🌊",
+     "company": "OpenAI", "desc": "OpenAI视频生成模型，可生成60秒高质量视频，物理模拟能力强"},
+    {"name": "剪映AI", "category": "AI视频", "icon": "✂️",
+     "company": "字节跳动", "desc": "剪映内置AI功能，支持AI配音、AI字幕、AI剪辑，国内用户友好"},
+    {"name": "快影AI", "category": "AI视频", "icon": "⚡",
+     "company": "快手", "desc": "快手官方剪辑工具，AI功能丰富，适合短视频创作者"},
+
+    # === AI音乐 ===
+    {"name": "Suno", "category": "AI音乐", "icon": "🎵",
+     "company": "Suno", "desc": "AI音乐生成神器，输入文字即可生成完整歌曲，支持多种风格"},
+    {"name": "Udio", "category": "AI音乐", "icon": "🎶",
+     "company": "Udio", "desc": "高品质AI音乐生成，人声效果逼真，适合专业音乐创作"},
+    {"name": "Mureka", "category": "AI音乐", "icon": "🎼",
+     "company": "Mureka", "desc": "AI音乐生成平台，支持多种乐器和风格，操作简单"},
+    {"name": "天工音乐", "category": "AI音乐", "icon": "🎹",
+     "company": "昆仑万维", "desc": "国内AI音乐生成工具，中文歌曲生成效果好"},
+
+    # === AI编程 ===
+    {"name": "Cursor", "category": "AI编程", "icon": "💻",
+     "company": "Cursor", "desc": "基于VSCode的AI代码编辑器，支持GPT-4和Claude，代码补全和重构能力极强"},
+    {"name": "GitHub Copilot", "category": "AI编程", "icon": "🐙",
+     "company": "GitHub/OpenAI", "desc": "GitHub官方AI编程助手，与IDE深度集成，代码建议准确率高"},
+    {"name": "Trae", "category": "AI编程", "icon": "🔧",
+     "company": "字节跳动", "desc": "字节推出的AI编程工具，对标Cursor，免费使用Claude模型"},
+    {"name": "v0.dev", "category": "AI编程", "icon": "⚡",
+     "company": "Vercel", "desc": "AI生成React组件和前端代码，输入描述即可生成可运行的UI代码"},
+    {"name": "Windsurf", "category": "AI编程", "icon": "🌊",
+     "company": "Codeium", "desc": "Codeium出品，支持AI代理模式，可自动执行多步骤编程任务"},
+    {"name": "Replit Agent", "category": "AI编程", "icon": "🤖",
+     "company": "Replit", "desc": "Replit的AI编程助手，支持从自然语言描述生成完整应用"},
+    {"name": "Codeium", "category": "AI编程", "icon": "🚀",
+     "company": "Codeium", "desc": "免费的AI代码补全工具，支持70+编程语言，响应速度快"},
+    {"name": "Tabnine", "category": "AI编程", "icon": "🔮",
+     "company": "Tabnine", "desc": "老牌AI代码补全工具，支持本地部署，隐私保护好"},
+    {"name": "Amazon CodeWhisperer", "category": "AI编程", "icon": "☁️",
+     "company": "AWS", "desc": "亚马逊AI编程助手，与AWS服务深度集成，适合云开发"},
+    {"name": "JetBrains AI", "category": "AI编程", "icon": "🎯",
+     "company": "JetBrains", "desc": "JetBrains IDE内置AI助手，支持IntelliJ、PyCharm等全系产品"},
+
+    # === AI搜索 ===
+    {"name": "Perplexity", "category": "AI搜索", "icon": "🔎",
+     "company": "Perplexity", "desc": "AI搜索引擎，直接给出带引用来源的答案，信息准确可靠"},
+    {"name": "秘塔AI搜索", "category": "AI搜索", "icon": "🔍",
+     "company": "秘塔科技", "desc": "国内AI搜索引擎，无广告，结构化展示搜索结果，学术搜索强"},
+    {"name": "Devv.ai", "category": "AI搜索", "icon": "👨‍💻",
+     "company": "Devv", "desc": "专为开发者设计的AI搜索，编程问题回答精准，支持GitHub搜索"},
+    {"name": "You.com", "category": "AI搜索", "icon": "🌐",
+     "company": "You.com", "desc": "AI搜索引擎，支持多种AI模式，隐私保护好，可定制搜索偏好"},
+    {"name": "Bing Copilot", "category": "AI搜索", "icon": "🔷",
+     "company": "微软", "desc": "Bing搜索引擎内置AI助手，与Edge浏览器深度集成"},
+    {"name": "Globe Explorer", "category": "AI搜索", "icon": "🌍",
+     "company": "Globe", "desc": "可视化AI搜索，以思维导图形式展示搜索结果，适合探索性学习"},
+
+    # === AI办公/效率 ===
+    {"name": "Notion AI", "category": "AI办公", "icon": "📝",
+     "company": "Notion", "desc": "Notion内置AI助手，支持写作、总结、翻译，与笔记深度整合"},
+    {"name": "Gamma", "category": "AI办公", "icon": "📊",
+     "company": "Gamma", "desc": "AI生成PPT工具，输入主题自动生成精美演示文稿，设计感强"},
+    {"name": "Tome", "category": "AI办公", "icon": "📑",
+     "company": "Tome", "desc": "AI叙事工具，生成故事性强的PPT，适合融资路演和创意展示"},
+    {"name": "飞书AI", "category": "AI办公", "icon": "🐦",
+     "company": "字节跳动", "desc": "飞书内置AI助手，支持会议纪要、文档写作、智能问答"},
+    {"name": "WPS AI", "category": "AI办公", "icon": "📄",
+     "company": "金山", "desc": "WPS内置AI功能，支持文档生成、PDF解析、表格分析"},
+    {"name": "Microsoft 365 Copilot", "category": "AI办公", "icon": "🔄",
+     "company": "微软", "desc": "Office全家桶AI助手，Word、Excel、PPT全面智能化"},
+    {"name": "NotebookLM", "category": "AI办公", "icon": "📓",
+     "company": "Google", "desc": "Google出品，上传文档即可生成播客、摘要、问答，学习神器"},
+    {"name": "Otter.ai", "category": "AI办公", "icon": "🎙️",
+     "company": "Otter", "desc": "AI会议记录工具，实时转录、自动生成会议纪要"},
+    {"name": "Fireflies.ai", "category": "AI办公", "icon": "🔥",
+     "company": "Fireflies", "desc": "AI会议助手，自动记录、搜索会议内容，支持多平台"},
+    {"name": "Grammarly", "category": "AI办公", "icon": "✍️",
+     "company": "Grammarly", "desc": "AI写作助手，语法检查、风格优化，英文写作必备"},
+    {"name": "DeepL Write", "category": "AI办公", "icon": "📝",
+     "company": "DeepL", "desc": "DeepL出品AI写作工具，翻译和改写能力极强"},
+
+    # === AI Agent/自动化 ===
+    {"name": "Coze", "category": "AI Agent", "icon": "🤖",
+     "company": "字节跳动", "desc": "字节跳动AI Bot开发平台，零代码搭建AI应用，可发布到抖音飞书"},
+    {"name": "Dify", "category": "AI Agent", "icon": "🔧",
+     "company": "Dify", "desc": "开源LLM应用开发平台，支持工作流编排、RAG、Agent开发"},
+    {"name": "LangChain", "category": "AI Agent", "icon": "🔗",
+     "company": "LangChain", "desc": "最流行的LLM开发框架，构建复杂AI应用的基础设施"},
+    {"name": "AutoGPT", "category": "AI Agent", "icon": "🎯",
+     "company": "AutoGPT", "desc": "自主AI Agent，可设定目标后自动分解任务并执行"},
+    {"name": "Zapier AI", "category": "AI Agent", "icon": "⚡",
+     "company": "Zapier", "desc": "Zapier集成AI功能，连接5000+应用，自动化工作流程"},
+    {"name": "Make", "category": "AI Agent", "icon": "🔀",
+     "company": "Make", "desc": "可视化自动化平台，支持复杂逻辑，比Zapier更灵活"},
+    {"name": "n8n", "category": "AI Agent", "icon": "🔄",
+     "company": "n8n", "desc": "开源工作流自动化工具，可自托管，适合技术用户"},
+    {"name": "Flowise", "category": "AI Agent", "icon": "🌊",
+     "company": "Flowise", "desc": "开源可视化LLM工作流构建工具，拖拽式搭建AI应用"},
+
+    # === AI学习/教育 ===
+    {"name": "Khanmigo", "category": "AI学习", "icon": "📚",
+     "company": "Khan Academy", "desc": "可汗学院AI导师，个性化辅导数学、科学等学科"},
+    {"name": "Duolingo Max", "category": "AI学习", "icon": "🦉",
+     "company": "Duolingo", "desc": "多邻国AI功能，AI对话练习、解释答案，语言学习神器"},
+    {"name": "Synthesis", "category": "AI学习", "icon": "🧮",
+     "company": "Synthesis", "desc": "AI数学辅导，通过对话引导学生自己找到答案"},
+    {"name": "Elicit", "category": "AI学习", "icon": "📖",
+     "company": "Elicit", "desc": "AI科研助手，自动搜索、总结学术论文，研究者必备"},
+    {"name": "Consensus", "category": "AI学习", "icon": "🔬",
+     "company": "Consensus", "desc": "AI学术搜索引擎，基于2亿+论文给出科学共识答案"},
+    {"name": "Scholarcy", "category": "AI学习", "icon": "📄",
+     "company": "Scholarcy", "desc": "AI文献阅读助手，自动生成摘要、提取关键信息"},
+
+    # === AI设计 ===
+    {"name": "Canva AI", "category": "AI设计", "icon": "🎨",
+     "company": "Canva", "desc": "Canva内置AI功能，Magic Design一键生成设计，简单易用"},
+    {"name": "Figma AI", "category": "AI设计", "icon": "🎯",
+     "company": "Figma", "desc": "Figma内置AI助手，自动生成设计、写设计说明"},
+    {"name": "Looka", "category": "AI设计", "icon": "🎭",
+     "company": "Looka", "desc": "AI Logo生成器，输入品牌名自动生成Logo设计方案"},
+    {"name": "Remove.bg", "category": "AI设计", "icon": "✂️",
+     "company": "Remove.bg", "desc": "AI自动抠图，一键去除背景，效果精准"},
+    {"name": "Upscayl", "category": "AI设计", "icon": "🔍",
+     "company": "Upscayl", "desc": "开源AI图片放大工具，无损提升图片分辨率"},
+    {"name": "Clipdrop", "category": "AI设计", "icon": "📸",
+     "company": "Stability AI", "desc": "Stability AI出品，AI修图工具集，抠图、打光、扩图一站式"}
+]
+
+# === 趣味互动环节 ===
+
+# 1. Prompt挑战关卡
+PROMPT_CHALLENGES = [
+    {
+        "id": "prompt_1",
+        "title": "初级：让AI讲个笑话",
+        "desc": "测试基础Prompt能力",
+        "task": "写一个Prompt让AI给你讲一个关于程序员的笑话",
+        "example_good": "你是一个幽默的喜剧演员，请给我讲一个程序员才能听懂的笑话，要求有反转",
+        "example_bad": "讲个笑话",
+        "points": 10
+    },
+    {
+        "id": "prompt_2",
+        "title": "中级：角色扮演",
+        "desc": "测试角色设定能力",
+        "task": "设定一个AI角色帮你解决工作问题",
+        "example_good": "你是一位有10年经验的麦肯锡咨询顾问，擅长用结构化思维解决复杂商业问题。请用金字塔原理帮我分析以下问题...",
+        "example_bad": "你帮我分析一下",
+        "points": 20
+    },
+    {
+        "id": "prompt_3",
+        "title": "高级：Few-shot示例",
+        "desc": "测试高级Prompt技巧",
+        "task": "用Few-shot技巧让AI学习你的写作风格",
+        "example_good": "请模仿以下写作风格：[示例1]...[示例2]... 现在请用同样的风格写一段关于AI的文字",
+        "example_bad": "模仿我的风格写一段",
+        "points": 30
+    }
+]
+
+# 2. AI对话模拟场景
+AI_CHAT_SCENARIOS = [
+    {
+        "id": "chat_1",
+        "scenario": "你是产品经理，需要让AI帮你分析竞品数据",
+        "options": [
+            {"text": "直接问：帮我分析一下竞品", "score": 10, "feedback": "太笼统了，AI不知道你要分析什么"},
+            {"text": "给AI一个表格，让它总结关键洞察", "score": 50, "feedback": "不错，但还可以更具体"},
+            {"text": "设定角色+提供数据+明确输出格式", "score": 100, "feedback": "完美！角色+数据+格式，AI能给出最佳答案"}
+        ]
+    },
+    {
+        "id": "chat_2",
+        "scenario": "AI给你的代码有bug，你会怎么反馈？",
+        "options": [
+            {"text": "直接说：这代码不对", "score": 10, "feedback": "AI不知道哪里不对"},
+            {"text": "指出具体错误行", "score": 50, "feedback": "可以，但AI可能不知道为什么错"},
+            {"text": "指出错误+提供错误信息+说明预期行为", "score": 100, "feedback": "完美！给AI足够信息才能修复"}
+        ]
+    },
+    {
+        "id": "chat_3",
+        "scenario": "你想让AI帮你写一封辞职信",
+        "options": [
+            {"text": "写一封辞职信", "score": 20, "feedback": "太简单了，结果可能很模板化"},
+            {"text": "说明原因和语气", "score": 60, "feedback": "好一些，但还可以更具体"},
+            {"text": "说明原因+语气+字数+必须包含的要点", "score": 100, "feedback": "完美！约束条件越多，结果越符合预期"}
+        ]
+    }
+]
+
+# 3. AI知识问答
+AI_KNOWLEDGE_QUIZ = [
+    {
+        "question": "以下哪个不是大语言模型的特点？",
+        "options": [
+            "能理解上下文语境",
+            "可以生成人类般的文本",
+            "拥有真实的情感和意识",
+            "能进行多轮对话"
+        ],
+        "correct": 2,
+        "explanation": "AI没有真实的情感和意识，它只是模拟人类的语言模式"
+    },
+    {
+        "question": "Prompt Engineering（提示工程）的主要目的是？",
+        "options": [
+            "让AI运行得更快",
+            "更好地引导AI生成期望的输出",
+            "修复AI的bug",
+            "训练新的AI模型"
+        ],
+        "correct": 1,
+        "explanation": "提示工程是通过优化输入提示来获得更好的AI输出"
+    },
+    {
+        "question": "什么是AI的'幻觉'(Hallucination)？",
+        "options": [
+            "AI看到了不存在的东西",
+            "AI生成了看似合理但实际错误的信息",
+            "AI运行速度变慢",
+            "AI产生了自我意识"
+        ],
+        "correct": 1,
+        "explanation": "AI幻觉是指AI生成听起来合理但实际上不正确或虚构的信息"
+    },
+    {
+        "question": "RAG（检索增强生成）的主要作用是？",
+        "options": [
+            "让AI说话更流畅",
+            "让AI能够访问外部知识库生成更准确的回答",
+            "让AI运行更快",
+            "让AI更省电"
+        ],
+        "correct": 1,
+        "explanation": "RAG让AI在生成回答前先检索相关信息，提高准确性和时效性"
+    }
+]
+
+# 4. 每日AI使用习惯测试
+DAILY_AI_HABITS = [
+    {"id": "morning", "question": "早上醒来第一件事是？",
+     "options": ["看手机消息", "问AI今天天气和日程", "刷社交媒体", "直接起床"]},
+    {"id": "work", "question": "工作中遇到不会的问题，你会？",
+     "options": ["先自己查资料", "直接问AI", "问同事", "放着不管"]},
+    {"id": "lunch", "question": "中午不知道吃什么，你会？",
+     "options": ["随便吃", "问AI推荐", "看外卖APP", "问朋友"]},
+    {"id": "write", "question": "需要写一封正式邮件，你会？",
+     "options": ["自己写", "让AI起草再修改", "找模板", "不写"]},
+    {"id": "learn", "question": "想学一个新技能，你会？",
+     "options": ["买课程系统学", "让AI制定学习计划", "直接问AI边做边学", "放弃"]}
 ]
 
 # 个人版趣味问题
@@ -1005,10 +1286,10 @@ def render_personal_version():
         st.markdown('''
         <div style="text-align:center;padding:1.5rem;margin-bottom:1.5rem;">
             <div style="font-size:1.5rem;font-weight:700;">你用过哪些AI工具？</div>
-            <div style="color:#64748b;">勾选你使用过的工具，解锁隐藏成就</div>
+            <div style="color:#64748b;">勾选你使用过的工具，解锁隐藏成就（悬停查看工具介绍）</div>
         </div>
         ''', unsafe_allow_html=True)
-        
+
         # 按类别分组显示
         tool_categories = {}
         for tool in AI_TOOLS_LIST:
@@ -1016,18 +1297,24 @@ def render_personal_version():
             if cat not in tool_categories:
                 tool_categories[cat] = []
             tool_categories[cat].append(tool)
-        
+
         for cat, tools in tool_categories.items():
             st.markdown(f"**{cat}**")
             cols = st.columns(min(len(tools), 4))
             for i, tool in enumerate(tools):
                 with cols[i % len(cols)]:
-                    checked = st.checkbox(f"{tool['icon']} {tool['name']}", key=f"tool_{tool['name']}")
+                    # 使用 help 参数显示公司和功能介绍
+                    help_text = f"【{tool.get('company', '未知')}】{tool.get('desc', '暂无介绍')}"
+                    checked = st.checkbox(
+                        f"{tool['icon']} {tool['name']}",
+                        key=f"tool_{tool['name']}",
+                        help=help_text
+                    )
                     if checked and tool['name'] not in st.session_state.personal_tools:
                         st.session_state.personal_tools.append(tool['name'])
                     elif not checked and tool['name'] in st.session_state.personal_tools:
                         st.session_state.personal_tools.remove(tool['name'])
-        
+
         st.markdown("---")
         col1, col2 = st.columns(2)
         with col1:
@@ -1035,12 +1322,230 @@ def render_personal_version():
                 st.session_state.personal_step = 4
                 st.rerun()
         with col2:
-            if st.button("查看我的AI人格", type="primary"):
+            if st.button("继续：Prompt挑战", type="primary"):
                 st.session_state.personal_step = 6
                 st.rerun()
-    
-    # ===== 结果页面 =====
+
+    # ===== Step 6: Prompt挑战 =====
     elif st.session_state.personal_step == 6:
+        st.markdown('''
+        <div style="text-align:center;padding:1.5rem;margin-bottom:1.5rem;">
+            <div style="font-size:1.5rem;font-weight:700;">Prompt挑战关卡</div>
+            <div style="color:#64748b;">测试你的Prompt Engineering技能，学习如何更好地与AI对话</div>
+        </div>
+        ''', unsafe_allow_html=True)
+
+        # 初始化Prompt挑战分数
+        if 'prompt_challenge_score' not in st.session_state:
+            st.session_state.prompt_challenge_score = 0
+
+        for challenge in PROMPT_CHALLENGES:
+            with st.expander(f"{challenge['title']} (+{challenge['points']}分)"):
+                st.write(f"**任务：** {challenge['task']}")
+                st.write(f"*{challenge['desc']}*")
+
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.markdown("**示例（差）**")
+                    st.info(challenge['example_bad'])
+                with col2:
+                    st.markdown("**示例（好）**")
+                    st.success(challenge['example_good'])
+
+                # 用户输入自己的Prompt
+                user_prompt = st.text_area(
+                    "写下你的Prompt：",
+                    key=f"prompt_input_{challenge['id']}",
+                    placeholder=f"尝试写一个比'{challenge['example_bad']}'更好的Prompt..."
+                )
+
+                if user_prompt:
+                    if len(user_prompt) > len(challenge['example_bad']) + 10:
+                        st.success(f"不错！你的Prompt很详细，可以获得+{challenge['points']}分！")
+                        if f"completed_{challenge['id']}" not in st.session_state:
+                            st.session_state.prompt_challenge_score += challenge['points']
+                            st.session_state[f"completed_{challenge['id']}"] = True
+                    else:
+                        st.warning("试着写得更详细一些，比如加入角色设定、背景信息或格式要求~")
+
+        st.markdown("---")
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("返回工具选择"):
+                st.session_state.personal_step = 5
+                st.rerun()
+        with col2:
+            if st.button("继续：AI对话模拟", type="primary"):
+                st.session_state.personal_step = 7
+                st.rerun()
+
+    # ===== Step 7: AI对话模拟 =====
+    elif st.session_state.personal_step == 7:
+        st.markdown('''
+        <div style="text-align:center;padding:1.5rem;margin-bottom:1.5rem;">
+            <div style="font-size:1.5rem;font-weight:700;">AI对话模拟场景</div>
+            <div style="color:#64748b;">选择最佳策略，学习如何与AI高效协作</div>
+        </div>
+        ''', unsafe_allow_html=True)
+
+        # 初始化对话模拟分数
+        if 'chat_scenario_score' not in st.session_state:
+            st.session_state.chat_scenario_score = 0
+        if 'chat_scenario_count' not in st.session_state:
+            st.session_state.chat_scenario_count = 0
+
+        for scenario in AI_CHAT_SCENARIOS:
+            st.markdown(f"**场景：** {scenario['scenario']}")
+
+            # 使用radio让用户选择
+            options_text = [opt['text'] for opt in scenario['options']]
+            selected = st.radio(
+                "你会怎么做？",
+                options_text,
+                key=f"scenario_{scenario['id']}",
+                label_visibility="collapsed"
+            )
+
+            # 显示反馈
+            for opt in scenario['options']:
+                if opt['text'] == selected:
+                    if opt['score'] == 100:
+                        st.success(f"{opt['feedback']} (+{opt['score']}分)")
+                    elif opt['score'] >= 50:
+                        st.info(f"{opt['feedback']} (+{opt['score']}分)")
+                    else:
+                        st.warning(f"{opt['feedback']} (+{opt['score']}分)")
+
+                    # 记录分数（只记录一次）
+                    if f"scenario_completed_{scenario['id']}" not in st.session_state:
+                        st.session_state.chat_scenario_score += opt['score']
+                        st.session_state.chat_scenario_count += 1
+                        st.session_state[f"scenario_completed_{scenario['id']}"] = True
+                    break
+
+            st.divider()
+
+        st.markdown("---")
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("返回Prompt挑战"):
+                st.session_state.personal_step = 6
+                st.rerun()
+        with col2:
+            if st.button("继续：AI知识问答", type="primary"):
+                st.session_state.personal_step = 8
+                st.rerun()
+
+    # ===== Step 8: AI知识问答 =====
+    elif st.session_state.personal_step == 8:
+        st.markdown('''
+        <div style="text-align:center;padding:1.5rem;margin-bottom:1.5rem;">
+            <div style="font-size:1.5rem;font-weight:700;">AI知识问答</div>
+            <div style="color:#64748b;">测试你的AI知识储备</div>
+        </div>
+        ''', unsafe_allow_html=True)
+
+        # 初始化知识问答分数
+        if 'quiz_score' not in st.session_state:
+            st.session_state.quiz_score = 0
+        if 'quiz_count' not in st.session_state:
+            st.session_state.quiz_count = 0
+
+        for i, quiz in enumerate(AI_KNOWLEDGE_QUIZ):
+            st.markdown(f"**问题 {i+1}：** {quiz['question']}")
+
+            # 使用radio让用户选择
+            selected_idx = st.radio(
+                "选择答案：",
+                range(len(quiz['options'])),
+                format_func=lambda x, quiz=quiz: quiz['options'][x],
+                key=f"quiz_{i}",
+                label_visibility="collapsed"
+            )
+
+            # 显示答案反馈
+            if f"quiz_answered_{i}" not in st.session_state:
+                if st.button("提交答案", key=f"submit_quiz_{i}"):
+                    st.session_state[f"quiz_answered_{i}"] = True
+                    st.session_state[f"quiz_selected_{i}"] = selected_idx
+                    if selected_idx == quiz['correct']:
+                        st.session_state.quiz_score += 25
+                        st.session_state.quiz_count += 1
+                    st.rerun()
+            else:
+                selected_idx = st.session_state.get(f"quiz_selected_{i}", selected_idx)
+                if selected_idx == quiz['correct']:
+                    st.success(f"回答正确！{quiz['explanation']}")
+                else:
+                    st.error(f"回答错误。{quiz['explanation']}")
+
+            st.divider()
+
+        st.markdown("---")
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("返回AI对话模拟"):
+                st.session_state.personal_step = 7
+                st.rerun()
+        with col2:
+            if st.button("继续：每日习惯测试", type="primary"):
+                st.session_state.personal_step = 9
+                st.rerun()
+
+    # ===== Step 9: 每日AI使用习惯测试 =====
+    elif st.session_state.personal_step == 9:
+        st.markdown('''
+        <div style="text-align:center;padding:1.5rem;margin-bottom:1.5rem;">
+            <div style="font-size:1.5rem;font-weight:700;">每日AI使用习惯测试</div>
+            <div style="color:#64748b;">测测你的生活有多AI Native</div>
+        </div>
+        ''', unsafe_allow_html=True)
+
+        # 初始化习惯测试答案
+        if 'habit_answers' not in st.session_state:
+            st.session_state.habit_answers = {}
+
+        for habit in DAILY_AI_HABITS:
+            st.markdown(f"**{habit['question']}**")
+
+            selected = st.radio(
+                "选择：",
+                habit['options'],
+                key=f"habit_{habit['id']}",
+                label_visibility="collapsed"
+            )
+
+            st.session_state.habit_answers[habit['id']] = selected
+
+            # 显示AI指数
+            if selected == habit['options'][1]:  # 问AI
+                st.caption("AI指数：高")
+            elif selected == habit['options'][2]:  # 其他AI相关选项
+                st.caption("AI指数：中高")
+            else:
+                st.caption("AI指数：待提升")
+
+            st.divider()
+
+        # 计算AI习惯得分
+        ai_habit_count = sum(1 for ans in st.session_state.habit_answers.values()
+                            if "AI" in ans or "问AI" in ans or "让AI" in ans)
+
+        st.info(f"你的AI习惯指数：{ai_habit_count}/{len(DAILY_AI_HABITS)} 个场景使用AI")
+
+        st.markdown("---")
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("返回知识问答"):
+                st.session_state.personal_step = 8
+                st.rerun()
+        with col2:
+            if st.button("查看我的AI人格", type="primary"):
+                st.session_state.personal_step = 10
+                st.rerun()
+
+    # ===== Step 10: 结果页面 =====
+    elif st.session_state.personal_step == 10:
         answers = st.session_state.personal_answers
         
         # 计算各维度分数
