@@ -741,8 +741,8 @@ st.markdown("""
     /* 极简问题卡片 */
     .minimal-question { background: #ffffff; border-radius: 20px; padding: 2rem; margin: 1.5rem 0; border: 1px solid #e5e5e7; }
     /* 极简人格卡片 */
-    .minimal-personality { flex: 0 0 auto; width: 160px; padding: 1.5rem; background: #ffffff; border-radius: 16px; border: 1px solid #e5e5e7; text-align: center; transition: all 0.2s; }
-    .minimal-personality:hover { border-color: #007AFF; transform: translateY(-2px); }
+    .minimal-personality { flex: 0 0 auto; width: 120px; padding: 1.5rem 1rem; background: #ffffff; border-radius: 20px; border: 1px solid #e5e5e7; text-align: center; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
+    .minimal-personality:hover { border-color: #007AFF; box-shadow: 0 4px 20px rgba(0, 122, 255, 0.15); transform: translateY(-4px); }
     /* 极简进度条 */
     .minimal-progress { margin: 2rem 0 3rem; }
     .minimal-progress-label { display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; color: #86868b; margin-bottom: 0.75rem; }
@@ -1321,10 +1321,23 @@ def render_personal_version():
         
         personalities = list(AI_PERSONALITIES.items())
         for key, p in personalities:
+            # 读取专业SVG图标
+            icon_path = f"static/personality_icons/{key}.svg"
+            icon_html = ""
+            try:
+                with open(icon_path, 'r', encoding='utf-8') as f:
+                    svg_content = f.read()
+                # 调整SVG样式 - 统一尺寸和颜色
+                svg_content = svg_content.replace('<svg', '<svg width="48" height="48" style="display:block;margin:0 auto;"')
+                icon_html = svg_content
+            except:
+                # fallback到emoji
+                icon_html = f'<div style="font-size:2rem;text-align:center;">{p.get("emoji", "🤖")}</div>'
+            
             st.markdown(f'''
             <div class="minimal-personality">
-                <div style="font-size:2rem;margin-bottom:0.75rem;">{p["emoji"]}</div>
-                <div style="font-size:0.875rem;font-weight:600;color:#1d1d1f;">{p["name"]}</div>
+                <div style="margin-bottom:0.75rem;">{icon_html}</div>
+                <div style="font-size:0.875rem;font-weight:600;color:#1d1d1f;text-align:center;">{p["name"]}</div>
             </div>
             ''', unsafe_allow_html=True)
         
@@ -1888,9 +1901,19 @@ def render_personal_version():
             <div style="font-size:0.875rem;font-weight:500;color:#86868b;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:1rem;">你的AI人格类型</div>
         ''', unsafe_allow_html=True)
         p = AI_PERSONALITIES[personality]
+        # 读取专业SVG图标
+        icon_path = f"static/personality_icons/{personality}.svg"
+        try:
+            with open(icon_path, 'r', encoding='utf-8') as f:
+                svg_content = f.read()
+            svg_content = svg_content.replace('<svg', '<svg width="64" height="64" style="display:block;margin:0 auto;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.2))"')
+            icon_html = svg_content
+        except:
+            icon_html = f'<div style="font-size:4rem;text-align:center;">{p.get("emoji", "🤖")}</div>'
+        
         st.markdown(f'''
         <div style="background:rgba(255,255,255,0.1);border-radius:20px;padding:2rem;margin:1rem 0;text-align:center;border:1px solid rgba(255,255,255,0.2);">
-            <div style="font-size:4rem;margin-bottom:1rem;">{p["emoji"]}</div>
+            <div style="margin-bottom:1rem;">{icon_html}</div>
             <div style="font-size:1.5rem;font-weight:600;color:#ffffff;">{personality} · {p['name']}</div>
             <div style="font-size:0.875rem;color:rgba(255,255,255,0.7);margin-top:0.5rem;">{p['trait']}</div>
         </div>
