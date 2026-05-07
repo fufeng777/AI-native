@@ -702,6 +702,7 @@ st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
     * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+    html { scroll-behavior: smooth; }
     .main-header { font-size: 2.2rem; font-weight: 600; color: #1a1a2e; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
     .sub-header { font-size: 1rem; color: #64748b; margin-bottom: 2rem; font-weight: 400; }
     .score-card { background: linear-gradient(135deg, #86efac 0%, #ffffff 100%); padding: 2rem; border-radius: 12px; color: #166534; text-align: center; margin: 1rem 0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid #bbf7d0; }
@@ -1264,8 +1265,20 @@ def determine_ai_personality(avg_scores, answers):
 def render_personal_version():
     """个人测评版本 - AI人格进化论"""
     
+    # 检查是否需要滚动到顶部
+    if st.session_state.get('scroll_to_top', False):
+        st.session_state.scroll_to_top = False
+        # 使用HTML和JavaScript实现滚动到顶部
+        st.markdown("""
+        <script>
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        </script>
+        """, unsafe_allow_html=True)
+    
     # ===== 欢迎页面 =====
     if st.session_state.personal_step == 0:
+        # 添加锚点
+        st.markdown('<div id="quiz_start"></div>', unsafe_allow_html=True)
         st.markdown('''
         <div class="fun-header">
             <div class="fun-title">AI 人格进化论</div>
@@ -1408,6 +1421,8 @@ def render_personal_version():
                     st.warning(f"请回答以下问题后再继续：{', '.join(unanswered_display)}")
                 else:
                     st.session_state.personal_step = step + 1
+                    # 标记需要滚动到顶部
+                    st.session_state.scroll_to_top = True
                     st.rerun()
     
     # ===== AI工具选择 =====
