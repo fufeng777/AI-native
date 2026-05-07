@@ -104,183 +104,183 @@ ACHIEVEMENTS = [
 # AI工具列表（60+工具，包含公司和功能介绍）
 AI_TOOLS_LIST = [
     # === 对话大模型 ===
-    {"name": "ChatGPT", "category": "对话大模型", "icon": "💬",
+    {"name": "ChatGPT", "category": "对话大模型", "icon": "static/icons/openai.svg",
      "company": "OpenAI", "desc": "全球最流行的AI对话助手，支持文本、图像、语音多模态交互，具备强大的推理和创作能力"},
-    {"name": "Claude", "category": "对话大模型", "icon": "🤖",
+    {"name": "Claude", "category": "对话大模型", "icon": "static/icons/anthropic.svg",
      "company": "Anthropic", "desc": "以安全性和长文本处理能力著称，擅长代码生成、文档分析和深度推理"},
-    {"name": "Gemini", "category": "对话大模型", "icon": "💎",
+    {"name": "Gemini", "category": "对话大模型", "icon": "static/icons/google.svg",
      "company": "Google", "desc": "谷歌旗舰AI模型，原生多模态，支持超长上下文，与Google生态深度整合"},
-    {"name": "GPT-4o", "category": "对话大模型", "icon": "🎯",
+    {"name": "GPT-4o", "category": "对话大模型", "icon": "static/icons/openai.svg",
      "company": "OpenAI", "desc": "OpenAI最新旗舰模型，支持实时语音对话、图像理解，响应速度极快"},
-    {"name": "o1/o3", "category": "对话大模型", "icon": "🧠",
+    {"name": "o1/o3", "category": "对话大模型", "icon": "static/icons/openai.svg",
      "company": "OpenAI", "desc": "OpenAI推理模型系列，擅长数学、编程、科学等需要深度思考的复杂任务"},
 
     # === 国产大模型 ===
-    {"name": "文心一言", "category": "国产大模型", "icon": "🇨🇳",
+    {"name": "文心一言", "category": "国产大模型", "icon": "static/icons/baidu.svg",
      "company": "百度", "desc": "百度推出的知识增强大模型，在中文理解和知识问答方面表现出色"},
-    {"name": "通义千问", "category": "国产大模型", "icon": "🇨🇳",
+    {"name": "通义千问", "category": "国产大模型", "icon": "static/icons/alibabadotcom.svg",
      "company": "阿里云", "desc": "阿里达摩院研发，支持长文档处理，与阿里生态产品深度整合"},
-    {"name": "豆包", "category": "国产大模型", "icon": "🫘",
+    {"name": "豆包", "category": "国产大模型", "icon": "static/icons/bytedance.svg",
      "company": "字节跳动", "desc": "字节跳动出品，语音交互体验优秀，适合日常对话和娱乐场景"},
-    {"name": "Kimi", "category": "国产大模型", "icon": "🌙",
+    {"name": "Kimi", "category": "国产大模型", "icon": "static/icons/moon.svg",
      "company": "月之暗面", "desc": "以200万字超长上下文处理能力闻名，适合长文档阅读和总结"},
-    {"name": "DeepSeek", "category": "国产大模型", "icon": "🔍",
+    {"name": "DeepSeek", "category": "国产大模型", "icon": "static/icons/deepseek.svg",
      "company": "深度求索", "desc": "开源大模型，推理能力强劲，性价比极高，深受开发者喜爱"},
-    {"name": "智谱清言", "category": "国产大模型", "icon": "📚",
+    {"name": "智谱清言", "category": "国产大模型", "icon": "static/icons/zhipu.svg",
      "company": "智谱AI", "desc": "清华系AI公司出品，GLM架构，在学术和代码场景表现优秀"},
-    {"name": "腾讯元宝", "category": "国产大模型", "icon": "💎",
+    {"name": "腾讯元宝", "category": "国产大模型", "icon": "static/icons/tencent.svg",
      "company": "腾讯", "desc": "腾讯混元大模型，与微信、QQ等腾讯产品生态打通"},
-    {"name": "讯飞星火", "category": "国产大模型", "icon": "🔥",
+    {"name": "讯飞星火", "category": "国产大模型", "icon": "static/icons/iflytek.svg",
      "company": "科大讯飞", "desc": "语音识别技术领先，在语音交互和办公场景有独特优势"},
-    {"name": "天工AI", "category": "国产大模型", "icon": "⚡",
+    {"name": "天工AI", "category": "国产大模型", "icon": "static/icons/kunlun.svg",
      "company": "昆仑万维", "desc": "支持AI搜索、AI音乐、AI绘画等多功能，娱乐属性强"},
 
     # === AI绘画 ===
-    {"name": "Midjourney", "category": "AI绘画", "icon": "🎨",
+    {"name": "Midjourney", "category": "AI绘画", "icon": "static/icons/midjourney.svg",
      "company": "Midjourney", "desc": "AI绘画领域标杆，画面质量极高，艺术风格独特，适合创意设计和艺术创作"},
-    {"name": "Stable Diffusion", "category": "AI绘画", "icon": "🖼️",
+    {"name": "Stable Diffusion", "category": "AI绘画", "icon": "static/icons/stability.svg",
      "company": "Stability AI", "desc": "开源AI绘画模型，可本地部署，社区生态丰富，支持大量自定义模型"},
-    {"name": "DALL-E 3", "category": "AI绘画", "icon": "🎭",
+    {"name": "DALL-E 3", "category": "AI绘画", "icon": "static/icons/openai.svg",
      "company": "OpenAI", "desc": "OpenAI出品，语义理解能力极强，能准确理解复杂描述生成图像"},
-    {"name": "Adobe Firefly", "category": "AI绘画", "icon": "✨",
+    {"name": "Adobe Firefly", "category": "AI绘画", "icon": "static/icons/adobe.svg",
      "company": "Adobe", "desc": "Adobe官方AI工具，与Photoshop等设计软件无缝集成，商用安全"},
-    {"name": "即梦AI", "category": "AI绘画", "icon": "🌟",
+    {"name": "即梦AI", "category": "AI绘画", "icon": "static/icons/bytedance.svg",
      "company": "字节跳动", "desc": "字节旗下AI绘画工具，中文提示词理解好，适合国内用户"},
-    {"name": "可灵AI", "category": "AI绘画", "icon": "📹",
+    {"name": "可灵AI", "category": "AI绘画", "icon": "static/icons/bytedance.svg",
      "company": "快手", "desc": "快手出品，支持图生视频，在视频生成领域表现突出"},
-    {"name": "LiblibAI", "category": "AI绘画", "icon": "🎨",
+    {"name": "LiblibAI", "category": "AI绘画", "icon": "static/icons/liblib.svg",
      "company": "Liblib", "desc": "国内领先的AI绘画平台，汇聚大量优质模型，社区活跃"},
-    {"name": "通义万相", "category": "AI绘画", "icon": "🖌️",
+    {"name": "通义万相", "category": "AI绘画", "icon": "static/icons/alibabadotcom.svg",
      "company": "阿里云", "desc": "阿里出品，支持文生图、图生图，中文场景优化好"},
 
     # === AI视频 ===
-    {"name": "Runway", "category": "AI视频", "icon": "🎬",
+    {"name": "Runway", "category": "AI视频", "icon": "static/icons/runway.svg",
      "company": "Runway", "desc": "AI视频生成先驱，Gen-3模型效果惊艳，支持文生视频、图生视频"},
-    {"name": "Pika", "category": "AI视频", "icon": "🎥",
+    {"name": "Pika", "category": "AI视频", "icon": "static/icons/pika.svg",
      "company": "Pika Labs", "desc": "专注AI视频生成，操作简单，适合快速生成短视频内容"},
-    {"name": "HeyGen", "category": "AI视频", "icon": "👤",
+    {"name": "HeyGen", "category": "AI视频", "icon": "static/icons/heygen.svg",
      "company": "HeyGen", "desc": "AI数字人视频生成，支持多语言口型同步，适合营销视频制作"},
-    {"name": "Sora", "category": "AI视频", "icon": "🌊",
+    {"name": "Sora", "category": "AI视频", "icon": "static/icons/openai.svg",
      "company": "OpenAI", "desc": "OpenAI视频生成模型，可生成60秒高质量视频，物理模拟能力强"},
-    {"name": "剪映AI", "category": "AI视频", "icon": "✂️",
+    {"name": "剪映AI", "category": "AI视频", "icon": "static/icons/bytedance.svg",
      "company": "字节跳动", "desc": "剪映内置AI功能，支持AI配音、AI字幕、AI剪辑，国内用户友好"},
-    {"name": "快影AI", "category": "AI视频", "icon": "⚡",
+    {"name": "快影AI", "category": "AI视频", "icon": "static/icons/bytedance.svg",
      "company": "快手", "desc": "快手官方剪辑工具，AI功能丰富，适合短视频创作者"},
 
     # === AI音乐 ===
-    {"name": "Suno", "category": "AI音乐", "icon": "🎵",
+    {"name": "Suno", "category": "AI音乐", "icon": "static/icons/suno.svg",
      "company": "Suno", "desc": "AI音乐生成神器，输入文字即可生成完整歌曲，支持多种风格"},
-    {"name": "Udio", "category": "AI音乐", "icon": "🎶",
+    {"name": "Udio", "category": "AI音乐", "icon": "static/icons/udio.svg",
      "company": "Udio", "desc": "高品质AI音乐生成，人声效果逼真，适合专业音乐创作"},
-    {"name": "Mureka", "category": "AI音乐", "icon": "🎼",
+    {"name": "Mureka", "category": "AI音乐", "icon": "static/icons/mureka.svg",
      "company": "Mureka", "desc": "AI音乐生成平台，支持多种乐器和风格，操作简单"},
-    {"name": "天工音乐", "category": "AI音乐", "icon": "🎹",
+    {"name": "天工音乐", "category": "AI音乐", "icon": "static/icons/kunlun.svg",
      "company": "昆仑万维", "desc": "国内AI音乐生成工具，中文歌曲生成效果好"},
 
     # === AI编程 ===
-    {"name": "Cursor", "category": "AI编程", "icon": "💻",
+    {"name": "Cursor", "category": "AI编程", "icon": "static/icons/cursor.svg",
      "company": "Cursor", "desc": "基于VSCode的AI代码编辑器，支持GPT-4和Claude，代码补全和重构能力极强"},
-    {"name": "GitHub Copilot", "category": "AI编程", "icon": "🐙",
+    {"name": "GitHub Copilot", "category": "AI编程", "icon": "static/icons/github.svg",
      "company": "GitHub/OpenAI", "desc": "GitHub官方AI编程助手，与IDE深度集成，代码建议准确率高"},
-    {"name": "Trae", "category": "AI编程", "icon": "🔧",
+    {"name": "Trae", "category": "AI编程", "icon": "static/icons/bytedance.svg",
      "company": "字节跳动", "desc": "字节推出的AI编程工具，对标Cursor，免费使用Claude模型"},
-    {"name": "v0.dev", "category": "AI编程", "icon": "⚡",
+    {"name": "v0.dev", "category": "AI编程", "icon": "static/icons/vercel.svg",
      "company": "Vercel", "desc": "AI生成React组件和前端代码，输入描述即可生成可运行的UI代码"},
-    {"name": "Windsurf", "category": "AI编程", "icon": "🌊",
+    {"name": "Windsurf", "category": "AI编程", "icon": "static/icons/codeium.svg",
      "company": "Codeium", "desc": "Codeium出品，支持AI代理模式，可自动执行多步骤编程任务"},
-    {"name": "Replit Agent", "category": "AI编程", "icon": "🤖",
+    {"name": "Replit Agent", "category": "AI编程", "icon": "static/icons/replit.svg",
      "company": "Replit", "desc": "Replit的AI编程助手，支持从自然语言描述生成完整应用"},
-    {"name": "Codeium", "category": "AI编程", "icon": "🚀",
+    {"name": "Codeium", "category": "AI编程", "icon": "static/icons/codeium.svg",
      "company": "Codeium", "desc": "免费的AI代码补全工具，支持70+编程语言，响应速度快"},
-    {"name": "Tabnine", "category": "AI编程", "icon": "🔮",
+    {"name": "Tabnine", "category": "AI编程", "icon": "static/icons/tabnine.svg",
      "company": "Tabnine", "desc": "老牌AI代码补全工具，支持本地部署，隐私保护好"},
-    {"name": "Amazon CodeWhisperer", "category": "AI编程", "icon": "☁️",
+    {"name": "Amazon CodeWhisperer", "category": "AI编程", "icon": "static/icons/amazonaws.svg",
      "company": "AWS", "desc": "亚马逊AI编程助手，与AWS服务深度集成，适合云开发"},
-    {"name": "JetBrains AI", "category": "AI编程", "icon": "🎯",
+    {"name": "JetBrains AI", "category": "AI编程", "icon": "static/icons/jetbrains.svg",
      "company": "JetBrains", "desc": "JetBrains IDE内置AI助手，支持IntelliJ、PyCharm等全系产品"},
 
     # === AI搜索 ===
-    {"name": "Perplexity", "category": "AI搜索", "icon": "🔎",
+    {"name": "Perplexity", "category": "AI搜索", "icon": "static/icons/perplexity.svg",
      "company": "Perplexity", "desc": "AI搜索引擎，直接给出带引用来源的答案，信息准确可靠"},
-    {"name": "秘塔AI搜索", "category": "AI搜索", "icon": "🔍",
+    {"name": "秘塔AI搜索", "category": "AI搜索", "icon": "static/icons/metaso.svg",
      "company": "秘塔科技", "desc": "国内AI搜索引擎，无广告，结构化展示搜索结果，学术搜索强"},
-    {"name": "Devv.ai", "category": "AI搜索", "icon": "👨‍💻",
+    {"name": "Devv.ai", "category": "AI搜索", "icon": "static/icons/devv.svg",
      "company": "Devv", "desc": "专为开发者设计的AI搜索，编程问题回答精准，支持GitHub搜索"},
-    {"name": "You.com", "category": "AI搜索", "icon": "🌐",
+    {"name": "You.com", "category": "AI搜索", "icon": "static/icons/you.svg",
      "company": "You.com", "desc": "AI搜索引擎，支持多种AI模式，隐私保护好，可定制搜索偏好"},
-    {"name": "Bing Copilot", "category": "AI搜索", "icon": "🔷",
+    {"name": "Bing Copilot", "category": "AI搜索", "icon": "static/icons/microsoft.svg",
      "company": "微软", "desc": "Bing搜索引擎内置AI助手，与Edge浏览器深度集成"},
-    {"name": "Globe Explorer", "category": "AI搜索", "icon": "🌍",
+    {"name": "Globe Explorer", "category": "AI搜索", "icon": "static/icons/globe.svg",
      "company": "Globe", "desc": "可视化AI搜索，以思维导图形式展示搜索结果，适合探索性学习"},
 
     # === AI办公/效率 ===
-    {"name": "Notion AI", "category": "AI办公", "icon": "📝",
+    {"name": "Notion AI", "category": "AI办公", "icon": "static/icons/notion.svg",
      "company": "Notion", "desc": "Notion内置AI助手，支持写作、总结、翻译，与笔记深度整合"},
-    {"name": "Gamma", "category": "AI办公", "icon": "📊",
+    {"name": "Gamma", "category": "AI办公", "icon": "static/icons/gamma.svg",
      "company": "Gamma", "desc": "AI生成PPT工具，输入主题自动生成精美演示文稿，设计感强"},
-    {"name": "Tome", "category": "AI办公", "icon": "📑",
+    {"name": "Tome", "category": "AI办公", "icon": "static/icons/tome.svg",
      "company": "Tome", "desc": "AI叙事工具，生成故事性强的PPT，适合融资路演和创意展示"},
-    {"name": "飞书AI", "category": "AI办公", "icon": "🐦",
+    {"name": "飞书AI", "category": "AI办公", "icon": "static/icons/bytedance.svg",
      "company": "字节跳动", "desc": "飞书内置AI助手，支持会议纪要、文档写作、智能问答"},
-    {"name": "WPS AI", "category": "AI办公", "icon": "📄",
+    {"name": "WPS AI", "category": "AI办公", "icon": "static/icons/wps.svg",
      "company": "金山", "desc": "WPS内置AI功能，支持文档生成、PDF解析、表格分析"},
-    {"name": "Microsoft 365 Copilot", "category": "AI办公", "icon": "🔄",
+    {"name": "Microsoft 365 Copilot", "category": "AI办公", "icon": "static/icons/microsoft.svg",
      "company": "微软", "desc": "Office全家桶AI助手，Word、Excel、PPT全面智能化"},
-    {"name": "NotebookLM", "category": "AI办公", "icon": "📓",
+    {"name": "NotebookLM", "category": "AI办公", "icon": "static/icons/google.svg",
      "company": "Google", "desc": "Google出品，上传文档即可生成播客、摘要、问答，学习神器"},
-    {"name": "Otter.ai", "category": "AI办公", "icon": "🎙️",
+    {"name": "Otter.ai", "category": "AI办公", "icon": "static/icons/otter.svg",
      "company": "Otter", "desc": "AI会议记录工具，实时转录、自动生成会议纪要"},
-    {"name": "Fireflies.ai", "category": "AI办公", "icon": "🔥",
+    {"name": "Fireflies.ai", "category": "AI办公", "icon": "static/icons/otter.svg",
      "company": "Fireflies", "desc": "AI会议助手，自动记录、搜索会议内容，支持多平台"},
-    {"name": "Grammarly", "category": "AI办公", "icon": "✍️",
+    {"name": "Grammarly", "category": "AI办公", "icon": "static/icons/grammarly.svg",
      "company": "Grammarly", "desc": "AI写作助手，语法检查、风格优化，英文写作必备"},
-    {"name": "DeepL Write", "category": "AI办公", "icon": "📝",
+    {"name": "DeepL Write", "category": "AI办公", "icon": "static/icons/deepl.svg",
      "company": "DeepL", "desc": "DeepL出品AI写作工具，翻译和改写能力极强"},
 
     # === AI Agent/自动化 ===
-    {"name": "Coze", "category": "AI Agent", "icon": "🤖",
+    {"name": "Coze", "category": "AI Agent", "icon": "static/icons/bytedance.svg",
      "company": "字节跳动", "desc": "字节跳动AI Bot开发平台，零代码搭建AI应用，可发布到抖音飞书"},
-    {"name": "Dify", "category": "AI Agent", "icon": "🔧",
+    {"name": "Dify", "category": "AI Agent", "icon": "static/icons/dify.svg",
      "company": "Dify", "desc": "开源LLM应用开发平台，支持工作流编排、RAG、Agent开发"},
-    {"name": "LangChain", "category": "AI Agent", "icon": "🔗",
+    {"name": "LangChain", "category": "AI Agent", "icon": "static/icons/langchain.svg",
      "company": "LangChain", "desc": "最流行的LLM开发框架，构建复杂AI应用的基础设施"},
-    {"name": "AutoGPT", "category": "AI Agent", "icon": "🎯",
+    {"name": "AutoGPT", "category": "AI Agent", "icon": "static/icons/autogpt.svg",
      "company": "AutoGPT", "desc": "自主AI Agent，可设定目标后自动分解任务并执行"},
-    {"name": "Zapier AI", "category": "AI Agent", "icon": "⚡",
+    {"name": "Zapier AI", "category": "AI Agent", "icon": "static/icons/zapier.svg",
      "company": "Zapier", "desc": "Zapier集成AI功能，连接5000+应用，自动化工作流程"},
-    {"name": "Make", "category": "AI Agent", "icon": "🔀",
+    {"name": "Make", "category": "AI Agent", "icon": "static/icons/make.svg",
      "company": "Make", "desc": "可视化自动化平台，支持复杂逻辑，比Zapier更灵活"},
-    {"name": "n8n", "category": "AI Agent", "icon": "🔄",
+    {"name": "n8n", "category": "AI Agent", "icon": "static/icons/n8n.svg",
      "company": "n8n", "desc": "开源工作流自动化工具，可自托管，适合技术用户"},
-    {"name": "Flowise", "category": "AI Agent", "icon": "🌊",
+    {"name": "Flowise", "category": "AI Agent", "icon": "static/icons/flowise.svg",
      "company": "Flowise", "desc": "开源可视化LLM工作流构建工具，拖拽式搭建AI应用"},
 
     # === AI学习/教育 ===
-    {"name": "Khanmigo", "category": "AI学习", "icon": "📚",
+    {"name": "Khanmigo", "category": "AI学习", "icon": "static/icons/khanacademy.svg",
      "company": "Khan Academy", "desc": "可汗学院AI导师，个性化辅导数学、科学等学科"},
-    {"name": "Duolingo Max", "category": "AI学习", "icon": "🦉",
+    {"name": "Duolingo Max", "category": "AI学习", "icon": "static/icons/duolingo.svg",
      "company": "Duolingo", "desc": "多邻国AI功能，AI对话练习、解释答案，语言学习神器"},
-    {"name": "Synthesis", "category": "AI学习", "icon": "🧮",
+    {"name": "Synthesis", "category": "AI学习", "icon": "static/icons/synthesis.svg",
      "company": "Synthesis", "desc": "AI数学辅导，通过对话引导学生自己找到答案"},
-    {"name": "Elicit", "category": "AI学习", "icon": "📖",
+    {"name": "Elicit", "category": "AI学习", "icon": "static/icons/academic.svg",
      "company": "Elicit", "desc": "AI科研助手，自动搜索、总结学术论文，研究者必备"},
-    {"name": "Consensus", "category": "AI学习", "icon": "🔬",
+    {"name": "Consensus", "category": "AI学习", "icon": "static/icons/academic.svg",
      "company": "Consensus", "desc": "AI学术搜索引擎，基于2亿+论文给出科学共识答案"},
-    {"name": "Scholarcy", "category": "AI学习", "icon": "📄",
+    {"name": "Scholarcy", "category": "AI学习", "icon": "static/icons/academic.svg",
      "company": "Scholarcy", "desc": "AI文献阅读助手，自动生成摘要、提取关键信息"},
 
     # === AI设计 ===
-    {"name": "Canva AI", "category": "AI设计", "icon": "🎨",
+    {"name": "Canva AI", "category": "AI设计", "icon": "static/icons/canva.svg",
      "company": "Canva", "desc": "Canva内置AI功能，Magic Design一键生成设计，简单易用"},
-    {"name": "Figma AI", "category": "AI设计", "icon": "🎯",
+    {"name": "Figma AI", "category": "AI设计", "icon": "static/icons/figma.svg",
      "company": "Figma", "desc": "Figma内置AI助手，自动生成设计、写设计说明"},
-    {"name": "Looka", "category": "AI设计", "icon": "🎭",
+    {"name": "Looka", "category": "AI设计", "icon": "static/icons/looka.svg",
      "company": "Looka", "desc": "AI Logo生成器，输入品牌名自动生成Logo设计方案"},
-    {"name": "Remove.bg", "category": "AI设计", "icon": "✂️",
+    {"name": "Remove.bg", "category": "AI设计", "icon": "static/icons/removebg.svg",
      "company": "Remove.bg", "desc": "AI自动抠图，一键去除背景，效果精准"},
-    {"name": "Upscayl", "category": "AI设计", "icon": "🔍",
+    {"name": "Upscayl", "category": "AI设计", "icon": "static/icons/upscayl.svg",
      "company": "Upscayl", "desc": "开源AI图片放大工具，无损提升图片分辨率"},
-    {"name": "Clipdrop", "category": "AI设计", "icon": "📸",
+    {"name": "Clipdrop", "category": "AI设计", "icon": "static/icons/clipdrop.svg",
      "company": "Stability AI", "desc": "Stability AI出品，AI修图工具集，抠图、打光、扩图一站式"}
 ]
 
@@ -1300,20 +1300,41 @@ def render_personal_version():
 
         for cat, tools in tool_categories.items():
             st.markdown(f"**{cat}**")
-            cols = st.columns(min(len(tools), 4))
-            for i, tool in enumerate(tools):
-                with cols[i % len(cols)]:
-                    # 使用 help 参数显示公司和功能介绍
-                    help_text = f"【{tool.get('company', '未知')}】{tool.get('desc', '暂无介绍')}"
-                    checked = st.checkbox(
-                        f"{tool['icon']} {tool['name']}",
-                        key=f"tool_{tool['name']}",
-                        help=help_text
-                    )
-                    if checked and tool['name'] not in st.session_state.personal_tools:
-                        st.session_state.personal_tools.append(tool['name'])
-                    elif not checked and tool['name'] in st.session_state.personal_tools:
-                        st.session_state.personal_tools.remove(tool['name'])
+            
+            # 使用HTML和columns来显示带图标的工具
+            for i in range(0, len(tools), 4):
+                cols = st.columns(4)
+                for j, tool in enumerate(tools[i:i+4]):
+                    with cols[j]:
+                        # 读取SVG图标
+                        icon_path = tool.get('icon', '')
+                        if icon_path and icon_path.endswith('.svg'):
+                            try:
+                                with open(icon_path, 'r', encoding='utf-8') as f:
+                                    svg_content = f.read()
+                                # 调整SVG大小
+                                svg_content = svg_content.replace('<svg', '<svg width="24" height="24"')
+                                icon_html = f'<span style="display:inline-block;vertical-align:middle;margin-right:4px;">{svg_content}</span>'
+                            except:
+                                icon_html = f'<span style="font-size:1.2rem;">{tool.get("icon", "🔧")}</span>'
+                        else:
+                            icon_html = f'<span style="font-size:1.2rem;">{tool.get("icon", "🔧")}</span>'
+                        
+                        # 使用 help 参数显示公司和功能介绍
+                        help_text = f"【{tool.get('company', '未知')}】{tool.get('desc', '暂无介绍')}"
+                        
+                        # 创建带图标的checkbox标签
+                        label_html = f'<span style="display:flex;align-items:center;gap:4px;">{icon_html}<span>{tool["name"]}</span></span>'
+                        
+                        checked = st.checkbox(
+                            label_html,
+                            key=f"tool_{tool['name']}",
+                            help=help_text
+                        )
+                        if checked and tool['name'] not in st.session_state.personal_tools:
+                            st.session_state.personal_tools.append(tool['name'])
+                        elif not checked and tool['name'] in st.session_state.personal_tools:
+                            st.session_state.personal_tools.remove(tool['name'])
 
         st.markdown("---")
         col1, col2 = st.columns(2)
