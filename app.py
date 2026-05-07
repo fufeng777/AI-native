@@ -109,15 +109,15 @@ ACHIEVEMENTS = [
 # AI工具列表（60+工具，包含公司和功能介绍）
 AI_TOOLS_LIST = [
     # === 对话大模型 ===
-    {"name": "ChatGPT", "category": "对话大模型", "icon": "static/icons/openai.svg",
+    {"name": "ChatGPT", "category": "对话大模型", "icon": "static/icons/openai.png",
      "company": "OpenAI", "desc": "全球最流行的AI对话助手，支持文本、图像、语音多模态交互，具备强大的推理和创作能力"},
     {"name": "Claude", "category": "对话大模型", "icon": "static/icons/anthropic.svg",
      "company": "Anthropic", "desc": "以安全性和长文本处理能力著称，擅长代码生成、文档分析和深度推理"},
     {"name": "Gemini", "category": "对话大模型", "icon": "static/icons/google.svg",
      "company": "Google", "desc": "谷歌旗舰AI模型，原生多模态，支持超长上下文，与Google生态深度整合"},
-    {"name": "GPT-4o", "category": "对话大模型", "icon": "static/icons/openai.svg",
+    {"name": "GPT-4o", "category": "对话大模型", "icon": "static/icons/openai.png",
      "company": "OpenAI", "desc": "OpenAI最新旗舰模型，支持实时语音对话、图像理解，响应速度极快"},
-    {"name": "o1/o3", "category": "对话大模型", "icon": "static/icons/openai.svg",
+    {"name": "o1/o3", "category": "对话大模型", "icon": "static/icons/openai.png",
      "company": "OpenAI", "desc": "OpenAI推理模型系列，擅长数学、编程、科学等需要深度思考的复杂任务"},
 
     # === 国产大模型 ===
@@ -145,7 +145,7 @@ AI_TOOLS_LIST = [
      "company": "Midjourney", "desc": "AI绘画领域标杆，画面质量极高，艺术风格独特，适合创意设计和艺术创作"},
     {"name": "Stable Diffusion", "category": "AI绘画", "icon": "static/icons/stability.svg",
      "company": "Stability AI", "desc": "开源AI绘画模型，可本地部署，社区生态丰富，支持大量自定义模型"},
-    {"name": "DALL-E 3", "category": "AI绘画", "icon": "static/icons/openai.svg",
+    {"name": "DALL-E 3", "category": "AI绘画", "icon": "static/icons/openai.png",
      "company": "OpenAI", "desc": "OpenAI出品，语义理解能力极强，能准确理解复杂描述生成图像"},
     {"name": "Adobe Firefly", "category": "AI绘画", "icon": "static/icons/adobe.svg",
      "company": "Adobe", "desc": "Adobe官方AI工具，与Photoshop等设计软件无缝集成，商用安全"},
@@ -165,7 +165,7 @@ AI_TOOLS_LIST = [
      "company": "Pika Labs", "desc": "专注AI视频生成，操作简单，适合快速生成短视频内容"},
     {"name": "HeyGen", "category": "AI视频", "icon": "static/icons/heygen.svg",
      "company": "HeyGen", "desc": "AI数字人视频生成，支持多语言口型同步，适合营销视频制作"},
-    {"name": "Sora", "category": "AI视频", "icon": "static/icons/openai.svg",
+    {"name": "Sora", "category": "AI视频", "icon": "static/icons/openai.png",
      "company": "OpenAI", "desc": "OpenAI视频生成模型，可生成60秒高质量视频，物理模拟能力强"},
     {"name": "剪映AI", "category": "AI视频", "icon": "static/icons/bytedance.svg",
      "company": "字节跳动", "desc": "剪映内置AI功能，支持AI配音、AI字幕、AI剪辑，国内用户友好"},
@@ -1508,18 +1508,22 @@ def render_personal_version():
                 cols = st.columns(3)
                 for j, tool in enumerate(tools[i:i+3]):
                     with cols[j]:
-                        # 读取SVG图标
+                        # 读取图标（支持SVG和PNG）
                         icon_path = tool.get('icon', '')
                         icon_html = ""
-                        if icon_path and icon_path.endswith('.svg'):
+                        if icon_path:
                             try:
-                                with open(icon_path, 'r', encoding='utf-8') as f:
-                                    svg_content = f.read()
-                                # 调整SVG样式 - 苹果风格大图标
-                                svg_content = svg_content.replace('<svg', '<svg width="32" height="32" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.1))"')
-                                icon_html = svg_content
+                                if icon_path.endswith('.svg'):
+                                    with open(icon_path, 'r', encoding='utf-8') as f:
+                                        svg_content = f.read()
+                                    svg_content = svg_content.replace('<svg', '<svg width="32" height="32" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.1))"')
+                                    icon_html = svg_content
+                                elif icon_path.endswith('.png'):
+                                    import base64
+                                    with open(icon_path, 'rb') as f:
+                                        img_data = base64.b64encode(f.read()).decode()
+                                    icon_html = f'<img src="data:image/png;base64,{img_data}" width="32" height="32" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.1))"/>'
                             except Exception as e:
-                                # 使用emoji作为fallback
                                 icon_html = f'<div style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🤖</div>'
                         else:
                             icon_html = f'<div style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🤖</div>'
