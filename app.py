@@ -275,17 +275,42 @@ def render_hr_version():
             
             # 各维度详情
             st.subheader("各维度评分详情")
+            ai_dimensions = c.get('ai_dimensions', {})
+            manual_modified = c.get('manual_modified', {})
+            
             for dim_key, dim_info in AI_NATIVE_DIMENSIONS.items():
                 dim_data = c.get('dimensions', {}).get(dim_key, {})
                 score = dim_data.get('score', 0)
                 notes = dim_data.get('notes', '')
+                is_manual = manual_modified.get(dim_key, False)
+                
+                # 获取AI原始评分
+                ai_dim_data = ai_dimensions.get(dim_key, {})
+                ai_score = ai_dim_data.get("score", 0) if ai_dim_data else 0
+                ai_reasoning = ai_dim_data.get("reasoning", "") if ai_dim_data else ""
+                
                 with st.container():
-                    col1, col2 = st.columns([1, 3])
-                    with col1:
+                    # 标题行：显示维度名称、分数、来源标签
+                    header_col1, header_col2, header_col3 = st.columns([2, 1, 1])
+                    with header_col1:
                         st.write(f"**{dim_info['name']}**")
-                        st.write(f"{score}分")
-                    with col2:
-                        st.write(notes if notes else "无评分说明")
+                    with header_col2:
+                        st.write(f"**{score}分**")
+                    with header_col3:
+                        if is_manual:
+                            st.markdown('<span style="background:#fef3c7;color:#92400e;padding:2px 8px;border-radius:4px;font-size:0.8rem;">人工调整</span>', unsafe_allow_html=True)
+                        else:
+                            st.markdown('<span style="background:#dbeafe;color:#1e40af;padding:2px 8px;border-radius:4px;font-size:0.8rem;">AI 评分</span>', unsafe_allow_html=True)
+                    
+                    # 显示评分说明
+                    st.write(notes if notes else "无评分说明")
+                    
+                    # 如果有人工修改，显示AI原始评分供对比
+                    if is_manual and ai_reasoning:
+                        with st.expander("查看 AI 原始评分"):
+                            st.write(f"AI 评分: {ai_score}分")
+                            st.write(f"AI 理由: {ai_reasoning}")
+                    
                     st.divider()
             
             # 快速判断清单
@@ -356,12 +381,32 @@ def render_hr_version():
             # 六维评分编辑
             st.write("**AI Native 六维评分**")
             edit_dimensions = {}
+            ai_dimensions = c.get('ai_dimensions', {})
+            manual_modified = c.get('manual_modified', {})
+            
             for dim_key, dim_info in AI_NATIVE_DIMENSIONS.items():
                 dim_data = c.get('dimensions', {}).get(dim_key, {})
                 current_score = dim_data.get('score', 50)
                 current_notes = dim_data.get('notes', '')
-                with st.expander(f"{dim_info['name']} (当前: {current_score}分)"):
+                is_manual = manual_modified.get(dim_key, False)
+                
+                # 获取AI原始评分
+                ai_dim_data = ai_dimensions.get(dim_key, {})
+                ai_score = ai_dim_data.get("score", 0) if ai_dim_data else 0
+                ai_reasoning = ai_dim_data.get("reasoning", "") if ai_dim_data else ""
+                
+                source_label = "人工调整" if is_manual else "AI 评分"
+                with st.expander(f"{dim_info['name']} (当前: {current_score}分 - {source_label})"):
                     st.write(f"**定义:** {dim_info['description']}")
+                    
+                    # 如果有AI原始评分，显示对比
+                    if ai_reasoning and is_manual:
+                        col_a, col_b = st.columns(2)
+                        with col_a:
+                            st.caption(f"AI 原始评分: {ai_score}分")
+                        with col_b:
+                            st.caption(f"当前评分: {current_score}分")
+                    
                     new_score = st.slider("评分", 0, 100, current_score, key=f"edit_score_{dim_key}")
                     new_notes = st.text_area("评分说明", value=current_notes, key=f"edit_notes_{dim_key}", height=100)
                     edit_dimensions[dim_key] = {"score": new_score, "notes": new_notes}
@@ -505,34 +550,59 @@ def render_hr_add_page():
         with st.expander("查看简历内容"):
             st.text_area("简历文本", value=resume_text, height=200, key="resume_text_display")
     
-    # 人工评分
+    # 人工评分（可选，默认使用AI评分）
     st.divider()
-    st.subheader("3. 人工评分（可参考 AI 分析结果）")
-    st.caption("请根据候选人的简历和面试表现，对以下六个维度进行评分（0-100分）")
+    st.subheader("3. 评分调整（可选）")
+    st.caption("AI 分析完成后已自动评分。如需调整，可在下方修改；不修改则默认使用 AI 评分结果。")
+    
+    # 获取AI评分作为默认值
+    ai_result = st.session_state.ai_analysis_result or {}
+    ai_dimension_scores = ai_result.get("dimension_scores", {})
+    ai_overall = ai_result.get("overall_assessment", "")
+    ai_checklist = ai_result.get("quick_checklist", {})
     
     dimension_scores = {}
+    manual_modified = {}
+    
     for dim_key, dim_info in AI_NATIVE_DIMENSIONS.items():
-        with st.expander(f"{dim_info['name']} (权重: {dim_info['weight']})"):
+        # AI 默认分数
+        ai_dim_data = ai_dimension_scores.get(dim_key, {})
+        ai_score = ai_dim_data.get("score", 50) if ai_dim_data else 50
+        ai_reasoning = ai_dim_data.get("reasoning", "") if ai_dim_data else ""
+        
+        with st.expander(f"{dim_info['name']} (AI评分: {ai_score}分)"):
+            # 显示AI分析理由
+            if ai_reasoning:
+                st.info(f"AI 分析理由: {ai_reasoning}")
+            
             st.write(f"**定义:** {dim_info['description']}")
             st.write("**关键信号:**")
             for signal in dim_info['signals']:
                 st.markdown(f"- {signal}")
-            score = st.slider("评分", 0, 100, 50, key=f"score_{dim_key}")
-            notes = st.text_area("评分说明", height=80, key=f"notes_{dim_key}")
+            
+            score = st.slider("评分（调整后）", 0, 100, int(ai_score), key=f"score_{dim_key}")
+            notes = st.text_area("评分说明", value=ai_reasoning, height=80, key=f"notes_{dim_key}")
             dimension_scores[dim_key] = {"score": score, "notes": notes}
+            
+            # 记录是否被人工修改过
+            manual_modified[dim_key] = (score != int(ai_score)) or (notes != ai_reasoning)
     
     # 快速判断清单
     st.divider()
     st.subheader("4. 快速判断清单")
     st.write("面试结束后，回答以下5个问题，即可快速判定:")
+    
     checklist = {}
+    checklist_items_keys = ["ai_first_response", "own_methodology", "workflow_reformed", "specific_complaints", "ai_anxiety"]
     for i, item in enumerate(QUICK_CHECKLIST, 1):
-        checklist[f"check_{i}"] = st.checkbox(item, key=f"check_{i}")
+        # 默认使用AI判断结果
+        ai_checked = ai_checklist.get(checklist_items_keys[i-1], False) if ai_checklist else False
+        checklist[f"check_{i}"] = st.checkbox(item, value=ai_checked, key=f"check_{i}")
     
     # 综合评价
     st.divider()
     st.subheader("5. 综合评价")
-    overall_notes = st.text_area("请输入对候选人的综合评价", height=150, key="overall_notes")
+    overall_notes = st.text_area("请输入综合评价（默认为AI评价）", value=ai_overall, height=150, key="overall_notes")
     
     # 保存按钮
     st.divider()
@@ -553,6 +623,8 @@ def render_hr_add_page():
                 "email": st.session_state.get("input_email", ""),
                 "phone": st.session_state.get("input_phone", ""),
                 "dimensions": dimension_scores,
+                "ai_dimensions": ai_dimension_scores,
+                "manual_modified": manual_modified,
                 "checklist": checklist,
                 "overall_notes": overall_notes,
                 "total_score": total_score,
