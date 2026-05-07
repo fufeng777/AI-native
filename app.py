@@ -100,7 +100,12 @@ def calculate_score(dimension_scores):
     max_total = 0
     weights = [1.0, 1.0, 1.0, 0.8, 0.8, 0.8]
     for i, dim_key in enumerate(AI_NATIVE_DIMENSIONS.keys()):
-        score = dimension_scores.get(dim_key, 0)
+        dim_data = dimension_scores.get(dim_key, {})
+        # 支持两种格式：{"score": xxx} 或直接是数字
+        if isinstance(dim_data, dict):
+            score = dim_data.get("score", 0)
+        else:
+            score = dim_data if isinstance(dim_data, (int, float)) else 0
         weight = weights[i]
         total += score * weight
         max_total += 100 * weight
@@ -429,7 +434,8 @@ def render_hr_add_page():
                 position = custom_position
             else:
                 position = selected_category
-                st.text_input("职位", value=position, key="position_custom", label_visibility="collapsed", disabled=True)
+                # 不显示禁用的输入框，只存储职位值
+                st.session_state["position_custom"] = position
     with col2:
         email = st.text_input("邮箱", value=default_email, key="input_email")
         phone = st.text_input("电话", value=default_phone, key="input_phone")
