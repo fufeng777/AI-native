@@ -419,35 +419,40 @@ FUN_QUESTIONS = [
          {"text": "先百度/Google搜一下看看", "score": 10, "tag": "传统搜索派"},
          {"text": "问ChatGPT这个领域是什么、该怎么做", "score": 50, "tag": "AI咨询派"},
          {"text": "让AI帮我制定一个完整的执行方案", "score": 80, "tag": "AI规划派"},
-         {"text": "直接让AI Agent帮我搭建框架，我负责审核", "score": 100, "tag": "AI代管派"}]},
+         {"text": "直接让AI Agent帮我搭建框架，我负责审核", "score": 100, "tag": "AI代管派"},
+         {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q2", "dimension": "deep_collaboration", "category": "AI本能反应",
      "question": "你写Prompt的习惯是？",
      "options": [
          {"text": "就写几个关键词，比如'帮我写个方案'", "score": 10, "tag": "佛系Prompt"},
          {"text": "会写清楚背景、需求、格式要求", "score": 50, "tag": "结构化Prompt"},
          {"text": "会设定角色、提供示例、多轮迭代优化", "score": 80, "tag": "高级Prompt"},
-         {"text": "我有自己的Prompt模板库，随时复用", "score": 100, "tag": "Prompt工程师"}]},
+         {"text": "我有自己的Prompt模板库，随时复用", "score": 100, "tag": "Prompt工程师"},
+         {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q3", "dimension": "problem_reframing", "category": "AI本能反应",
      "question": "遇到一个棘手的工作问题，你会？",
      "options": [
          {"text": "自己苦思冥想，实在不行问同事", "score": 0, "tag": "独立思考派"},
          {"text": "把问题描述给AI，看看它有什么建议", "score": 40, "tag": "AI顾问派"},
          {"text": "让AI帮我重新定义问题，找到更好的切入点", "score": 75, "tag": "问题重构派"},
-         {"text": "和AI来一场头脑风暴，碰撞出全新思路", "score": 100, "tag": "共创派"}]},
+         {"text": "和AI来一场头脑风暴，碰撞出全新思路", "score": 100, "tag": "共创派"},
+         {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q4", "dimension": "learning_mode", "category": "AI本能反应",
      "question": "老板让你一周内学会一个你完全不懂的新技能，你会？",
      "options": [
          {"text": "买本书/找课程，从零开始系统学习", "score": 10, "tag": "传统学习派"},
          {"text": "让AI帮我制定学习计划，推荐学习资源", "score": 50, "tag": "AI辅助学习"},
          {"text": "直接用AI边做边学，遇到问题就问", "score": 85, "tag": "实战派"},
-         {"text": "让AI帮我快速搭建原型，在实践中掌握", "score": 100, "tag": "极速上手派"}]},
+         {"text": "让AI帮我快速搭建原型，在实践中掌握", "score": 100, "tag": "极速上手派"},
+         {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q5", "dimension": "iteration_agility", "category": "AI本能反应",
      "question": "你手机里装了几个AI相关的App？",
      "options": [
          {"text": "0-1个，就一个ChatGPT", "score": 10, "tag": "专一派"},
          {"text": "2-4个，常用的那几个", "score": 40, "tag": "实用派"},
          {"text": "5-9个，看到新的就想试试", "score": 75, "tag": "尝鲜派"},
-         {"text": "10个以上，手机内存都被AI占满了", "score": 100, "tag": "AI收藏家"}]},
+         {"text": "10个以上，手机内存都被AI占满了", "score": 100, "tag": "AI收藏家"},
+         {"text": "其他", "score": 0, "tag": "自定义"}]},
     # === 第二部分：AI社交风格 ===
     {"id": "q6", "dimension": "boundary_awareness", "category": "AI社交风格",
      "question": "AI给你一个看起来很专业但你不确定的答案，你会？",
@@ -455,35 +460,40 @@ FUN_QUESTIONS = [
          {"text": "直接用，AI说的应该没错", "score": 0, "tag": "信任派"},
          {"text": "大概看一下，没问题就用", "score": 30, "tag": "粗略检查派"},
          {"text": "交叉验证一下，用另一个AI或搜索引擎确认", "score": 70, "tag": "验证派"},
-         {"text": "让AI自己批判自己的答案，找出漏洞", "score": 100, "tag": "批判大师"}]},
+         {"text": "让AI自己批判自己的答案，找出漏洞", "score": 100, "tag": "批判大师"},
+         {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q7", "dimension": "ai_first_mindset", "category": "AI社交风格",
      "question": "你怎么形容你和AI的关系？",
      "options": [
          {"text": "就是个工具，用完就关", "score": 10, "tag": "工具关系"},
          {"text": "像个助手，帮我处理杂活", "score": 40, "tag": "助手关系"},
          {"text": "像个搭档，一起讨论解决问题", "score": 75, "tag": "搭档关系"},
-         {"text": "像个导师/朋友，有时候还会跟它聊天", "score": 100, "tag": "灵魂伴侣"}]},
+         {"text": "像个导师/朋友，有时候还会跟它聊天", "score": 100, "tag": "灵魂伴侣"},
+         {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q8", "dimension": "deep_collaboration", "category": "AI社交风格",
      "question": "你用AI做过最让你自豪的事情是？",
      "options": [
          {"text": "写过邮件、翻译过文档", "score": 15, "tag": "基础应用"},
          {"text": "用AI写过代码、做过数据分析", "score": 45, "tag": "进阶应用"},
          {"text": "用AI完成了一个完整的项目", "score": 75, "tag": "项目级应用"},
-         {"text": "搭建了AI自动化工作流，持续节省时间", "score": 100, "tag": "系统级应用"}]},
+         {"text": "搭建了AI自动化工作流，持续节省时间", "score": 100, "tag": "系统级应用"},
+         {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q9", "dimension": "deep_collaboration", "category": "AI社交风格",
      "question": "你和朋友聊天时，提到AI的频率是？",
      "options": [
          {"text": "很少提，觉得没什么好说的", "score": 10, "tag": "低调派"},
          {"text": "偶尔分享一些好用的AI技巧", "score": 40, "tag": "分享派"},
          {"text": "经常安利，朋友都说我被AI洗脑了", "score": 75, "tag": "布道派"},
-         {"text": "三句话不离AI，朋友都开始用了", "score": 100, "tag": "AI传教士"}]},
+         {"text": "三句话不离AI，朋友都开始用了", "score": 100, "tag": "AI传教士"},
+         {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q10", "dimension": "learning_mode", "category": "AI社交风格",
      "question": "你有没有给AI取过名字或者设定过人设？",
      "options": [
          {"text": "没有，就叫ChatGPT", "score": 0, "tag": "务实派"},
          {"text": "想过但没做过", "score": 30, "tag": "犹豫派"},
          {"text": "设定过角色，比如'你是一个资深产品经理'", "score": 65, "tag": "角色扮演派"},
-         {"text": "取了名字，还设定了性格、背景故事", "score": 100, "tag": "AI养成派"}]},
+         {"text": "取了名字，还设定了性格、背景故事", "score": 100, "tag": "AI养成派"},
+         {"text": "其他", "score": 0, "tag": "自定义"}]},
     # === 第三部分：AI生活场景 ===
     {"id": "q11", "dimension": "ai_first_mindset", "category": "AI生活场景",
      "question": "周末朋友聚餐，需要选餐厅，你会？",
@@ -491,28 +501,32 @@ FUN_QUESTIONS = [
          {"text": "打开大众点评自己翻", "score": 10, "tag": "传统派"},
          {"text": "问AI推荐附近有什么好吃的", "score": 50, "tag": "AI推荐派"},
          {"text": "让AI根据大家的口味偏好来推荐", "score": 80, "tag": "AI管家派"},
-         {"text": "让AI做一个餐厅对比分析表格", "score": 100, "tag": "AI分析师"}]},
+         {"text": "让AI做一个餐厅对比分析表格", "score": 100, "tag": "AI分析师"},
+         {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q12", "dimension": "iteration_agility", "category": "AI生活场景",
      "question": "看到一个新AI工具发布，你的反应是？",
      "options": [
          {"text": "哦，又出新了，跟我没关系", "score": 0, "tag": "佛系派"},
          {"text": "看看介绍，有意思就试试", "score": 40, "tag": "观望派"},
          {"text": "立刻注册试用，测评一下好不好用", "score": 75, "tag": "尝鲜派"},
-         {"text": "不仅试用，还要写一篇测评发朋友圈", "score": 100, "tag": "测评博主"}]},
+         {"text": "不仅试用，还要写一篇测评发朋友圈", "score": 100, "tag": "测评博主"},
+         {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q13", "dimension": "problem_reframing", "category": "AI生活场景",
      "question": "你用AI做过最有创意的事情是？",
      "options": [
          {"text": "没做过什么特别的", "score": 0, "tag": "待开发"},
          {"text": "用AI生成过图片/音乐/视频", "score": 50, "tag": "创作入门"},
          {"text": "用AI帮朋友做过生日礼物/表白文案", "score": 75, "tag": "创意生活家"},
-         {"text": "用AI做了一个让所有人都惊艳的作品", "score": 100, "tag": "创意大师"}]},
+         {"text": "用AI做了一个让所有人都惊艳的作品", "score": 100, "tag": "创意大师"},
+         {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q14", "dimension": "boundary_awareness", "category": "AI生活场景",
      "question": "你有没有发现过AI'一本正经胡说八道'（幻觉）？",
      "options": [
          {"text": "没有，AI说的我都信", "score": 0, "tag": "信任者"},
          {"text": "好像有过，但不确定", "score": 30, "tag": "模糊感知"},
          {"text": "发现过好几次，现在都会验证一下", "score": 70, "tag": "警惕派"},
-         {"text": "经常发现，还能故意引导AI犯错来测试它", "score": 100, "tag": "幻觉猎人"}]},
+         {"text": "经常发现，还能故意引导AI犯错来测试它", "score": 100, "tag": "幻觉猎人"},
+         {"text": "其他", "score": 0, "tag": "自定义"}]},
     # === 第四部分：AI哲学思考 ===
     {"id": "q15", "dimension": "ai_first_mindset", "category": "AI哲学思考",
      "question": "如果AI能完美替代你80%的工作，你会？",
@@ -520,42 +534,48 @@ FUN_QUESTIONS = [
          {"text": "有点慌，开始担心失业", "score": 10, "tag": "焦虑派"},
          {"text": "无所谓，AI替代不了那20%", "score": 40, "tag": "淡定派"},
          {"text": "太好了，终于有时间做想做的事", "score": 75, "tag": "乐观派"},
-         {"text": "主动学习驾驭AI，让自己不可替代", "score": 100, "tag": "进化派"}]},
+         {"text": "主动学习驾驭AI，让自己不可替代", "score": 100, "tag": "进化派"},
+         {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q16", "dimension": "iteration_agility", "category": "AI哲学思考",
      "question": "你通常在什么时间段使用AI？",
      "options": [
          {"text": "只在工作时间用", "score": 10, "tag": "上班族"},
          {"text": "工作+偶尔下班后", "score": 40, "tag": "加班族"},
          {"text": "随时随地，有需求就用", "score": 75, "tag": "全天候"},
-         {"text": "凌晨2点还在和AI讨论人生哲学", "score": 100, "tag": "深夜AI玩家"}]},
+         {"text": "凌晨2点还在和AI讨论人生哲学", "score": 100, "tag": "深夜AI玩家"},
+         {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q17", "dimension": "deep_collaboration", "category": "AI哲学思考",
      "question": "你觉得5年后AI会变成什么样？",
      "options": [
          {"text": "跟现在差不多吧", "score": 10, "tag": "保守派"},
          {"text": "会比现在好用很多", "score": 40, "tag": "谨慎乐观"},
          {"text": "会深刻改变每个人的工作和生活", "score": 75, "tag": "变革派"},
-         {"text": "AI将无处不在，人类与AI深度融合", "score": 100, "tag": "未来主义者"}]},
+         {"text": "AI将无处不在，人类与AI深度融合", "score": 100, "tag": "未来主义者"},
+         {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q18", "dimension": "boundary_awareness", "category": "AI哲学思考",
      "question": "你有没有因为使用AI而产生过'原来还可以这样'的顿悟时刻？",
      "options": [
          {"text": "没有过", "score": 0, "tag": "未觉醒"},
          {"text": "有过一两次", "score": 40, "tag": "初步觉醒"},
          {"text": "有很多次，每次都让我对AI有了新认识", "score": 75, "tag": "持续觉醒"},
-         {"text": "经常有，我已经习惯了被AI惊艳", "score": 100, "tag": "见怪不怪"}]},
+         {"text": "经常有，我已经习惯了被AI惊艳", "score": 100, "tag": "见怪不怪"},
+         {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q19", "dimension": "problem_reframing", "category": "AI哲学思考",
      "question": "如果让你用一句话描述AI对你的影响，你会说？",
      "options": [
          {"text": "AI就是一个好用的工具", "score": 10, "tag": "工具论"},
          {"text": "AI让我的工作效率提升了不少", "score": 40, "tag": "效率论"},
          {"text": "AI改变了我思考问题的方式", "score": 75, "tag": "思维变革论"},
-         {"text": "AI重新定义了我对'能力'的理解", "score": 100, "tag": "认知革命论"}]},
+         {"text": "AI重新定义了我对'能力'的理解", "score": 100, "tag": "认知革命论"},
+         {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q20", "dimension": "learning_mode", "category": "AI哲学思考",
      "question": "如果给AI打分（满分10分），你会打几分？",
      "options": [
          {"text": "5分以下，还有很多不足", "score": 10, "tag": "严格评委"},
          {"text": "6-7分，还不错但需要改进", "score": 40, "tag": "客观评委"},
          {"text": "8-9分，已经非常强大了", "score": 75, "tag": "粉丝评委"},
-         {"text": "10分满分！AI是人类的未来", "score": 100, "tag": "超级粉丝"}]}
+         {"text": "10分满分！AI是人类的未来", "score": 100, "tag": "超级粉丝"},
+         {"text": "其他", "score": 0, "tag": "自定义"}]}
 ]
 
 def load_candidates():
@@ -603,6 +623,58 @@ def calculate_score(dimension_scores):
 def get_level_color(level):
     return LEVEL_DEFINITIONS.get(level, {}).get("color", "#gray")
 
+def analyze_other_answer(question_text, user_answer, analyzer=None):
+    """分析用户对'其他'选项的自定义回答，给出评分和建议"""
+    
+    # 如果没有AI分析器，返回默认分数
+    if not analyzer or not analyzer.is_available():
+        return {
+            "score": 40,  # 默认中等偏低的分数
+            "analysis": "无法进行AI分析，采用默认评分"
+        }
+    
+    # 构建分析prompt
+    prompt = f"""
+请分析用户对以下问题的回答，评估其AI使用能力和意识：
+
+问题：{question_text}
+用户回答：{user_answer}
+
+请从以下几个维度评估（每项0-100分）：
+1. AI使用频率和深度
+2. AI使用方法的合理性
+3. 对AI能力边界的认知
+4. 整体AI素养
+
+请以JSON格式返回：
+{{"score": 平均分数(0-100), "analysis": "简短分析说明"}}
+"""
+    
+    try:
+        response = analyzer.client.chat.completions.create(
+            model=analyzer.model,
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=500
+        )
+        result_text = response.choices[0].message.content
+        
+        # 尝试解析JSON
+        import re
+        json_match = re.search(r'\{.*\}', result_text, re.DOTALL)
+        if json_match:
+            result = json.loads(json_match.group())
+            return {
+                "score": min(100, max(0, int(result.get("score", 40)))),
+                "analysis": result.get("analysis", "")
+            }
+    except Exception as e:
+        pass
+    
+    return {
+        "score": 40,
+        "analysis": "分析失败，采用默认评分"
+    }
+
 # 初始化 session state
 if 'candidates' not in st.session_state:
     st.session_state.candidates = load_candidates()
@@ -622,6 +694,8 @@ if 'personal_step' not in st.session_state:
     st.session_state.personal_step = 0
 if 'personal_tools' not in st.session_state:
     st.session_state.personal_tools = []
+if 'personal_other_answers' not in st.session_state:
+    st.session_state.personal_other_answers = {}
 
 # CSS 样式
 st.markdown("""
@@ -1254,19 +1328,57 @@ def render_personal_version():
             </div>
             ''', unsafe_allow_html=True)
             
-            selected = st.radio("选择最接近你的答案", 
-                               options=[o["text"] for o in q["options"]], 
-                               key=f"q_{q['id']}",
-                               format_func=lambda x: x,
-                               label_visibility="collapsed")
+            # 获取radio的选项
+            radio_options = [o["text"] for o in q["options"]]
             
+            # 检查是否有已保存的答案
+            current_answer = st.session_state.personal_answers.get(q["id"])
+            current_index = None
+            if current_answer:
+                # 找到当前选择的索引
+                for idx, o in enumerate(q["options"]):
+                    if o["text"] == current_answer.get("text"):
+                        current_index = idx
+                        break
+            
+            # 使用radio显示选项，不设置默认值(index=None)
+            selected = st.radio(
+                "选择最接近你的答案", 
+                options=radio_options, 
+                key=f"q_{q['id']}",
+                index=current_index,
+                format_func=lambda x: x,
+                label_visibility="collapsed"
+            )
+            
+            # 处理答案选择
             for o in q["options"]:
                 if o["text"] == selected:
                     st.session_state.personal_answers[q["id"]] = {
                         "dimension": q["dimension"], 
                         "score": o["score"],
-                        "tag": o.get("tag", "")
+                        "tag": o.get("tag", ""),
+                        "text": o["text"]
                     }
+                    
+                    # 如果选择了"其他"选项，显示文本输入框
+                    if o["text"] == "其他":
+                        other_answer_key = f"other_{q['id']}"
+                        current_other = st.session_state.personal_other_answers.get(q["id"], "")
+                        
+                        other_text = st.text_input(
+                            "请描述你的回答：",
+                            value=current_other,
+                            key=other_answer_key,
+                            placeholder="请输入你的回答..."
+                        )
+                        
+                        # 保存其他答案到session_state
+                        if other_text:
+                            st.session_state.personal_other_answers[q["id"]] = other_text
+                        elif other_text == "" and q["id"] in st.session_state.personal_other_answers:
+                            # 如果用户清空了输入，也清空保存的值
+                            del st.session_state.personal_other_answers[q["id"]]
                     break
         
         # 下一阶段按钮
@@ -1278,8 +1390,25 @@ def render_personal_version():
         with col2:
             btn_text = "下一部分" if step < 4 else "进入工具选择"
             if st.button(btn_text, type="primary"):
-                st.session_state.personal_step = step + 1
-                st.rerun()
+                # 检查当前板块的所有题目是否都已选择
+                unanswered = []
+                for q in step_questions:
+                    answer = st.session_state.personal_answers.get(q["id"])
+                    if not answer:
+                        # 没有选择任何答案
+                        unanswered.append(q["id"])
+                    elif answer.get("text") == "其他":
+                        # 选择了"其他"，检查是否填写了具体内容
+                        if not st.session_state.personal_other_answers.get(q["id"], "").strip():
+                            unanswered.append(q["id"])
+                
+                if unanswered:
+                    # 显示警告信息
+                    unanswered_display = [f"第{step_questions.index(next((x for x in step_questions if x['id'] == uid), step_questions[0]))+1}题" for uid in unanswered]
+                    st.warning(f"请回答以下问题后再继续：{', '.join(unanswered_display)}")
+                else:
+                    st.session_state.personal_step = step + 1
+                    st.rerun()
     
     # ===== AI工具选择 =====
     elif st.session_state.personal_step == 5:
@@ -1301,35 +1430,41 @@ def render_personal_version():
         for cat, tools in tool_categories.items():
             st.markdown(f"**{cat}**")
             
-            # 使用HTML和columns来显示带图标的工具
+            # 使用HTML渲染图标 + checkbox处理选择的方案
             for i in range(0, len(tools), 4):
                 cols = st.columns(4)
                 for j, tool in enumerate(tools[i:i+4]):
                     with cols[j]:
-                        # 读取SVG图标
+                        # 读取SVG图标并渲染
                         icon_path = tool.get('icon', '')
+                        icon_display = ""
                         if icon_path and icon_path.endswith('.svg'):
                             try:
                                 with open(icon_path, 'r', encoding='utf-8') as f:
                                     svg_content = f.read()
                                 # 调整SVG大小
-                                svg_content = svg_content.replace('<svg', '<svg width="24" height="24"')
-                                icon_html = f'<span style="display:inline-block;vertical-align:middle;margin-right:4px;">{svg_content}</span>'
+                                svg_content = svg_content.replace('<svg', '<svg width="20" height="20"')
+                                icon_display = svg_content
                             except:
-                                icon_html = f'<span style="font-size:1.2rem;">{tool.get("icon", "🔧")}</span>'
-                        else:
-                            icon_html = f'<span style="font-size:1.2rem;">{tool.get("icon", "🔧")}</span>'
+                                icon_display = ""
                         
                         # 使用 help 参数显示公司和功能介绍
                         help_text = f"【{tool.get('company', '未知')}】{tool.get('desc', '暂无介绍')}"
                         
-                        # 创建带图标的checkbox标签
-                        label_html = f'<span style="display:flex;align-items:center;gap:4px;">{icon_html}<span>{tool["name"]}</span></span>'
+                        # 先渲染图标（用st.markdown），再用checkbox处理选择
+                        if icon_display:
+                            st.markdown(f'''
+                            <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px;margin-top:8px;">
+                                <span style="display:inline-block;vertical-align:middle;">{icon_display}</span>
+                                <span style="font-size:0.85rem;font-weight:500;color:#1a1a2e;">{tool["name"]}</span>
+                            </div>
+                            ''', unsafe_allow_html=True)
                         
                         checked = st.checkbox(
-                            label_html,
+                            tool["name"],
                             key=f"tool_{tool['name']}",
-                            help=help_text
+                            help=help_text,
+                            label_visibility="collapsed"
                         )
                         if checked and tool['name'] not in st.session_state.personal_tools:
                             st.session_state.personal_tools.append(tool['name'])
@@ -1569,13 +1704,39 @@ def render_personal_version():
     elif st.session_state.personal_step == 10:
         answers = st.session_state.personal_answers
         
+        # 检查AI分析器是否可用
+        analyzer_available = False
+        analyzer = None
+        try:
+            analyzer = get_analyzer()
+            if analyzer and analyzer.is_available():
+                analyzer_available = True
+        except:
+            pass
+        
         # 计算各维度分数
         dimension_scores = {}
         for q_id, ans in answers.items():
             dim = ans["dimension"]
             if dim not in dimension_scores:
                 dimension_scores[dim] = []
-            dimension_scores[dim].append(ans["score"])
+            
+            # 检查是否有"其他"选项被选择
+            if ans.get("text") == "其他":
+                custom_answer = st.session_state.personal_other_answers.get(q_id, "")
+                if custom_answer:
+                    # 使用AI分析自定义答案
+                    analysis_result = analyze_other_answer(
+                        next((q["question"] for q in FUN_QUESTIONS if q["id"] == q_id), ""),
+                        custom_answer,
+                        analyzer if analyzer_available else None
+                    )
+                    dimension_scores[dim].append(analysis_result["score"])
+                else:
+                    # 用户选择了"其他"但没有填写答案，给最低分
+                    dimension_scores[dim].append(0)
+            else:
+                dimension_scores[dim].append(ans["score"])
         
         avg_scores = {}
         for dim, scores in dimension_scores.items():
