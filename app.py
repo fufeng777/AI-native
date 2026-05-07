@@ -47,35 +47,234 @@ JOB_CATEGORIES = [
 
 # 个人版趣味等级定义
 FUN_TITLES = {
-    "L0": {"title": "AI 小白", "description": "还在用传统方式工作的你，AI的世界等待探索", "emoji": "🌱", "color": "#9CA3AF"},
-    "L1": {"title": "AI 玩家", "description": "偶尔玩玩AI工具，已经尝到甜头了", "emoji": "🎮", "color": "#60A5FA"},
-    "L2": {"title": "AI 高手", "description": "AI已经是你的得力助手，工作效率起飞", "emoji": "🚀", "color": "#34D399"},
-    "L3": {"title": "AI 大师", "description": "AI已经融入你的血液，你就是prompt大师", "emoji": "⚡", "color": "#FBBF24"}
+    "L0": {"title": "AI 原始人", "description": "你还在用石器时代的方式工作，AI对你来说就像外星科技", "emoji": "🦣", "color": "#9CA3AF",
+           "tagline": "碳基生物最后的倔强", "advice": "别怕AI，它不会取代你...暂时不会"},
+    "L1": {"title": "AI 玩家", "description": "你已经踏入AI世界的大门，偶尔玩玩ChatGPT写写邮件", "emoji": "🎮", "color": "#60A5FA",
+           "tagline": "AI世界的观光客", "advice": "试着把AI用到更多场景，你会发现新大陆"},
+    "L2": {"title": "AI 高手", "description": "AI已经是你的得力助手，工作效率比同事快3倍", "emoji": "🚀", "color": "#34D399",
+           "tagline": "人机协作的典范", "advice": "你已经超越90%的人，继续探索更深层的AI用法"},
+    "L3": {"title": "AI 大师", "description": "AI已经融入你的血液，你甚至开始用AI来管理你的AI", "emoji": "⚡", "color": "#FBBF24",
+           "tagline": "碳硅融合体", "advice": "你就是未来的样子，请带我们飞"}
 }
+
+# 8种AI人格类型（类似MBTI）
+AI_PERSONALITIES = {
+    "PROMPT-A": {"name": "提示词建筑师", "emoji": "🏗️", "desc": "你擅长用精确的语言指挥AI，写出的Prompt堪比艺术品",
+                  "trait": "逻辑缜密 | 追求精准 | 结构化思维", "color": "#3B82F6",
+                  "tools": ["ChatGPT", "Claude", "Gemini"], "scene": "写Prompt像写代码，每个字都有意义"},
+    "AGENT-C": {"name": "智能体指挥官", "emoji": "🎯", "desc": "你善于构建AI Agent工作流，让多个AI协同作战",
+                "trait": "全局视角 | 系统思维 | 善于编排", "color": "#EF4444",
+                "tools": ["Coze", "Dify", "LangChain"], "scene": "你的AI团队比你整个部门都忙"},
+    "CREATE-X": {"name": "创意炼金师", "emoji": "🎨", "desc": "你用AI释放无限创意，从文字到图像到视频无所不能",
+                  "trait": "天马行空 | 审美在线 | 善于表达", "color": "#A855F7",
+                  "tools": ["Midjourney", "Suno", "Runway"], "scene": "你的创意产出速度让甲方怀疑人生"},
+    "CODE-N": {"name": "代码忍者", "emoji": "💻", "desc": "AI编程是你的超能力，Cursor和Copilot是你的双刀",
+               "trait": "技术驱动 | 效率至上 | 持续学习", "color": "#10B981",
+               "tools": ["Cursor", "GitHub Copilot", "v0"], "scene": "你一个人就是一个开发团队"},
+    "DATA-W": {"name": "数据巫师", "emoji": "🔮", "desc": "你善于用AI洞察数据背后的秘密，让数据说话",
+               "trait": "分析思维 | 数据敏感 | 洞察力强", "color": "#F59E0B",
+               "tools": ["ChatGPT数据分析", "NotebookLM", "Perplexity"], "scene": "你看到数据就能预测未来"},
+    "AUTO-B": {"name": "自动化狂人", "emoji": "🤖", "desc": "能用AI自动化的绝不手动，你的工作流全是自动的",
+               "trait": "效率极致 | 流程思维 | 懒得优雅", "color": "#EC4899",
+               "tools": ["Zapier", "Make", "n8n"], "scene": "别人上班你在摸鱼，因为AI替你干了"},
+    "CHAT-S": {"name": "AI知己", "emoji": "💬", "desc": "你和AI的关系超越了工具，更像是思维伙伴和灵魂伴侣",
+               "trait": "善于沟通 | 思想开放 | 情感丰富", "color": "#06B6D4",
+               "tools": ["ChatGPT", "Pi", "Character.AI"], "scene": "你跟AI聊天的记录比跟朋友的还长"},
+    "LEARN-P": {"name": "学习狂魔", "emoji": "📚", "desc": "AI是你的私人导师，任何新领域都能快速入门",
+                "trait": "好奇心强 | 快速学习 | 知识面广", "color": "#8B5CF6",
+                "tools": ["Coursera AI", "Khan Academy", "Perplexity"], "scene": "你的学习速度让爱因斯坦都嫉妒"}
+}
+
+# 成就系统
+ACHIEVEMENTS = [
+    {"id": "first_chat", "name": "初次接触", "desc": "第一次和AI对话", "icon": "🌱", "condition": lambda s: True},
+    {"id": "prompt_master", "name": "提示词大师", "desc": "能用精准的Prompt获得理想结果", "icon": "✍️", "condition": lambda s: s.get("q2_score", 0) >= 80},
+    {"id": "tool_collector", "name": "工具收藏家", "desc": "使用过5种以上AI工具", "icon": "🔧", "condition": lambda s: s.get("tool_count", 0) >= 5},
+    {"id": "auto_flow", "name": "流程自动化", "desc": "用AI构建过自动化工作流", "icon": "⚙️", "condition": lambda s: s.get("q8_score", 0) >= 80},
+    {"id": "ai_friend", "name": "AI之友", "desc": "把AI当成朋友而不只是工具", "icon": "🤝", "condition": lambda s: s.get("q10_score", 0) >= 80},
+    {"id": "speed_learner", "name": "速学达人", "desc": "用AI在1周内学会新技能", "icon": "⚡", "condition": lambda s: s.get("q4_score", 0) >= 80},
+    {"id": "boundary_keeper", "name": "边界守卫", "desc": "能精准识别AI的错误和幻觉", "icon": "🛡️", "condition": lambda s: s.get("q6_score", 0) >= 70},
+    {"id": "creative_mind", "name": "创意无限", "desc": "用AI创作过令人惊叹的作品", "icon": "🌈", "condition": lambda s: s.get("q13_score", 0) >= 80},
+    {"id": "night_owl", "name": "深夜AI玩家", "desc": "凌晨还在和AI讨论人生", "icon": "🦉", "condition": lambda s: s.get("q16_score", 0) >= 60},
+    {"id": "evangelist", "name": "AI布道者", "desc": "逢人就安利AI工具", "icon": "📣", "condition": lambda s: s.get("q17_score", 0) >= 80},
+    {"id": "philosopher", "name": "AI哲学家", "desc": "思考过AI与人类的关系", "icon": "🧠", "condition": lambda s: s.get("q19_score", 0) >= 60},
+    {"id": "master", "name": "AI大师", "desc": "综合评分达到L3级别", "icon": "👑", "condition": lambda s: s.get("total_score", 0) >= 80}
+]
+
+# AI工具列表（用于成就解锁）
+AI_TOOLS_LIST = [
+    {"name": "ChatGPT", "category": "对话", "icon": "💬"},
+    {"name": "Claude", "category": "对话", "icon": "🤖"},
+    {"name": "Gemini", "category": "对话", "icon": "💎"},
+    {"name": "文心一言", "category": "对话", "icon": "🇨🇳"},
+    {"name": "通义千问", "category": "对话", "icon": "🇨🇳"},
+    {"name": "豆包", "category": "对话", "icon": "🫘"},
+    {"name": "Kimi", "category": "对话", "icon": "🌙"},
+    {"name": "DeepSeek", "category": "对话", "icon": "🔍"},
+    {"name": "Midjourney", "category": "绘画", "icon": "🎨"},
+    {"name": "Stable Diffusion", "category": "绘画", "icon": "🖼️"},
+    {"name": "DALL-E", "category": "绘画", "icon": "🎭"},
+    {"name": "Suno", "category": "音乐", "icon": "🎵"},
+    {"name": "Runway", "category": "视频", "icon": "🎬"},
+    {"name": "Cursor", "category": "编程", "icon": "💻"},
+    {"name": "GitHub Copilot", "category": "编程", "icon": "🐙"},
+    {"name": "v0.dev", "category": "编程", "icon": "⚡"},
+    {"name": "Perplexity", "category": "搜索", "icon": "🔎"},
+    {"name": "NotebookLM", "category": "学习", "icon": "📓"},
+    {"name": "Gamma", "category": "PPT", "icon": "📊"},
+    {"name": "Canva AI", "category": "设计", "icon": "🎯"},
+    {"name": "Notion AI", "category": "效率", "icon": "📝"},
+    {"name": "飞书AI", "category": "效率", "icon": "🐦"},
+    {"name": "Coze", "category": "Agent", "icon": "🤖"},
+    {"name": "Dify", "category": "Agent", "icon": "🔧"}
+]
 
 # 个人版趣味问题
 FUN_QUESTIONS = [
-    {"id": "q1", "dimension": "ai_first_mindset", "question": "接到新任务时，你的第一个念头是？", "options": [
-        {"text": "先想以前怎么做", "score": 0}, {"text": "看看有没有现成的AI工具能用", "score": 40}, 
-        {"text": "思考如何用AI来重构这个问题", "score": 80}, {"text": "这能不能用AI做成一个自动化流程", "score": 100}]},
-    {"id": "q2", "dimension": "deep_collaboration", "question": "你通常怎么和AI对话？", "options": [
-        {"text": "问一个问题，等答案", "score": 0}, {"text": "多轮对话，迭代优化结果", "score": 60}, {"text": "像和一个专家讨论，有来有回", "score": 100}]},
-    {"id": "q3", "dimension": "problem_reframing", "question": "遇到复杂问题时，你会？", "options": [
-        {"text": "按部就班一步步解决", "score": 0}, {"text": "问问AI有没有更好的方法", "score": 40},
-        {"text": "让AI帮我重新定义这个问题", "score": 80}, {"text": "和AI一起头脑风暴，找出最优解", "score": 100}]},
-    {"id": "q4", "dimension": "learning_mode", "question": "需要学习一项新技能时，你会？", "options": [
-        {"text": "找教程视频慢慢学", "score": 0}, {"text": "让AI给我制定学习计划", "score": 50}, {"text": "用AI快速搭建脚手架，边做边学", "score": 100}]},
-    {"id": "q5", "dimension": "iteration_agility", "question": "你多久会尝试一次新的AI工具？", "options": [
-        {"text": "基本上不换，用习惯的就行", "score": 0}, {"text": "偶尔会尝试新的", "score": 40},
-        {"text": "经常关注AI动态，会主动尝试", "score": 80}, {"text": "AI新工具发布，我都是第一批用户", "score": 100}]},
-    {"id": "q6", "dimension": "boundary_awareness", "question": "你如何看待AI的局限性？", "options": [
-        {"text": "AI说的就是对的", "score": 0}, {"text": "知道AI有时候会出错", "score": 30},
-        {"text": "能识别AI的幻觉，会批判性使用", "score": 70}, {"text": "清楚AI的能力边界，能精准指出问题", "score": 100}]},
-    {"id": "q7", "dimension": "ai_first_mindset", "question": "你会用什么词形容自己使用AI的频率？", "options": [
-        {"text": "偶尔", "score": 10}, {"text": "经常", "score": 50}, {"text": "日常", "score": 80}, {"text": "离不开", "score": 100}]},
-    {"id": "q8", "dimension": "deep_collaboration", "question": "你用AI做过最复杂的事情是？", "options": [
-        {"text": "回答问题、写文案", "score": 20}, {"text": "写代码、调试程序", "score": 50},
-        {"text": "完成一个完整的项目", "score": 80}, {"text": "构建自动化工作流，节省大量时间", "score": 100}]}
+    # === 第一部分：AI本能反应 ===
+    {"id": "q1", "dimension": "ai_first_mindset", "category": "AI本能反应",
+     "question": "老板突然给你一个全新领域的任务，你的第一反应是？",
+     "options": [
+         {"text": "先百度/Google搜一下看看", "score": 10, "tag": "传统搜索派"},
+         {"text": "问ChatGPT这个领域是什么、该怎么做", "score": 50, "tag": "AI咨询派"},
+         {"text": "让AI帮我制定一个完整的执行方案", "score": 80, "tag": "AI规划派"},
+         {"text": "直接让AI Agent帮我搭建框架，我负责审核", "score": 100, "tag": "AI代管派"}]},
+    {"id": "q2", "dimension": "deep_collaboration", "category": "AI本能反应",
+     "question": "你写Prompt的习惯是？",
+     "options": [
+         {"text": "就写几个关键词，比如'帮我写个方案'", "score": 10, "tag": "佛系Prompt"},
+         {"text": "会写清楚背景、需求、格式要求", "score": 50, "tag": "结构化Prompt"},
+         {"text": "会设定角色、提供示例、多轮迭代优化", "score": 80, "tag": "高级Prompt"},
+         {"text": "我有自己的Prompt模板库，随时复用", "score": 100, "tag": "Prompt工程师"}]},
+    {"id": "q3", "dimension": "problem_reframing", "category": "AI本能反应",
+     "question": "遇到一个棘手的工作问题，你会？",
+     "options": [
+         {"text": "自己苦思冥想，实在不行问同事", "score": 0, "tag": "独立思考派"},
+         {"text": "把问题描述给AI，看看它有什么建议", "score": 40, "tag": "AI顾问派"},
+         {"text": "让AI帮我重新定义问题，找到更好的切入点", "score": 75, "tag": "问题重构派"},
+         {"text": "和AI来一场头脑风暴，碰撞出全新思路", "score": 100, "tag": "共创派"}]},
+    {"id": "q4", "dimension": "learning_mode", "category": "AI本能反应",
+     "question": "老板让你一周内学会一个你完全不懂的新技能，你会？",
+     "options": [
+         {"text": "买本书/找课程，从零开始系统学习", "score": 10, "tag": "传统学习派"},
+         {"text": "让AI帮我制定学习计划，推荐学习资源", "score": 50, "tag": "AI辅助学习"},
+         {"text": "直接用AI边做边学，遇到问题就问", "score": 85, "tag": "实战派"},
+         {"text": "让AI帮我快速搭建原型，在实践中掌握", "score": 100, "tag": "极速上手派"}]},
+    {"id": "q5", "dimension": "iteration_agility", "category": "AI本能反应",
+     "question": "你手机里装了几个AI相关的App？",
+     "options": [
+         {"text": "0-1个，就一个ChatGPT", "score": 10, "tag": "专一派"},
+         {"text": "2-4个，常用的那几个", "score": 40, "tag": "实用派"},
+         {"text": "5-9个，看到新的就想试试", "score": 75, "tag": "尝鲜派"},
+         {"text": "10个以上，手机内存都被AI占满了", "score": 100, "tag": "AI收藏家"}]},
+    # === 第二部分：AI社交风格 ===
+    {"id": "q6", "dimension": "boundary_awareness", "category": "AI社交风格",
+     "question": "AI给你一个看起来很专业但你不确定的答案，你会？",
+     "options": [
+         {"text": "直接用，AI说的应该没错", "score": 0, "tag": "信任派"},
+         {"text": "大概看一下，没问题就用", "score": 30, "tag": "粗略检查派"},
+         {"text": "交叉验证一下，用另一个AI或搜索引擎确认", "score": 70, "tag": "验证派"},
+         {"text": "让AI自己批判自己的答案，找出漏洞", "score": 100, "tag": "批判大师"}]},
+    {"id": "q7", "dimension": "ai_first_mindset", "category": "AI社交风格",
+     "question": "你怎么形容你和AI的关系？",
+     "options": [
+         {"text": "就是个工具，用完就关", "score": 10, "tag": "工具关系"},
+         {"text": "像个助手，帮我处理杂活", "score": 40, "tag": "助手关系"},
+         {"text": "像个搭档，一起讨论解决问题", "score": 75, "tag": "搭档关系"},
+         {"text": "像个导师/朋友，有时候还会跟它聊天", "score": 100, "tag": "灵魂伴侣"}]},
+    {"id": "q8", "dimension": "deep_collaboration", "category": "AI社交风格",
+     "question": "你用AI做过最让你自豪的事情是？",
+     "options": [
+         {"text": "写过邮件、翻译过文档", "score": 15, "tag": "基础应用"},
+         {"text": "用AI写过代码、做过数据分析", "score": 45, "tag": "进阶应用"},
+         {"text": "用AI完成了一个完整的项目", "score": 75, "tag": "项目级应用"},
+         {"text": "搭建了AI自动化工作流，持续节省时间", "score": 100, "tag": "系统级应用"}]},
+    {"id": "q9", "dimension": "deep_collaboration", "category": "AI社交风格",
+     "question": "你和朋友聊天时，提到AI的频率是？",
+     "options": [
+         {"text": "很少提，觉得没什么好说的", "score": 10, "tag": "低调派"},
+         {"text": "偶尔分享一些好用的AI技巧", "score": 40, "tag": "分享派"},
+         {"text": "经常安利，朋友都说我被AI洗脑了", "score": 75, "tag": "布道派"},
+         {"text": "三句话不离AI，朋友都开始用了", "score": 100, "tag": "AI传教士"}]},
+    {"id": "q10", "dimension": "learning_mode", "category": "AI社交风格",
+     "question": "你有没有给AI取过名字或者设定过人设？",
+     "options": [
+         {"text": "没有，就叫ChatGPT", "score": 0, "tag": "务实派"},
+         {"text": "想过但没做过", "score": 30, "tag": "犹豫派"},
+         {"text": "设定过角色，比如'你是一个资深产品经理'", "score": 65, "tag": "角色扮演派"},
+         {"text": "取了名字，还设定了性格、背景故事", "score": 100, "tag": "AI养成派"}]},
+    # === 第三部分：AI生活场景 ===
+    {"id": "q11", "dimension": "ai_first_mindset", "category": "AI生活场景",
+     "question": "周末朋友聚餐，需要选餐厅，你会？",
+     "options": [
+         {"text": "打开大众点评自己翻", "score": 10, "tag": "传统派"},
+         {"text": "问AI推荐附近有什么好吃的", "score": 50, "tag": "AI推荐派"},
+         {"text": "让AI根据大家的口味偏好来推荐", "score": 80, "tag": "AI管家派"},
+         {"text": "让AI做一个餐厅对比分析表格", "score": 100, "tag": "AI分析师"}]},
+    {"id": "q12", "dimension": "iteration_agility", "category": "AI生活场景",
+     "question": "看到一个新AI工具发布，你的反应是？",
+     "options": [
+         {"text": "哦，又出新了，跟我没关系", "score": 0, "tag": "佛系派"},
+         {"text": "看看介绍，有意思就试试", "score": 40, "tag": "观望派"},
+         {"text": "立刻注册试用，测评一下好不好用", "score": 75, "tag": "尝鲜派"},
+         {"text": "不仅试用，还要写一篇测评发朋友圈", "score": 100, "tag": "测评博主"}]},
+    {"id": "q13", "dimension": "problem_reframing", "category": "AI生活场景",
+     "question": "你用AI做过最有创意的事情是？",
+     "options": [
+         {"text": "没做过什么特别的", "score": 0, "tag": "待开发"},
+         {"text": "用AI生成过图片/音乐/视频", "score": 50, "tag": "创作入门"},
+         {"text": "用AI帮朋友做过生日礼物/表白文案", "score": 75, "tag": "创意生活家"},
+         {"text": "用AI做了一个让所有人都惊艳的作品", "score": 100, "tag": "创意大师"}]},
+    {"id": "q14", "dimension": "boundary_awareness", "category": "AI生活场景",
+     "question": "你有没有发现过AI'一本正经胡说八道'（幻觉）？",
+     "options": [
+         {"text": "没有，AI说的我都信", "score": 0, "tag": "信任者"},
+         {"text": "好像有过，但不确定", "score": 30, "tag": "模糊感知"},
+         {"text": "发现过好几次，现在都会验证一下", "score": 70, "tag": "警惕派"},
+         {"text": "经常发现，还能故意引导AI犯错来测试它", "score": 100, "tag": "幻觉猎人"}]},
+    # === 第四部分：AI哲学思考 ===
+    {"id": "q15", "dimension": "ai_first_mindset", "category": "AI哲学思考",
+     "question": "如果AI能完美替代你80%的工作，你会？",
+     "options": [
+         {"text": "有点慌，开始担心失业", "score": 10, "tag": "焦虑派"},
+         {"text": "无所谓，AI替代不了那20%", "score": 40, "tag": "淡定派"},
+         {"text": "太好了，终于有时间做想做的事", "score": 75, "tag": "乐观派"},
+         {"text": "主动学习驾驭AI，让自己不可替代", "score": 100, "tag": "进化派"}]},
+    {"id": "q16", "dimension": "iteration_agility", "category": "AI哲学思考",
+     "question": "你通常在什么时间段使用AI？",
+     "options": [
+         {"text": "只在工作时间用", "score": 10, "tag": "上班族"},
+         {"text": "工作+偶尔下班后", "score": 40, "tag": "加班族"},
+         {"text": "随时随地，有需求就用", "score": 75, "tag": "全天候"},
+         {"text": "凌晨2点还在和AI讨论人生哲学", "score": 100, "tag": "深夜AI玩家"}]},
+    {"id": "q17", "dimension": "deep_collaboration", "category": "AI哲学思考",
+     "question": "你觉得5年后AI会变成什么样？",
+     "options": [
+         {"text": "跟现在差不多吧", "score": 10, "tag": "保守派"},
+         {"text": "会比现在好用很多", "score": 40, "tag": "谨慎乐观"},
+         {"text": "会深刻改变每个人的工作和生活", "score": 75, "tag": "变革派"},
+         {"text": "AI将无处不在，人类与AI深度融合", "score": 100, "tag": "未来主义者"}]},
+    {"id": "q18", "dimension": "boundary_awareness", "category": "AI哲学思考",
+     "question": "你有没有因为使用AI而产生过'原来还可以这样'的顿悟时刻？",
+     "options": [
+         {"text": "没有过", "score": 0, "tag": "未觉醒"},
+         {"text": "有过一两次", "score": 40, "tag": "初步觉醒"},
+         {"text": "有很多次，每次都让我对AI有了新认识", "score": 75, "tag": "持续觉醒"},
+         {"text": "经常有，我已经习惯了被AI惊艳", "score": 100, "tag": "见怪不怪"}]},
+    {"id": "q19", "dimension": "problem_reframing", "category": "AI哲学思考",
+     "question": "如果让你用一句话描述AI对你的影响，你会说？",
+     "options": [
+         {"text": "AI就是一个好用的工具", "score": 10, "tag": "工具论"},
+         {"text": "AI让我的工作效率提升了不少", "score": 40, "tag": "效率论"},
+         {"text": "AI改变了我思考问题的方式", "score": 75, "tag": "思维变革论"},
+         {"text": "AI重新定义了我对'能力'的理解", "score": 100, "tag": "认知革命论"}]},
+    {"id": "q20", "dimension": "learning_mode", "category": "AI哲学思考",
+     "question": "如果给AI打分（满分10分），你会打几分？",
+     "options": [
+         {"text": "5分以下，还有很多不足", "score": 10, "tag": "严格评委"},
+         {"text": "6-7分，还不错但需要改进", "score": 40, "tag": "客观评委"},
+         {"text": "8-9分，已经非常强大了", "score": 75, "tag": "粉丝评委"},
+         {"text": "10分满分！AI是人类的未来", "score": 100, "tag": "超级粉丝"}]}
 ]
 
 def load_candidates():
@@ -138,6 +337,10 @@ if 'personal_answers' not in st.session_state:
     st.session_state.personal_answers = {}
 if 'personal_completed' not in st.session_state:
     st.session_state.personal_completed = False
+if 'personal_step' not in st.session_state:
+    st.session_state.personal_step = 0
+if 'personal_tools' not in st.session_state:
+    st.session_state.personal_tools = []
 
 # CSS 样式
 st.markdown("""
@@ -673,139 +876,357 @@ def render_hr_add_page():
                 st.rerun()
 
 # ==================== 个人测评版本 ====================
-def render_personal_version():
-    """个人测评版本主页面"""
+def determine_ai_personality(avg_scores, answers):
+    """根据各维度分数判定AI人格类型"""
+    scores = {
+        "prompt": avg_scores.get("deep_collaboration", 0),      # Prompt能力
+        "agent": avg_scores.get("ai_first_mindset", 0),         # 系统思维
+        "create": avg_scores.get("problem_reframing", 0),       # 创意能力
+        "code": avg_scores.get("learning_mode", 0),             # 学习/技术
+        "data": avg_scores.get("boundary_awareness", 0),        # 分析能力
+        "auto": avg_scores.get("iteration_agility", 0),         # 效率/自动化
+        "chat": avg_scores.get("deep_collaboration", 0) * 0.5 + avg_scores.get("ai_first_mindset", 0) * 0.5,  # 社交
+        "learn": avg_scores.get("learning_mode", 0) * 0.7 + avg_scores.get("iteration_agility", 0) * 0.3  # 学习
+    }
     
-    # 欢迎页面
-    if not st.session_state.personal_completed:
-        st.markdown('<div class="fun-header"><div class="fun-title">AI Native 能力测试</div><div class="fun-subtitle">测测你是AI小白还是AI大师？</div></div>', unsafe_allow_html=True)
-        
-        # 介绍
-        st.markdown("""
-        <div class="info-card">
-        <h3>关于这个测试</h3>
-        <p>AI Native 是指把 AI 作为默认工作方式来思考和行动的能力。这个测试会从6个维度评估你在工作中使用AI的水平。</p>
-        <p><strong>测试时间：</strong>约3-5分钟</p>
-        <p><strong>题目数量：</strong>8道选择题</p>
+    # 找到最高分的维度
+    max_dim = max(scores, key=scores.get)
+    
+    personality_map = {
+        "prompt": "PROMPT-A",
+        "agent": "AGENT-C",
+        "create": "CREATE-X",
+        "code": "CODE-N",
+        "data": "DATA-W",
+        "auto": "AUTO-B",
+        "chat": "CHAT-S",
+        "learn": "LEARN-P"
+    }
+    
+    return personality_map.get(max_dim, "CHAT-S")
+
+
+def render_personal_version():
+    """个人测评版本 - AI人格进化论"""
+    
+    # ===== 欢迎页面 =====
+    if st.session_state.personal_step == 0:
+        st.markdown('''
+        <div class="fun-header">
+            <div class="fun-title">AI 人格进化论</div>
+            <div class="fun-subtitle">你是AI原始人，还是AI大师？20道题揭示你的AI人格</div>
+            <div style="margin-top:1rem;opacity:0.8;font-size:0.95rem;">
+                测试时间 约5分钟 | 20道趣味场景题 | 8种AI人格类型 | 12个成就解锁
+            </div>
         </div>
-        """, unsafe_allow_html=True)
+        ''', unsafe_allow_html=True)
         
-        st.markdown("### 开始测试")
+        # 8种人格预览
+        st.markdown("### 你可能是什么AI人格？")
+        personality_cols = st.columns(4)
+        personalities = list(AI_PERSONALITIES.items())
+        for i, (key, p) in enumerate(personalities):
+            with personality_cols[i % 4]:
+                st.markdown(f'''
+                <div style="text-align:center;padding:1rem;background:white;border-radius:12px;
+                     border:1px solid #e2e8f0;margin:0.5rem 0;">
+                    <div style="font-size:2rem;">{p["emoji"]}</div>
+                    <div style="font-weight:600;font-size:0.9rem;color:#1a1a2e;">{p["name"]}</div>
+                    <div style="font-size:0.75rem;color:#64748b;">{p["trait"]}</div>
+                </div>
+                ''', unsafe_allow_html=True)
         
-        # 显示问题
-        answers = {}
-        for q in FUN_QUESTIONS:
-            st.markdown(f'<div class="quiz-card"><h4>{q["question"]}</h4></div>', unsafe_allow_html=True)
-            selected = st.radio("选择你的答案", 
-                               options=[o["text"] for o in q["options"]], 
-                               key=f"q_{q['id']}",
-                               format_func=lambda x: x)
-            # 找到对应的分数
-            for o in q["options"]:
-                if o["text"] == selected:
-                    answers[q["id"]] = {"dimension": q["dimension"], "score": o["score"]}
-                    break
+        st.markdown("---")
         
-        if st.button("查看我的结果", type="primary", use_container_width=True):
-            # 计算各维度分数
-            dimension_scores = {}
-            for q_id, ans in answers.items():
-                dim = ans["dimension"]
-                if dim not in dimension_scores:
-                    dimension_scores[dim] = []
-                dimension_scores[dim].append(ans["score"])
-            
-            # 平均分数
-            avg_scores = {}
-            for dim, scores in dimension_scores.items():
-                avg_scores[dim] = sum(scores) / len(scores)
-            
-            # 计算总分
-            total_score = calculate_score(avg_scores)
-            level = calculate_level(total_score)
-            
-            # 保存结果
-            st.session_state.personal_answers = answers
-            st.session_state.personal_dimension_scores = avg_scores
-            st.session_state.personal_total_score = total_score
-            st.session_state.personal_level = level
-            st.session_state.personal_completed = True
+        # 开始按钮
+        if st.button("开始测试", type="primary", use_container_width=True):
+            st.session_state.personal_step = 1
             st.rerun()
     
-    # 结果页面
-    else:
-        level = st.session_state.personal_level
-        total_score = st.session_state.personal_total_score
-        dimension_scores = st.session_state.personal_dimension_scores
+    # ===== 测试阶段 =====
+    elif st.session_state.personal_step in [1, 2, 3, 4]:
+        step = st.session_state.personal_step
+        categories = ["AI本能反应", "AI社交风格", "AI生活场景", "AI哲学思考"]
+        category = categories[step - 1]
+        
+        # 进度条
+        progress = step / 5
+        st.markdown(f'''
+        <div style="margin-bottom:1.5rem;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">
+                <span style="font-weight:600;">第{step}/4部分：{category}</span>
+                <span style="color:#64748b;">{progress*100:.0f}%</span>
+            </div>
+            <div style="height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden;">
+                <div style="height:100%;width:{progress*100}%;background:linear-gradient(90deg,#667eea,#764ba2);border-radius:4px;transition:width 0.3s;"></div>
+            </div>
+        </div>
+        ''', unsafe_allow_html=True)
+        
+        # 当前阶段的题目
+        step_questions = [q for q in FUN_QUESTIONS if q.get("category") == category]
+        
+        for q in step_questions:
+            st.markdown(f'''
+            <div class="quiz-card">
+                <div style="font-weight:600;margin-bottom:0.75rem;">{q["question"]}</div>
+            </div>
+            ''', unsafe_allow_html=True)
+            
+            selected = st.radio("选择最接近你的答案", 
+                               options=[o["text"] for o in q["options"]], 
+                               key=f"q_{q['id']}",
+                               format_func=lambda x: x,
+                               label_visibility="collapsed")
+            
+            for o in q["options"]:
+                if o["text"] == selected:
+                    st.session_state.personal_answers[q["id"]] = {
+                        "dimension": q["dimension"], 
+                        "score": o["score"],
+                        "tag": o.get("tag", "")
+                    }
+                    break
+        
+        # 下一阶段按钮
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("上一部分"):
+                st.session_state.personal_step = max(0, step - 1)
+                st.rerun()
+        with col2:
+            btn_text = "下一部分" if step < 4 else "进入工具选择"
+            if st.button(btn_text, type="primary"):
+                st.session_state.personal_step = step + 1
+                st.rerun()
+    
+    # ===== AI工具选择 =====
+    elif st.session_state.personal_step == 5:
+        st.markdown('''
+        <div style="text-align:center;padding:1.5rem;margin-bottom:1.5rem;">
+            <div style="font-size:1.5rem;font-weight:700;">你用过哪些AI工具？</div>
+            <div style="color:#64748b;">勾选你使用过的工具，解锁隐藏成就</div>
+        </div>
+        ''', unsafe_allow_html=True)
+        
+        # 按类别分组显示
+        tool_categories = {}
+        for tool in AI_TOOLS_LIST:
+            cat = tool["category"]
+            if cat not in tool_categories:
+                tool_categories[cat] = []
+            tool_categories[cat].append(tool)
+        
+        for cat, tools in tool_categories.items():
+            st.markdown(f"**{cat}**")
+            cols = st.columns(min(len(tools), 4))
+            for i, tool in enumerate(tools):
+                with cols[i % len(cols)]:
+                    checked = st.checkbox(f"{tool['icon']} {tool['name']}", key=f"tool_{tool['name']}")
+                    if checked and tool['name'] not in st.session_state.personal_tools:
+                        st.session_state.personal_tools.append(tool['name'])
+                    elif not checked and tool['name'] in st.session_state.personal_tools:
+                        st.session_state.personal_tools.remove(tool['name'])
+        
+        st.markdown("---")
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("返回测试"):
+                st.session_state.personal_step = 4
+                st.rerun()
+        with col2:
+            if st.button("查看我的AI人格", type="primary"):
+                st.session_state.personal_step = 6
+                st.rerun()
+    
+    # ===== 结果页面 =====
+    elif st.session_state.personal_step == 6:
+        answers = st.session_state.personal_answers
+        
+        # 计算各维度分数
+        dimension_scores = {}
+        for q_id, ans in answers.items():
+            dim = ans["dimension"]
+            if dim not in dimension_scores:
+                dimension_scores[dim] = []
+            dimension_scores[dim].append(ans["score"])
+        
+        avg_scores = {}
+        for dim, scores in dimension_scores.items():
+            avg_scores[dim] = sum(scores) / len(scores)
+        
+        total_score = calculate_score(avg_scores)
+        level = calculate_level(total_score)
         fun_info = FUN_TITLES[level]
         
-        # 结果展示
+        # 判定AI人格类型
+        personality = determine_ai_personality(avg_scores, answers)
+        
+        # 计算成就
+        achievement_data = {
+            "total_score": total_score,
+            "tool_count": len(st.session_state.personal_tools),
+        }
+        for q_id, ans in answers.items():
+            achievement_data[f"{q_id}_score"] = ans["score"]
+        
+        unlocked = []
+        for ach in ACHIEVEMENTS:
+            try:
+                if ach["condition"](achievement_data):
+                    unlocked.append(ach)
+            except:
+                pass
+        
+        # ===== 结果展示 =====
+        # 主结果卡片
         st.markdown(f'''
         <div class="result-hero">
             <div class="result-emoji">{fun_info["emoji"]}</div>
             <div class="result-title">{fun_info["title"]}</div>
+            <div style="font-size:1.1rem;opacity:0.9;margin:0.5rem 0;">{fun_info["tagline"]}</div>
             <div class="result-score">{total_score}分</div>
-            <p>{fun_info["description"]}</p>
         </div>
         ''', unsafe_allow_html=True)
         
-        # 等级说明
-        st.subheader("等级说明")
-        for lvl, info in FUN_TITLES.items():
-            color = info["color"]
-            is_current = lvl == level
-            with st.container():
-                col1, col2 = st.columns([1, 3])
-                with col1:
-                    st.markdown(f'<div class="level-badge" style="background-color: {color}">{info["emoji"]} {info["title"]}</div>', unsafe_allow_html=True)
-                with col2:
-                    if is_current:
-                        st.success(info["description"])
-                    else:
-                        st.write(info["description"])
+        # AI人格类型
+        st.markdown("---")
+        st.markdown("### 你的AI人格类型")
+        p = AI_PERSONALITIES[personality]
+        st.markdown(f'''
+        <div style="background:white;border-radius:12px;padding:1.5rem;border:2px solid {p['color']};margin:1rem 0;">
+            <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;">
+                <div style="font-size:3rem;">{p["emoji"]}</div>
+                <div>
+                    <div style="font-size:1.5rem;font-weight:700;color:{p['color']};">{personality} - {p['name']}</div>
+                    <div style="color:#64748b;">{p['trait']}</div>
+                </div>
+            </div>
+            <p style="color:#475569;margin-bottom:0.75rem;">{p['desc']}</p>
+            <div style="background:#f8fafc;padding:0.75rem;border-radius:8px;font-size:0.9rem;color:#64748b;">
+                <strong>经典场景：</strong>{p['scene']}
+            </div>
+            <div style="margin-top:0.75rem;">
+                <strong>常用工具：</strong>
+                {" ".join([f'<span style="background:#e3f2fd;padding:2px 8px;border-radius:4px;margin:2px;display:inline-block;font-size:0.85rem;">{t}</span>' for t in p['tools']])}
+            </div>
+        </div>
+        ''', unsafe_allow_html=True)
         
         # 雷达图
-        st.subheader("你的AI能力雷达图")
+        st.subheader("AI能力雷达图")
         import plotly.graph_objects as go
         categories = [AI_NATIVE_DIMENSIONS[dim]["name"] for dim in AI_NATIVE_DIMENSIONS.keys()]
-        values = [dimension_scores.get(dim, 0) for dim in AI_NATIVE_DIMENSIONS.keys()]
+        values = [avg_scores.get(dim, 0) for dim in AI_NATIVE_DIMENSIONS.keys()]
         values.append(values[0])
-        fig = go.Figure(data=go.Scatterpolar(r=values, theta=categories + [categories[0]], fill='toself', 
+        fig = go.Figure(data=go.Scatterpolar(r=values, theta=categories + [categories[0]], fill='toself',
                                               fillcolor='rgba(102, 126, 234, 0.3)',
                                               line=dict(color='rgba(102, 126, 234, 1)')))
-        fig.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 100], tickcolor='white'), 
-                                    bgcolor='rgba(0,0,0,0)'),
-                         paper_bgcolor='rgba(0,0,0,0)',
-                         plot_bgcolor='rgba(0,0,0,0)',
-                         showlegend=False, height=400, font=dict(color='white'))
+        fig.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 100])),
+                         showlegend=False, height=400)
         st.plotly_chart(fig, use_container_width=True)
         
-        # 各维度详情
-        st.subheader("各维度详细分析")
+        # 各维度进度条
+        st.subheader("各维度得分")
         dimension_colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe']
-        for i, (dim_key, dim_info) in enumerate(AI_NATIVE_DIMENSIONS.items()):
-            score = dimension_scores.get(dim_key, 0)
+        dim_names = {"ai_first_mindset": "AI优先思维", "deep_collaboration": "深度协作", 
+                     "problem_reframing": "问题重构", "learning_mode": "学习模式",
+                     "iteration_agility": "迭代敏捷", "boundary_awareness": "边界认知"}
+        for i, (dim_key, score) in enumerate(avg_scores.items()):
             color = dimension_colors[i % len(dimension_colors)]
-            with st.container():
-                col1, col2 = st.columns([1, 2])
-                with col1:
-                    st.write(f"**{dim_info['name']}**")
-                    st.write(f"{score}分")
-                with col2:
-                    st.markdown(f'<div class="dimension-bar"><div class="dimension-fill" style="width: {score}%; background: {color}"></div></div>', unsafe_allow_html=True)
-                    st.caption(dim_info['description'])
+            name = dim_names.get(dim_key, dim_key)
+            st.markdown(f'''
+            <div style="margin:0.5rem 0;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:0.25rem;">
+                    <span style="font-weight:500;">{name}</span>
+                    <span style="font-weight:600;color:{color};">{score:.0f}分</span>
+                </div>
+                <div class="dimension-bar">
+                    <div class="dimension-fill" style="width:{score}%;background:{color};"></div>
+                </div>
+            </div>
+            ''', unsafe_allow_html=True)
+        
+        # 成就解锁
+        st.markdown("---")
+        st.subheader(f"成就解锁 ({len(unlocked)}/{len(ACHIEVEMENTS)})")
+        ach_cols = st.columns(4)
+        for i, ach in enumerate(unlocked):
+            with ach_cols[i % 4]:
+                st.markdown(f'''
+                <div style="text-align:center;padding:0.75rem;background:linear-gradient(135deg,#fef3c7,#fde68a);
+                     border-radius:8px;margin:0.25rem 0;">
+                    <div style="font-size:1.5rem;">{ach["icon"]}</div>
+                    <div style="font-weight:600;font-size:0.8rem;">{ach["name"]}</div>
+                    <div style="font-size:0.7rem;color:#92400e;">{ach["desc"]}</div>
+                </div>
+                ''', unsafe_allow_html=True)
+        
+        # 未解锁的成就
+        locked = [a for a in ACHIEVEMENTS if a not in unlocked]
+        if locked:
+            with st.expander(f"未解锁的成就 ({len(locked)}个)"):
+                for ach in locked:
+                    st.markdown(f'''
+                    <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem;opacity:0.5;">
+                        <div style="font-size:1.5rem;">{ach["icon"]}</div>
+                        <div>
+                            <div style="font-weight:500;">{ach["name"]}</div>
+                            <div style="font-size:0.8rem;color:#64748b;">{ach["desc"]}</div>
+                        </div>
+                    </div>
+                    ''', unsafe_allow_html=True)
+        
+        # AI给你的寄语
+        st.markdown("---")
+        st.subheader("AI给你的寄语")
+        st.markdown(f'''
+        <div style="background:linear-gradient(135deg,#667eea,#764ba2);border-radius:12px;padding:1.5rem;color:white;">
+            <p style="font-size:1.1rem;line-height:1.8;">{fun_info["advice"]}</p>
+        </div>
+        ''', unsafe_allow_html=True)
+        
+        # 使用的工具统计
+        if st.session_state.personal_tools:
+            st.markdown("---")
+            st.subheader(f"你的AI工具箱 ({len(st.session_state.personal_tools)}个)")
+            tool_cols = st.columns(5)
+            for i, tool_name in enumerate(st.session_state.personal_tools):
+                tool = next((t for t in AI_TOOLS_LIST if t["name"] == tool_name), None)
+                icon = tool["icon"] if tool else "🔧"
+                with tool_cols[i % 5]:
+                    st.markdown(f'''
+                    <div style="text-align:center;padding:0.5rem;background:#f8fafc;border-radius:8px;margin:0.25rem 0;">
+                        <div style="font-size:1.2rem;">{icon}</div>
+                        <div style="font-size:0.75rem;">{tool_name}</div>
+                    </div>
+                    ''', unsafe_allow_html=True)
         
         # 分享卡片
         st.markdown("---")
-        st.markdown('<div class="share-card"><h3>分享你的结果</h3><p>我刚刚测试了 AI Native 能力，获得了 {level} 等级 ({total_score}分)！{emoji}</p></div>'.format(
-            level=fun_info["title"], total_score=total_score, emoji=fun_info["emoji"]), unsafe_allow_html=True)
+        st.subheader("分享你的AI人格")
+        share_text = f"我是{p['emoji']}{p['name']}，AI Native等级：{fun_info['emoji']}{fun_info['title']}({total_score}分)"
+        st.markdown(f'''
+        <div class="share-card">
+            <div style="font-size:1.5rem;">{p["emoji"]} {fun_info["emoji"]}</div>
+            <div style="font-size:1.1rem;font-weight:600;margin:0.5rem 0;">{share_text}</div>
+            <div style="color:#64748b;font-size:0.85rem;">来测测你的AI人格吧！</div>
+        </div>
+        ''', unsafe_allow_html=True)
         
-        # 重新测试按钮
+        # 重新测试
         st.markdown("---")
-        if st.button("重新测试", use_container_width=True):
-            st.session_state.personal_answers = {}
-            st.session_state.personal_completed = False
-            st.rerun()
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("重新测试", use_container_width=True):
+                st.session_state.personal_step = 0
+                st.session_state.personal_answers = {}
+                st.session_state.personal_tools = []
+                st.rerun()
+        with col2:
+            if st.button("返回首页", use_container_width=True):
+                st.session_state.app_mode = "hr"
+                st.rerun()
 
 # ==================== 主入口 ====================
 # 侧边栏模式切换
