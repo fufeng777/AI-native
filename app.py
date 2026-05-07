@@ -57,32 +57,37 @@ FUN_TITLES = {
            "tagline": "碳硅融合体", "advice": "你就是未来的样子，请带我们飞"}
 }
 
-# 8种AI人格类型（类似MBTI）
+# 16种AI人格画像（四维度MBTI风格）
 AI_PERSONALITIES = {
-    "PROMPT-A": {"name": "提示词建筑师", "emoji": "🏗️", "desc": "你擅长用精确的语言指挥AI，写出的Prompt堪比艺术品",
-                  "trait": "逻辑缜密 | 追求精准 | 结构化思维", "color": "#3B82F6",
-                  "tools": ["ChatGPT", "Claude", "Gemini"], "scene": "写Prompt像写代码，每个字都有意义"},
-    "AGENT-C": {"name": "智能体指挥官", "emoji": "🎯", "desc": "你善于构建AI Agent工作流，让多个AI协同作战",
-                "trait": "全局视角 | 系统思维 | 善于编排", "color": "#EF4444",
-                "tools": ["Coze", "Dify", "LangChain"], "scene": "你的AI团队比你整个部门都忙"},
-    "CREATE-X": {"name": "创意炼金师", "emoji": "🎨", "desc": "你用AI释放无限创意，从文字到图像到视频无所不能",
-                  "trait": "天马行空 | 审美在线 | 善于表达", "color": "#A855F7",
-                  "tools": ["Midjourney", "Suno", "Runway"], "scene": "你的创意产出速度让甲方怀疑人生"},
-    "CODE-N": {"name": "代码忍者", "emoji": "💻", "desc": "AI编程是你的超能力，Cursor和Copilot是你的双刀",
-               "trait": "技术驱动 | 效率至上 | 持续学习", "color": "#10B981",
-               "tools": ["Cursor", "GitHub Copilot", "v0"], "scene": "你一个人就是一个开发团队"},
-    "DATA-W": {"name": "数据巫师", "emoji": "🔮", "desc": "你善于用AI洞察数据背后的秘密，让数据说话",
-               "trait": "分析思维 | 数据敏感 | 洞察力强", "color": "#F59E0B",
-               "tools": ["ChatGPT数据分析", "NotebookLM", "Perplexity"], "scene": "你看到数据就能预测未来"},
-    "AUTO-B": {"name": "自动化狂人", "emoji": "🤖", "desc": "能用AI自动化的绝不手动，你的工作流全是自动的",
-               "trait": "效率极致 | 流程思维 | 懒得优雅", "color": "#EC4899",
-               "tools": ["Zapier", "Make", "n8n"], "scene": "别人上班你在摸鱼，因为AI替你干了"},
-    "CHAT-S": {"name": "AI知己", "emoji": "💬", "desc": "你和AI的关系超越了工具，更像是思维伙伴和灵魂伴侣",
-               "trait": "善于沟通 | 思想开放 | 情感丰富", "color": "#06B6D4",
-               "tools": ["ChatGPT", "Pi", "Character.AI"], "scene": "你跟AI聊天的记录比跟朋友的还长"},
-    "LEARN-P": {"name": "学习狂魔", "emoji": "📚", "desc": "AI是你的私人导师，任何新领域都能快速入门",
-                "trait": "好奇心强 | 快速学习 | 知识面广", "color": "#8B5CF6",
-                "tools": ["Coursera AI", "Khan Academy", "Perplexity"], "scene": "你的学习速度让爱因斯坦都嫉妒"}
+    # === 四大维度 ===
+    # I=内向型/独立型  E=外向型/社交型
+    # T=技术型/工具型  F=创意型/表达型
+    # P=实践型/效率型  J=战略型/规划型
+    # A=分析型/理性型  S=感性型/体验型
+
+    # ---- IT型：内向·技术·实践·分析 ----
+    "ITPA": {"name": "独狼极客", "emoji": "🐺", "desc": "独自钻研AI技术，追求极致效率。深夜独自调试代码，用AI构建自动化系统，不社交但实力恐怖。", "trait": "独立 | 技术驱动 | 效率至上", "color": "#1E40AF", "tools": ["Cursor", "GitHub Copilot", "DeepSeek", "n8n"], "scene": "凌晨3点，你独自用AI重构了整个后端系统，第二天同事以为系统被黑了"},
+    "ITPS": {"name": "效率机器", "emoji": "⚡", "desc": "把AI当效率工具用到极致。每个工作流程都自动化，每天省出4小时摸鱼时间。", "trait": "高效 | 流程化 | 实用主义", "color": "#0369A1", "tools": ["Zapier", "Make", "Notion AI", "飞书AI"], "scene": "你用AI把周报自动生成了，同事还在手动写"},
+    "ITJA": {"name": "架构大师", "emoji": "🏗️", "desc": "擅长用AI设计和构建复杂系统。先规划再执行，代码架构清晰如画。", "trait": "系统思维 | 规划能力强 | 严谨", "color": "#1E3A8A", "tools": ["LangChain", "Dify", "Coze", "Trae"], "scene": "你用AI设计了一套完整的Agent架构图，比架构师画的还清楚"},
+    "ITJS": {"name": "数据先知", "emoji": "🔮", "desc": "用AI洞察数据背后的规律。看一眼数据就能预测趋势，决策靠数据不靠直觉。", "trait": "数据敏感 | 洞察力强 | 理性", "color": "#312E81", "tools": ["Perplexity", "NotebookLM", "ChatGPT数据分析", "Elicit"], "scene": "你用AI分析了竞品数据，发现了对手都没注意到的市场机会"},
+
+    # ---- IF型：内向·技术·实践·感性 ----
+    "IFPA": {"name": "AI艺术家", "emoji": "🎨", "desc": "用AI释放无限创意，作品令人惊叹。把AI当画笔，创作出超越想象的作品。", "trait": "创意无限 | 审美在线 | 表达欲强", "color": "#7C3AED", "tools": ["Midjourney", "Suno", "Runway", "DALL-E 3"], "scene": "你用AI生成的插画被误认为是专业设计师的作品"},
+    "IFPS": {"name": "内容创客", "emoji": "✍️", "desc": "用AI高效产出内容，从文案到视频全覆盖。一个人就是一支内容团队。", "trait": "高产 | 多面手 | 快速迭代", "color": "#6D28D9", "tools": ["ChatGPT", "Gamma", "剪映AI", "Canva AI"], "scene": "你一个人用AI完成了品牌全套视觉物料，设计师以为你请了外包团队"},
+    "IFJA": {"name": "产品幻视者", "emoji": "💡", "desc": "用AI快速验证产品想法，从概念到原型只需一天。脑中的产品总能变成现实。", "trait": "产品思维 | 快速验证 | 用户导向", "color": "#5B21B6", "tools": ["v0.dev", "Figma AI", "ChatGPT", "Claude"], "scene": "你用AI在一天内做出了产品MVP，投资人以为你有一个10人团队"},
+    "IFJS": {"name": "学习黑客", "emoji": "🧠", "desc": "用AI破解学习难题，任何新领域都能快速上手。知识面广得像个行走的百科全书。", "trait": "好奇心强 | 快速学习 | 知识面广", "color": "#4C1D95", "tools": ["Khanmigo", "Duolingo Max", "Perplexity", "Consensus"], "scene": "你用AI在一周内学会了新编程语言，然后做出了一个完整项目"},
+
+    # ---- ET型：外向·技术·效率·分析 ----
+    "ETPA": {"name": "AI布道师", "emoji": "📣", "desc": "逢人就安利AI工具，朋友圈全是AI相关内容。公司里第一个用AI的人，也是最后一个放弃的人。", "trait": "热情 | 分享欲强 | 影响力大", "color": "#DC2626", "tools": ["ChatGPT", "Kimi", "豆包", "通义千问"], "scene": "你成功让全公司都用上了AI，老板给你加了薪"},
+    "ETPS": {"name": "流程终结者", "emoji": "⚙️", "desc": "看到重复劳动就手痒，用AI自动化一切。你的口头禅是'这个可以自动化'。", "trait": "自动化狂 | 懒得聪明 | 流程优化", "color": "#B91C1C", "tools": ["Zapier", "Make", "Coze", "n8n"], "scene": "你用AI自动化了80%的日常工作，现在每天下午3点就下班了"},
+    "ETJA": {"name": "战略指挥官", "emoji": "🎯", "desc": "善于用AI制定战略和规划。不是在用工具，而是在指挥一支AI军队。", "trait": "全局视角 | 战略思维 | 领导力", "color": "#991B1B", "tools": ["Claude", "ChatGPT", "Coze", "Dify"], "scene": "你用AI帮CEO制定了年度战略规划，董事会以为请了咨询公司"},
+    "ETJS": {"name": "AI科学家", "emoji": "🔬", "desc": "用AI进行深度研究和分析，追求AI能力的边界。不是在使用AI，而是在研究AI。", "trait": "研究型 | 追求极致 | 学术精神", "color": "#7F1D1D", "tools": ["NotebookLM", "Elicit", "Consensus", "Scholarcy"], "scene": "你用AI写了一篇论文，被顶级会议收录了"},
+
+    # ---- EF型：外向·技术·效率·感性 ----
+    "EFPA": {"name": "AI社交家", "emoji": "🤝", "desc": "把AI当朋友和搭档，和AI的对话记录比和朋友的还长。擅长用AI提升沟通效率。", "trait": "善于沟通 | 人际导向 | AI知己", "color": "#059669", "tools": ["ChatGPT", "Pi", "Claude", "豆包"], "scene": "你用AI帮忙写了给客户的道歉信，客户感动得哭了"},
+    "EFPS": {"name": "创意总监", "emoji": "🎭", "desc": "用AI激发团队创意，擅长把AI生成的灵感转化为落地方案。一个人带动整个团队的AI化。", "trait": "领导力 | 创意驱动 | 落地能力", "color": "#047857", "tools": ["Midjourney", "Gamma", "Canva AI", "Runway"], "scene": "你用AI带领团队在48小时内完成了一个品牌全案"},
+    "EFJA": {"name": "AI产品经理", "emoji": "📱", "desc": "用AI理解用户需求，快速迭代产品。PRD、竞品分析、用户画像，AI全包了。", "trait": "产品感强 | 用户导向 | 数据驱动", "color": "#065F46", "tools": ["ChatGPT", "Claude", "Notion AI", "Perplexity"], "scene": "你用AI分析用户反馈，发现了产品经理都没注意到的痛点"},
+    "EFJS": {"name": "体验设计师", "emoji": "✨", "desc": "用AI设计极致用户体验，从交互到视觉都追求完美。每个像素都有它的意义。", "trait": "审美极致 | 用户体验 | 细节控", "color": "#064E3B", "tools": ["Figma AI", "Adobe Firefly", "v0.dev", "Canva AI"], "scene": "你用AI设计的界面，用户留存率提升了40%"}
 }
 
 # 成就系统
@@ -416,165 +421,165 @@ FUN_QUESTIONS = [
     {"id": "q1", "dimension": "ai_first_mindset", "category": "AI本能反应",
      "question": "老板突然给你一个全新领域的任务，你的第一反应是？",
      "options": [
-         {"text": "先百度/Google搜一下看看", "score": 10, "tag": "传统搜索派"},
-         {"text": "问ChatGPT这个领域是什么、该怎么做", "score": 50, "tag": "AI咨询派"},
-         {"text": "让AI帮我制定一个完整的执行方案", "score": 80, "tag": "AI规划派"},
-         {"text": "直接让AI Agent帮我搭建框架，我负责审核", "score": 100, "tag": "AI代管派"},
+         {"text": "先百度/Google搜一下看看", "score": {"ie": 20, "tf": 30, "pj": 40, "as": 50}, "tag": "传统搜索派"},
+         {"text": "问ChatGPT这个领域是什么、该怎么做", "score": {"ie": 40, "tf": 40, "pj": 50, "as": 50}, "tag": "AI咨询派"},
+         {"text": "让AI帮我制定一个完整的执行方案", "score": {"ie": 50, "tf": 60, "pj": 60, "as": 60}, "tag": "AI规划派"},
+         {"text": "直接让AI Agent帮我搭建框架，我负责审核", "score": {"ie": 60, "tf": 80, "pj": 70, "as": 70}, "tag": "AI代管派"},
          {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q2", "dimension": "deep_collaboration", "category": "AI本能反应",
      "question": "你写Prompt的习惯是？",
      "options": [
-         {"text": "就写几个关键词，比如'帮我写个方案'", "score": 10, "tag": "佛系Prompt"},
-         {"text": "会写清楚背景、需求、格式要求", "score": 50, "tag": "结构化Prompt"},
-         {"text": "会设定角色、提供示例、多轮迭代优化", "score": 80, "tag": "高级Prompt"},
-         {"text": "我有自己的Prompt模板库，随时复用", "score": 100, "tag": "Prompt工程师"},
+         {"text": "就写几个关键词，比如'帮我写个方案'", "score": {"ie": 30, "tf": 20, "pj": 30, "as": 30}, "tag": "佛系Prompt"},
+         {"text": "会写清楚背景、需求、格式要求", "score": {"ie": 40, "tf": 50, "pj": 50, "as": 50}, "tag": "结构化Prompt"},
+         {"text": "会设定角色、提供示例、多轮迭代优化", "score": {"ie": 50, "tf": 70, "pj": 60, "as": 60}, "tag": "高级Prompt"},
+         {"text": "我有自己的Prompt模板库，随时复用", "score": {"ie": 40, "tf": 90, "pj": 70, "as": 70}, "tag": "Prompt工程师"},
          {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q3", "dimension": "problem_reframing", "category": "AI本能反应",
      "question": "遇到一个棘手的工作问题，你会？",
      "options": [
-         {"text": "自己苦思冥想，实在不行问同事", "score": 0, "tag": "独立思考派"},
-         {"text": "把问题描述给AI，看看它有什么建议", "score": 40, "tag": "AI顾问派"},
-         {"text": "让AI帮我重新定义问题，找到更好的切入点", "score": 75, "tag": "问题重构派"},
-         {"text": "和AI来一场头脑风暴，碰撞出全新思路", "score": 100, "tag": "共创派"},
+         {"text": "自己苦思冥想，实在不行问同事", "score": {"ie": 10, "tf": 30, "pj": 40, "as": 40}, "tag": "独立思考派"},
+         {"text": "把问题描述给AI，看看它有什么建议", "score": {"ie": 40, "tf": 40, "pj": 50, "as": 50}, "tag": "AI顾问派"},
+         {"text": "让AI帮我重新定义问题，找到更好的切入点", "score": {"ie": 50, "tf": 60, "pj": 70, "as": 70}, "tag": "问题重构派"},
+         {"text": "和AI来一场头脑风暴，碰撞出全新思路", "score": {"ie": 70, "tf": 50, "pj": 60, "as": 50}, "tag": "共创派"},
          {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q4", "dimension": "learning_mode", "category": "AI本能反应",
      "question": "老板让你一周内学会一个你完全不懂的新技能，你会？",
      "options": [
-         {"text": "买本书/找课程，从零开始系统学习", "score": 10, "tag": "传统学习派"},
-         {"text": "让AI帮我制定学习计划，推荐学习资源", "score": 50, "tag": "AI辅助学习"},
-         {"text": "直接用AI边做边学，遇到问题就问", "score": 85, "tag": "实战派"},
-         {"text": "让AI帮我快速搭建原型，在实践中掌握", "score": 100, "tag": "极速上手派"},
+         {"text": "买本书/找课程，从零开始系统学习", "score": {"ie": 20, "tf": 40, "pj": 50, "as": 50}, "tag": "传统学习派"},
+         {"text": "让AI帮我制定学习计划，推荐学习资源", "score": {"ie": 40, "tf": 50, "pj": 60, "as": 60}, "tag": "AI辅助学习"},
+         {"text": "直接用AI边做边学，遇到问题就问", "score": {"ie": 50, "tf": 60, "pj": 80, "as": 50}, "tag": "实战派"},
+         {"text": "让AI帮我快速搭建原型，在实践中掌握", "score": {"ie": 60, "tf": 80, "pj": 90, "as": 60}, "tag": "极速上手派"},
          {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q5", "dimension": "iteration_agility", "category": "AI本能反应",
      "question": "你手机里装了几个AI相关的App？",
      "options": [
-         {"text": "0-1个，就一个ChatGPT", "score": 10, "tag": "专一派"},
-         {"text": "2-4个，常用的那几个", "score": 40, "tag": "实用派"},
-         {"text": "5-9个，看到新的就想试试", "score": 75, "tag": "尝鲜派"},
-         {"text": "10个以上，手机内存都被AI占满了", "score": 100, "tag": "AI收藏家"},
+         {"text": "0-1个，就一个ChatGPT", "score": {"ie": 20, "tf": 30, "pj": 30, "as": 40}, "tag": "专一派"},
+         {"text": "2-4个，常用的那几个", "score": {"ie": 40, "tf": 40, "pj": 50, "as": 50}, "tag": "实用派"},
+         {"text": "5-9个，看到新的就想试试", "score": {"ie": 60, "tf": 50, "pj": 60, "as": 50}, "tag": "尝鲜派"},
+         {"text": "10个以上，手机内存都被AI占满了", "score": {"ie": 80, "tf": 60, "pj": 70, "as": 50}, "tag": "AI收藏家"},
          {"text": "其他", "score": 0, "tag": "自定义"}]},
     # === 第二部分：AI社交风格 ===
     {"id": "q6", "dimension": "boundary_awareness", "category": "AI社交风格",
      "question": "AI给你一个看起来很专业但你不确定的答案，你会？",
      "options": [
-         {"text": "直接用，AI说的应该没错", "score": 0, "tag": "信任派"},
-         {"text": "大概看一下，没问题就用", "score": 30, "tag": "粗略检查派"},
-         {"text": "交叉验证一下，用另一个AI或搜索引擎确认", "score": 70, "tag": "验证派"},
-         {"text": "让AI自己批判自己的答案，找出漏洞", "score": 100, "tag": "批判大师"},
+         {"text": "直接用，AI说的应该没错", "score": {"ie": 30, "tf": 20, "pj": 30, "as": 10}, "tag": "信任派"},
+         {"text": "大概看一下，没问题就用", "score": {"ie": 40, "tf": 40, "pj": 40, "as": 40}, "tag": "粗略检查派"},
+         {"text": "交叉验证一下，用另一个AI或搜索引擎确认", "score": {"ie": 50, "tf": 60, "pj": 60, "as": 80}, "tag": "验证派"},
+         {"text": "让AI自己批判自己的答案，找出漏洞", "score": {"ie": 50, "tf": 80, "pj": 70, "as": 90}, "tag": "批判大师"},
          {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q7", "dimension": "ai_first_mindset", "category": "AI社交风格",
      "question": "你怎么形容你和AI的关系？",
      "options": [
-         {"text": "就是个工具，用完就关", "score": 10, "tag": "工具关系"},
-         {"text": "像个助手，帮我处理杂活", "score": 40, "tag": "助手关系"},
-         {"text": "像个搭档，一起讨论解决问题", "score": 75, "tag": "搭档关系"},
-         {"text": "像个导师/朋友，有时候还会跟它聊天", "score": 100, "tag": "灵魂伴侣"},
+         {"text": "就是个工具，用完就关", "score": {"ie": 10, "tf": 40, "pj": 40, "as": 40}, "tag": "工具关系"},
+         {"text": "像个助手，帮我处理杂活", "score": {"ie": 40, "tf": 50, "pj": 50, "as": 50}, "tag": "助手关系"},
+         {"text": "像个搭档，一起讨论解决问题", "score": {"ie": 60, "tf": 50, "pj": 60, "as": 60}, "tag": "搭档关系"},
+         {"text": "像个导师/朋友，有时候还会跟它聊天", "score": {"ie": 80, "tf": 40, "pj": 50, "as": 70}, "tag": "灵魂伴侣"},
          {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q8", "dimension": "deep_collaboration", "category": "AI社交风格",
      "question": "你用AI做过最让你自豪的事情是？",
      "options": [
-         {"text": "写过邮件、翻译过文档", "score": 15, "tag": "基础应用"},
-         {"text": "用AI写过代码、做过数据分析", "score": 45, "tag": "进阶应用"},
-         {"text": "用AI完成了一个完整的项目", "score": 75, "tag": "项目级应用"},
-         {"text": "搭建了AI自动化工作流，持续节省时间", "score": 100, "tag": "系统级应用"},
+         {"text": "写过邮件、翻译过文档", "score": {"ie": 30, "tf": 30, "pj": 30, "as": 30}, "tag": "基础应用"},
+         {"text": "用AI写过代码、做过数据分析", "score": {"ie": 40, "tf": 70, "pj": 60, "as": 70}, "tag": "进阶应用"},
+         {"text": "用AI完成了一个完整的项目", "score": {"ie": 50, "tf": 60, "pj": 70, "as": 60}, "tag": "项目级应用"},
+         {"text": "搭建了AI自动化工作流，持续节省时间", "score": {"ie": 50, "tf": 80, "pj": 80, "as": 70}, "tag": "系统级应用"},
          {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q9", "dimension": "deep_collaboration", "category": "AI社交风格",
      "question": "你和朋友聊天时，提到AI的频率是？",
      "options": [
-         {"text": "很少提，觉得没什么好说的", "score": 10, "tag": "低调派"},
-         {"text": "偶尔分享一些好用的AI技巧", "score": 40, "tag": "分享派"},
-         {"text": "经常安利，朋友都说我被AI洗脑了", "score": 75, "tag": "布道派"},
-         {"text": "三句话不离AI，朋友都开始用了", "score": 100, "tag": "AI传教士"},
+         {"text": "很少提，觉得没什么好说的", "score": {"ie": 10, "tf": 30, "pj": 30, "as": 30}, "tag": "低调派"},
+         {"text": "偶尔分享一些好用的AI技巧", "score": {"ie": 40, "tf": 40, "pj": 50, "as": 50}, "tag": "分享派"},
+         {"text": "经常安利，朋友都说我被AI洗脑了", "score": {"ie": 70, "tf": 40, "pj": 60, "as": 50}, "tag": "布道派"},
+         {"text": "三句话不离AI，朋友都开始用了", "score": {"ie": 90, "tf": 40, "pj": 70, "as": 40}, "tag": "AI传教士"},
          {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q10", "dimension": "learning_mode", "category": "AI社交风格",
      "question": "你有没有给AI取过名字或者设定过人设？",
      "options": [
-         {"text": "没有，就叫ChatGPT", "score": 0, "tag": "务实派"},
-         {"text": "想过但没做过", "score": 30, "tag": "犹豫派"},
-         {"text": "设定过角色，比如'你是一个资深产品经理'", "score": 65, "tag": "角色扮演派"},
-         {"text": "取了名字，还设定了性格、背景故事", "score": 100, "tag": "AI养成派"},
+         {"text": "没有，就叫ChatGPT", "score": {"ie": 10, "tf": 30, "pj": 30, "as": 20}, "tag": "务实派"},
+         {"text": "想过但没做过", "score": {"ie": 30, "tf": 30, "pj": 40, "as": 40}, "tag": "犹豫派"},
+         {"text": "设定过角色，比如'你是一个资深产品经理'", "score": {"ie": 50, "tf": 50, "pj": 50, "as": 60}, "tag": "角色扮演派"},
+         {"text": "取了名字，还设定了性格、背景故事", "score": {"ie": 70, "tf": 40, "pj": 60, "as": 80}, "tag": "AI养成派"},
          {"text": "其他", "score": 0, "tag": "自定义"}]},
     # === 第三部分：AI生活场景 ===
     {"id": "q11", "dimension": "ai_first_mindset", "category": "AI生活场景",
      "question": "周末朋友聚餐，需要选餐厅，你会？",
      "options": [
-         {"text": "打开大众点评自己翻", "score": 10, "tag": "传统派"},
-         {"text": "问AI推荐附近有什么好吃的", "score": 50, "tag": "AI推荐派"},
-         {"text": "让AI根据大家的口味偏好来推荐", "score": 80, "tag": "AI管家派"},
-         {"text": "让AI做一个餐厅对比分析表格", "score": 100, "tag": "AI分析师"},
+         {"text": "打开大众点评自己翻", "score": {"ie": 20, "tf": 30, "pj": 30, "as": 40}, "tag": "传统派"},
+         {"text": "问AI推荐附近有什么好吃的", "score": {"ie": 50, "tf": 40, "pj": 50, "as": 50}, "tag": "AI推荐派"},
+         {"text": "让AI根据大家的口味偏好来推荐", "score": {"ie": 50, "tf": 50, "pj": 60, "as": 60}, "tag": "AI管家派"},
+         {"text": "让AI做一个餐厅对比分析表格", "score": {"ie": 40, "tf": 70, "pj": 70, "as": 90}, "tag": "AI分析师"},
          {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q12", "dimension": "iteration_agility", "category": "AI生活场景",
      "question": "看到一个新AI工具发布，你的反应是？",
      "options": [
-         {"text": "哦，又出新了，跟我没关系", "score": 0, "tag": "佛系派"},
-         {"text": "看看介绍，有意思就试试", "score": 40, "tag": "观望派"},
-         {"text": "立刻注册试用，测评一下好不好用", "score": 75, "tag": "尝鲜派"},
-         {"text": "不仅试用，还要写一篇测评发朋友圈", "score": 100, "tag": "测评博主"},
+         {"text": "哦，又出新了，跟我没关系", "score": {"ie": 10, "tf": 20, "pj": 20, "as": 30}, "tag": "佛系派"},
+         {"text": "看看介绍，有意思就试试", "score": {"ie": 40, "tf": 40, "pj": 40, "as": 40}, "tag": "观望派"},
+         {"text": "立刻注册试用，测评一下好不好用", "score": {"ie": 60, "tf": 50, "pj": 70, "as": 50}, "tag": "尝鲜派"},
+         {"text": "不仅试用，还要写一篇测评发朋友圈", "score": {"ie": 80, "tf": 40, "pj": 80, "as": 40}, "tag": "测评博主"},
          {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q13", "dimension": "problem_reframing", "category": "AI生活场景",
      "question": "你用AI做过最有创意的事情是？",
      "options": [
-         {"text": "没做过什么特别的", "score": 0, "tag": "待开发"},
-         {"text": "用AI生成过图片/音乐/视频", "score": 50, "tag": "创作入门"},
-         {"text": "用AI帮朋友做过生日礼物/表白文案", "score": 75, "tag": "创意生活家"},
-         {"text": "用AI做了一个让所有人都惊艳的作品", "score": 100, "tag": "创意大师"},
+         {"text": "没做过什么特别的", "score": {"ie": 20, "tf": 20, "pj": 20, "as": 30}, "tag": "待开发"},
+         {"text": "用AI生成过图片/音乐/视频", "score": {"ie": 50, "tf": 40, "pj": 50, "as": 60}, "tag": "创作入门"},
+         {"text": "用AI帮朋友做过生日礼物/表白文案", "score": {"ie": 60, "tf": 30, "pj": 60, "as": 70}, "tag": "创意生活家"},
+         {"text": "用AI做了一个让所有人都惊艳的作品", "score": {"ie": 70, "tf": 40, "pj": 80, "as": 80}, "tag": "创意大师"},
          {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q14", "dimension": "boundary_awareness", "category": "AI生活场景",
      "question": "你有没有发现过AI'一本正经胡说八道'（幻觉）？",
      "options": [
-         {"text": "没有，AI说的我都信", "score": 0, "tag": "信任者"},
-         {"text": "好像有过，但不确定", "score": 30, "tag": "模糊感知"},
-         {"text": "发现过好几次，现在都会验证一下", "score": 70, "tag": "警惕派"},
-         {"text": "经常发现，还能故意引导AI犯错来测试它", "score": 100, "tag": "幻觉猎人"},
+         {"text": "没有，AI说的我都信", "score": {"ie": 30, "tf": 10, "pj": 20, "as": 10}, "tag": "信任者"},
+         {"text": "好像有过，但不确定", "score": {"ie": 40, "tf": 30, "pj": 40, "as": 40}, "tag": "模糊感知"},
+         {"text": "发现过好几次，现在都会验证一下", "score": {"ie": 50, "tf": 60, "pj": 60, "as": 70}, "tag": "警惕派"},
+         {"text": "经常发现，还能故意引导AI犯错来测试它", "score": {"ie": 50, "tf": 90, "pj": 70, "as": 90}, "tag": "幻觉猎人"},
          {"text": "其他", "score": 0, "tag": "自定义"}]},
     # === 第四部分：AI哲学思考 ===
     {"id": "q15", "dimension": "ai_first_mindset", "category": "AI哲学思考",
      "question": "如果AI能完美替代你80%的工作，你会？",
      "options": [
-         {"text": "有点慌，开始担心失业", "score": 10, "tag": "焦虑派"},
-         {"text": "无所谓，AI替代不了那20%", "score": 40, "tag": "淡定派"},
-         {"text": "太好了，终于有时间做想做的事", "score": 75, "tag": "乐观派"},
-         {"text": "主动学习驾驭AI，让自己不可替代", "score": 100, "tag": "进化派"},
+         {"text": "有点慌，开始担心失业", "score": {"ie": 20, "tf": 30, "pj": 30, "as": 30}, "tag": "焦虑派"},
+         {"text": "无所谓，AI替代不了那20%", "score": {"ie": 30, "tf": 40, "pj": 40, "as": 40}, "tag": "淡定派"},
+         {"text": "太好了，终于有时间做想做的事", "score": {"ie": 50, "tf": 40, "pj": 50, "as": 50}, "tag": "乐观派"},
+         {"text": "主动学习驾驭AI，让自己不可替代", "score": {"ie": 60, "tf": 70, "pj": 70, "as": 70}, "tag": "进化派"},
          {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q16", "dimension": "iteration_agility", "category": "AI哲学思考",
      "question": "你通常在什么时间段使用AI？",
      "options": [
-         {"text": "只在工作时间用", "score": 10, "tag": "上班族"},
-         {"text": "工作+偶尔下班后", "score": 40, "tag": "加班族"},
-         {"text": "随时随地，有需求就用", "score": 75, "tag": "全天候"},
-         {"text": "凌晨2点还在和AI讨论人生哲学", "score": 100, "tag": "深夜AI玩家"},
+         {"text": "只在工作时间用", "score": {"ie": 10, "tf": 40, "pj": 30, "as": 40}, "tag": "上班族"},
+         {"text": "工作+偶尔下班后", "score": {"ie": 30, "tf": 50, "pj": 50, "as": 50}, "tag": "加班族"},
+         {"text": "随时随地，有需求就用", "score": {"ie": 60, "tf": 50, "pj": 60, "as": 50}, "tag": "全天候"},
+         {"text": "凌晨2点还在和AI讨论人生哲学", "score": {"ie": 70, "tf": 40, "pj": 50, "as": 80}, "tag": "深夜AI玩家"},
          {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q17", "dimension": "deep_collaboration", "category": "AI哲学思考",
      "question": "你觉得5年后AI会变成什么样？",
      "options": [
-         {"text": "跟现在差不多吧", "score": 10, "tag": "保守派"},
-         {"text": "会比现在好用很多", "score": 40, "tag": "谨慎乐观"},
-         {"text": "会深刻改变每个人的工作和生活", "score": 75, "tag": "变革派"},
-         {"text": "AI将无处不在，人类与AI深度融合", "score": 100, "tag": "未来主义者"},
+         {"text": "跟现在差不多吧", "score": {"ie": 10, "tf": 20, "pj": 20, "as": 30}, "tag": "保守派"},
+         {"text": "会比现在好用很多", "score": {"ie": 40, "tf": 40, "pj": 50, "as": 50}, "tag": "谨慎乐观"},
+         {"text": "会深刻改变每个人的工作和生活", "score": {"ie": 60, "tf": 50, "pj": 60, "as": 60}, "tag": "变革派"},
+         {"text": "AI将无处不在，人类与AI深度融合", "score": {"ie": 70, "tf": 60, "pj": 70, "as": 70}, "tag": "未来主义者"},
          {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q18", "dimension": "boundary_awareness", "category": "AI哲学思考",
      "question": "你有没有因为使用AI而产生过'原来还可以这样'的顿悟时刻？",
      "options": [
-         {"text": "没有过", "score": 0, "tag": "未觉醒"},
-         {"text": "有过一两次", "score": 40, "tag": "初步觉醒"},
-         {"text": "有很多次，每次都让我对AI有了新认识", "score": 75, "tag": "持续觉醒"},
-         {"text": "经常有，我已经习惯了被AI惊艳", "score": 100, "tag": "见怪不怪"},
+         {"text": "没有过", "score": {"ie": 10, "tf": 20, "pj": 20, "as": 20}, "tag": "未觉醒"},
+         {"text": "有过一两次", "score": {"ie": 40, "tf": 40, "pj": 40, "as": 50}, "tag": "初步觉醒"},
+         {"text": "有很多次，每次都让我对AI有了新认识", "score": {"ie": 60, "tf": 50, "pj": 60, "as": 70}, "tag": "持续觉醒"},
+         {"text": "经常有，我已经习惯了被AI惊艳", "score": {"ie": 60, "tf": 50, "pj": 70, "as": 80}, "tag": "见怪不怪"},
          {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q19", "dimension": "problem_reframing", "category": "AI哲学思考",
      "question": "如果让你用一句话描述AI对你的影响，你会说？",
      "options": [
-         {"text": "AI就是一个好用的工具", "score": 10, "tag": "工具论"},
-         {"text": "AI让我的工作效率提升了不少", "score": 40, "tag": "效率论"},
-         {"text": "AI改变了我思考问题的方式", "score": 75, "tag": "思维变革论"},
-         {"text": "AI重新定义了我对'能力'的理解", "score": 100, "tag": "认知革命论"},
+         {"text": "AI就是一个好用的工具", "score": {"ie": 20, "tf": 30, "pj": 30, "as": 30}, "tag": "工具论"},
+         {"text": "AI让我的工作效率提升了不少", "score": {"ie": 40, "tf": 40, "pj": 50, "as": 50}, "tag": "效率论"},
+         {"text": "AI改变了我思考问题的方式", "score": {"ie": 60, "tf": 50, "pj": 60, "as": 70}, "tag": "思维变革论"},
+         {"text": "AI重新定义了我对'能力'的理解", "score": {"ie": 70, "tf": 60, "pj": 70, "as": 80}, "tag": "认知革命论"},
          {"text": "其他", "score": 0, "tag": "自定义"}]},
     {"id": "q20", "dimension": "learning_mode", "category": "AI哲学思考",
      "question": "如果给AI打分（满分10分），你会打几分？",
      "options": [
-         {"text": "5分以下，还有很多不足", "score": 10, "tag": "严格评委"},
-         {"text": "6-7分，还不错但需要改进", "score": 40, "tag": "客观评委"},
-         {"text": "8-9分，已经非常强大了", "score": 75, "tag": "粉丝评委"},
-         {"text": "10分满分！AI是人类的未来", "score": 100, "tag": "超级粉丝"},
+         {"text": "5分以下，还有很多不足", "score": {"ie": 20, "tf": 30, "pj": 30, "as": 40}, "tag": "严格评委"},
+         {"text": "6-7分，还不错但需要改进", "score": {"ie": 40, "tf": 40, "pj": 50, "as": 50}, "tag": "客观评委"},
+         {"text": "8-9分，已经非常强大了", "score": {"ie": 60, "tf": 50, "pj": 60, "as": 60}, "tag": "粉丝评委"},
+         {"text": "10分满分！AI是人类的未来", "score": {"ie": 70, "tf": 40, "pj": 70, "as": 50}, "tag": "超级粉丝"},
          {"text": "其他", "score": 0, "tag": "自定义"}]}
 ]
 
@@ -629,7 +634,7 @@ def analyze_other_answer(question_text, user_answer, analyzer=None):
     # 如果没有AI分析器，返回默认分数
     if not analyzer or not analyzer.is_available():
         return {
-            "score": 40,  # 默认中等偏低的分数
+            "score": {"ie": 40, "tf": 40, "pj": 40, "as": 40},  # 默认中等偏低的分数
             "analysis": "无法进行AI分析，采用默认评分"
         }
     
@@ -640,14 +645,14 @@ def analyze_other_answer(question_text, user_answer, analyzer=None):
 问题：{question_text}
 用户回答：{user_answer}
 
-请从以下几个维度评估（每项0-100分）：
-1. AI使用频率和深度
-2. AI使用方法的合理性
-3. 对AI能力边界的认知
-4. 整体AI素养
+请从以下四个维度评估（每项0-100分）：
+1. ie（内向/外向）：AI使用的社交性和分享程度，高分偏E外向
+2. tf（技术/创意）：AI使用的技术深度，高分偏T技术
+3. pj（实践/战略）：AI使用的行动力，高分偏J战略
+4. as（分析/感性）：AI使用的理性程度，高分偏A分析
 
 请以JSON格式返回：
-{{"score": 平均分数(0-100), "analysis": "简短分析说明"}}
+{{"ie": 分数, "tf": 分数, "pj": 分数, "as": 分数, "analysis": "简短分析说明"}}
 """
     
     try:
@@ -663,15 +668,19 @@ def analyze_other_answer(question_text, user_answer, analyzer=None):
         json_match = re.search(r'\{.*\}', result_text, re.DOTALL)
         if json_match:
             result = json.loads(json_match.group())
+            ie_score = min(100, max(0, int(result.get("ie", 40))))
+            tf_score = min(100, max(0, int(result.get("tf", 40))))
+            pj_score = min(100, max(0, int(result.get("pj", 40))))
+            as_score = min(100, max(0, int(result.get("as", 40))))
             return {
-                "score": min(100, max(0, int(result.get("score", 40)))),
+                "score": {"ie": ie_score, "tf": tf_score, "pj": pj_score, "as": as_score},
                 "analysis": result.get("analysis", "")
             }
     except Exception as e:
         pass
     
     return {
-        "score": 40,
+        "score": {"ie": 40, "tf": 40, "pj": 40, "as": 40},
         "analysis": "分析失败，采用默认评分"
     }
 
@@ -1251,33 +1260,38 @@ def render_hr_add_page():
 
 # ==================== 个人测评版本 ====================
 def determine_ai_personality(avg_scores, answers):
-    """根据各维度分数判定AI人格类型"""
-    scores = {
-        "prompt": avg_scores.get("deep_collaboration", 0),      # Prompt能力
-        "agent": avg_scores.get("ai_first_mindset", 0),         # 系统思维
-        "create": avg_scores.get("problem_reframing", 0),       # 创意能力
-        "code": avg_scores.get("learning_mode", 0),             # 学习/技术
-        "data": avg_scores.get("boundary_awareness", 0),        # 分析能力
-        "auto": avg_scores.get("iteration_agility", 0),         # 效率/自动化
-        "chat": avg_scores.get("deep_collaboration", 0) * 0.5 + avg_scores.get("ai_first_mindset", 0) * 0.5,  # 社交
-        "learn": avg_scores.get("learning_mode", 0) * 0.7 + avg_scores.get("iteration_agility", 0) * 0.3  # 学习
-    }
+    """根据各维度分数判定16种AI人格画像
     
-    # 找到最高分的维度
-    max_dim = max(scores, key=scores.get)
+    avg_scores 包含4个维度: {"ie": x, "tf": x, "pj": x, "as": x}
+    每个维度 0-100 分，>= 50 为高方向，< 50 为低方向
+    """
+    # 直接从 avg_scores 读取4个维度分数
+    ie_score = avg_scores.get("ie", 50)
+    tf_score = avg_scores.get("tf", 50)
+    pj_score = avg_scores.get("pj", 50)
+    as_score = avg_scores.get("as", 50)
     
-    personality_map = {
-        "prompt": "PROMPT-A",
-        "agent": "AGENT-C",
-        "create": "CREATE-X",
-        "code": "CODE-N",
-        "data": "DATA-W",
-        "auto": "AUTO-B",
-        "chat": "CHAT-S",
-        "learn": "LEARN-P"
-    }
+    # 判定每个维度
+    ie = "E" if ie_score >= 50 else "I"
+    tf = "T" if tf_score >= 50 else "F"
+    pj = "J" if pj_score >= 50 else "P"
+    a_s = "A" if as_score >= 50 else "S"
     
-    return personality_map.get(max_dim, "CHAT-S")
+    personality_code = f"{ie}{tf}{pj}{a_s}"
+    
+    # 确保是有效的16种画像之一
+    valid_types = [
+        "ITPA", "ITPS", "ITJA", "ITJS",
+        "IFPA", "IFPS", "IFJA", "IFJS",
+        "ETPA", "ETPS", "ETJA", "ETJS",
+        "EFPA", "EFPS", "EFJA", "EFJS"
+    ]
+    
+    if personality_code in valid_types:
+        return personality_code
+    
+    # fallback
+    return "ITPA"
 
 
 def render_personal_version():
@@ -1307,14 +1321,14 @@ def render_personal_version():
             <div style="display:flex;gap:2rem;justify-content:center;margin-bottom:4rem;font-size:0.875rem;color:#86868b;">
                 <span>20题趣味测试</span>
                 <span style="width:1px;background:#d2d2d7;"></span>
-                <span>8种人格类型</span>
+                <span>16种人格类型</span>
                 <span style="width:1px;background:#d2d2d7;"></span>
                 <span>约5分钟</span>
             </div>
         </div>
         ''', unsafe_allow_html=True)
         
-        # 8种人格预览 - 一行4个网格
+        # 16种人格预览 - 一行4个网格
         personalities = list(AI_PERSONALITIES.items())
         for i in range(0, len(personalities), 4):
             cols = st.columns(4)
@@ -1340,6 +1354,8 @@ def render_personal_version():
                         </div>
                         ''', unsafe_allow_html=True)
         
+        st.markdown('<div style="height:3rem;"></div>', unsafe_allow_html=True)
+
         # 极简开始按钮
         if st.button("开始测试 →", type="primary", use_container_width=True):
             st.session_state.personal_step = 1
@@ -1830,39 +1846,41 @@ def render_personal_version():
         except:
             pass
         
-        # 计算各维度分数
-        dimension_scores = {}
+        # 计算4个MBTI维度的分数
+        dimension_scores_ie = []
+        dimension_scores_tf = []
+        dimension_scores_pj = []
+        dimension_scores_as = []
+
         for q_id, ans in answers.items():
-            dim = ans["dimension"]
-            if dim not in dimension_scores:
-                dimension_scores[dim] = []
-            
-            # 检查是否有"其他"选项被选择
-            if ans.get("text") == "其他":
-                custom_answer = st.session_state.personal_other_answers.get(q_id, "")
-                if custom_answer:
-                    # 使用AI分析自定义答案
-                    analysis_result = analyze_other_answer(
-                        next((q["question"] for q in FUN_QUESTIONS if q["id"] == q_id), ""),
-                        custom_answer,
-                        analyzer if analyzer_available else None
-                    )
-                    dimension_scores[dim].append(analysis_result["score"])
-                else:
-                    # 用户选择了"其他"但没有填写答案，给最低分
-                    dimension_scores[dim].append(0)
-            else:
-                dimension_scores[dim].append(ans["score"])
-        
-        avg_scores = {}
-        for dim, scores in dimension_scores.items():
-            avg_scores[dim] = sum(scores) / len(scores)
-        
-        total_score = calculate_score(avg_scores)
+            score = ans.get("score", 0)
+            if isinstance(score, dict):
+                dimension_scores_ie.append(score.get("ie", 50))
+                dimension_scores_tf.append(score.get("tf", 50))
+                dimension_scores_pj.append(score.get("pj", 50))
+                dimension_scores_as.append(score.get("as", 50))
+            elif isinstance(score, (int, float)):
+                # 兼容旧的数字格式
+                dimension_scores_ie.append(score)
+                dimension_scores_tf.append(score)
+                dimension_scores_pj.append(score)
+                dimension_scores_as.append(score)
+
+        avg_ie = sum(dimension_scores_ie) / len(dimension_scores_ie) if dimension_scores_ie else 50
+        avg_tf = sum(dimension_scores_tf) / len(dimension_scores_tf) if dimension_scores_tf else 50
+        avg_pj = sum(dimension_scores_pj) / len(dimension_scores_pj) if dimension_scores_pj else 50
+        avg_as = sum(dimension_scores_as) / len(dimension_scores_as) if dimension_scores_as else 50
+
+        avg_scores = {
+            "ie": avg_ie, "tf": avg_tf, "pj": avg_pj, "as": avg_as
+        }
+
+        # 总分 = 4个维度的加权平均
+        total_score = round((avg_ie + avg_tf + avg_pj + avg_as) / 4, 1)
         level = calculate_level(total_score)
         fun_info = FUN_TITLES[level]
-        
-        # 判定AI人格类型
+
+        # 判定AI人格画像
         personality = determine_ai_personality(avg_scores, answers)
         
         # 计算成就
@@ -1871,7 +1889,12 @@ def render_personal_version():
             "tool_count": len(st.session_state.personal_tools),
         }
         for q_id, ans in answers.items():
-            achievement_data[f"{q_id}_score"] = ans["score"]
+            score_val = ans["score"]
+            if isinstance(score_val, dict):
+                avg_val = sum(score_val.values()) / len(score_val)
+            else:
+                avg_val = float(score_val) if isinstance(score_val, (int, float)) else 0
+            achievement_data[f"{q_id}_score"] = avg_val
         
         unlocked = []
         for ach in ACHIEVEMENTS:
@@ -1933,8 +1956,14 @@ def render_personal_version():
         
         # 雷达图 - 透明背景适配深色区域
         import plotly.graph_objects as go
-        categories = [AI_NATIVE_DIMENSIONS[dim]["name"] for dim in AI_NATIVE_DIMENSIONS.keys()]
-        values = [avg_scores.get(dim, 0) for dim in AI_NATIVE_DIMENSIONS.keys()]
+        dimension_labels = {
+            "ie": "I内向 ← → E外向",
+            "tf": "T技术 ← → F创意",
+            "pj": "P实践 ← → J战略",
+            "as": "A分析 ← → S感性"
+        }
+        categories = [dimension_labels[k] for k in ["ie", "tf", "pj", "as"]]
+        values = [avg_scores.get(k, 50) for k in ["ie", "tf", "pj", "as"]]
         values.append(values[0])
         fig = go.Figure(data=go.Scatterpolar(r=values, theta=categories + [categories[0]], fill='toself',
                                               fillcolor='rgba(0, 122, 255, 0.3)',
@@ -1955,21 +1984,25 @@ def render_personal_version():
             <div style="font-size:0.875rem;font-weight:500;color:#86868b;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:1.5rem;">各维度得分</div>
         ''', unsafe_allow_html=True)
         # 极简蓝调配色
-        dimension_colors = ['#007AFF', '#5856D6', '#AF52DE', '#FF2D55', '#FF9500', '#34C759']
-        dim_names = {"ai_first_mindset": "AI优先思维", "deep_collaboration": "深度协作", 
-                     "problem_reframing": "问题重构", "learning_mode": "学习模式",
-                     "iteration_agility": "迭代敏捷", "boundary_awareness": "边界认知"}
+        dimension_colors = ['#007AFF', '#7C3AED', '#059669', '#DC2626']
+        dimension_names = {
+            "ie": ("I内向", "E外向"),
+            "tf": ("T技术", "F创意"),
+            "pj": ("P实践", "J战略"),
+            "as": ("A分析", "S感性")
+        }
         for i, (dim_key, score) in enumerate(avg_scores.items()):
-            color = dimension_colors[i % len(dimension_colors)]
-            name = dim_names.get(dim_key, dim_key)
+            color = dimension_colors[i]
+            left_label, right_label = dimension_names[dim_key]
             st.markdown(f'''
-            <div style="margin:1rem 0;">
-                <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">
-                    <span style="font-size:0.875rem;font-weight:500;color:#1d1d1f;">{name}</span>
-                    <span style="font-size:0.875rem;font-weight:600;color:{color};">{score:.0f}</span>
+            <div style="margin:0.75rem 0;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:0.25rem;">
+                    <span style="font-size:0.8rem;color:#86868b;">{left_label}</span>
+                    <span style="font-size:0.8rem;color:#86868b;">{right_label}</span>
                 </div>
-                <div class="dimension-bar">
-                    <div class="dimension-fill" style="width:{score}%;background:{color};"></div>
+                <div style="height:6px;background:#e5e5e7;border-radius:3px;position:relative;">
+                    <div style="height:100%;width:50%;background:#e5e5e7;border-radius:3px;"></div>
+                    <div style="position:absolute;top:-4px;left:{score}%;transform:translateX(-50%);width:14px;height:14px;background:{color};border-radius:50%;border:2px solid #ffffff;box-shadow:0 1px 3px rgba(0,0,0,0.2);"></div>
                 </div>
             </div>
             ''', unsafe_allow_html=True)
