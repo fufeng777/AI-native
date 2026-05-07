@@ -527,6 +527,8 @@ def render_hr_add_page():
             with st.spinner("AI 正在分析简历，请稍候..."):
                 result = analyzer.analyze_resume(resume_text)
                 st.session_state.ai_analysis_result = result
+                # 重置AI评分初始化标志，确保表单能更新为AI评分
+                st.session_state.ai_scores_initialized = False
                 if "basic_info" in result:
                     basic_info = result.get("basic_info", {})
                     if basic_info.get("name"):
@@ -537,6 +539,7 @@ def render_hr_add_page():
                         st.session_state["ai_detected_email"] = basic_info.get("email", "")
                     if basic_info.get("phone"):
                         st.session_state["ai_detected_phone"] = basic_info.get("phone", "")
+                st.rerun()  # 重新渲染页面以应用AI评分
         else:
             st.warning("请先上传简历文件")
     
@@ -561,6 +564,20 @@ def render_hr_add_page():
     ai_overall = ai_result.get("overall_assessment", "")
     ai_checklist = ai_result.get("quick_checklist", {})
     
+    # 初始化 session state 用于存储AI评分（确保AI分析后能正确更新默认值）
+    if 'ai_scores_initialized' not in st.session_state:
+        st.session_state.ai_scores_initialized = False
+    
+    # 如果AI分析结果更新了，重置初始化标志
+    if ai_result and not st.session_state.ai_scores_initialized:
+        for dim_key in AI_NATIVE_DIMENSIONS.keys():
+            ai_dim_data = ai_dimension_scores.get(dim_key, {})
+            ai_score = ai_dim_data.get("score", 50) if ai_dim_data else 50
+            ai_reasoning = ai_dim_data.get("reasoning", "") if ai_dim_data else ""
+            st.session_state[f"score_{dim_key}"] = int(ai_score)
+            st.session_state[f"notes_{dim_key}"] = ai_reasoning
+        st.session_state.ai_scores_initialized = True
+    
     dimension_scores = {}
     manual_modified = {}
     
@@ -569,6 +586,10 @@ def render_hr_add_page():
         ai_dim_data = ai_dimension_scores.get(dim_key, {})
         ai_score = ai_dim_data.get("score", 50) if ai_dim_data else 50
         ai_reasoning = ai_dim_data.get("reasoning", "") if ai_dim_data else ""
+        
+        # 获取当前值（优先从session_state获取，确保AI分析后能更新）
+        current_score = st.session_state.get(f"score_{dim_key}", int(ai_score))
+        current_notes = st.session_state.get(f"notes_{dim_key}", ai_reasoning)
         
         with st.expander(f"{dim_info['name']} (AI评分: {ai_score}分)"):
             # 显示AI分析理由
@@ -580,8 +601,8 @@ def render_hr_add_page():
             for signal in dim_info['signals']:
                 st.markdown(f"- {signal}")
             
-            score = st.slider("评分（调整后）", 0, 100, int(ai_score), key=f"score_{dim_key}")
-            notes = st.text_area("评分说明", value=ai_reasoning, height=80, key=f"notes_{dim_key}")
+            score = st.slider("评分（调整后）", 0, 100, current_score, key=f"score_{dim_key}")
+            notes = st.text_area("评分说明", value=current_notes, height=80, key=f"notes_{dim_key}")
             dimension_scores[dim_key] = {"score": score, "notes": notes}
             
             # 只比较分数是否被修改（不比较notes，因为text_area可能有格式差异）
