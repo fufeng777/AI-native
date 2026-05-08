@@ -2839,14 +2839,14 @@ with st.sidebar:
         text-decoration: none;
     }}
     .mode-btn-primary {{
-        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
         color: white;
-        border-color: #4f46e5;
-        box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+        border-color: #1a1a1a;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
     }}
     .mode-btn-primary:hover {{
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(79, 70, 229, 0.45);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
     }}
     .mode-btn-secondary {{
         background: #f1f5f9;
