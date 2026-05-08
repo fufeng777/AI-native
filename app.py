@@ -2839,14 +2839,14 @@ with st.sidebar:
         text-decoration: none;
     }}
     .mode-btn-primary {{
-        background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
+        background: linear-gradient(135deg, #4a4a4a 0%, #6b6b6b 100%);
         color: white;
-        border-color: #1a1a1a;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+        border-color: #4a4a4a;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
     }}
     .mode-btn-primary:hover {{
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
     }}
     .mode-btn-secondary {{
         background: #f1f5f9;
@@ -2859,14 +2859,14 @@ with st.sidebar:
         transform: translateY(-2px);
     }}
     </style>
-    <a href="?switch=hr" class="mode-btn {'mode-btn-primary' if is_hr else 'mode-btn-secondary'}">
+    <div class="mode-btn {'mode-btn-primary' if is_hr else 'mode-btn-secondary'}" onclick="window.location.href='?switch=hr'">
         {hr_icon_svg}
         <span>HR招聘</span>
-    </a>
-    <a href="?switch=personal" class="mode-btn {'mode-btn-secondary' if is_hr else 'mode-btn-primary'}">
+    </div>
+    <div class="mode-btn {'mode-btn-secondary' if is_hr else 'mode-btn-primary'}" onclick="window.location.href='?switch=personal'">
         {user_icon_svg}
         <span>个人测评</span>
-    </a>
+    </div>
     """, unsafe_allow_html=True)
     
     # 检测URL参数切换
