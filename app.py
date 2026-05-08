@@ -24,8 +24,9 @@ from ai_analyzer import (
     LEVEL_DEFINITIONS
 )
 
-# 数据存储路径
-DATA_DIR = Path("data")
+# 数据存储路径 - 使用绝对路径确保数据持久化
+BASE_DIR = Path(__file__).parent.resolve()
+DATA_DIR = BASE_DIR / "data"
 DATA_DIR.mkdir(exist_ok=True)
 CANDIDATES_FILE = DATA_DIR / "candidates.json"
 RESUMES_DIR = DATA_DIR / "resumes"
@@ -104,6 +105,26 @@ ACHIEVEMENTS = [
     {"id": "evangelist", "name": "AI布道者", "desc": "逢人就安利AI工具", "icon": "📣", "condition": lambda s: s.get("q17_score", 0) >= 80},
     {"id": "philosopher", "name": "AI哲学家", "desc": "思考过AI与人类的关系", "icon": "🧠", "condition": lambda s: s.get("q19_score", 0) >= 60},
     {"id": "master", "name": "AI大师", "desc": "综合评分达到L3级别", "icon": "👑", "condition": lambda s: s.get("total_score", 0) >= 80}
+]
+
+# 人才库标签预设
+TALENT_TAGS = [
+    "AI高手", "潜力股", "技术专家", "产品思维", "沟通能力强",
+    "学习能力强", "经验丰富", "创新思维", "团队协作", "独立工作",
+    "紧急招聘", "高优先级", "已联系", "待跟进", "已拒绝", "已录用"
+]
+
+# 面试阶段定义
+INTERVIEW_STAGES = [
+    {"id": "new", "name": "新简历", "color": "#9CA3AF"},
+    {"id": "screening", "name": "初筛中", "color": "#60A5FA"},
+    {"id": "interview1", "name": "一面", "color": "#34D399"},
+    {"id": "interview2", "name": "二面", "color": "#10B981"},
+    {"id": "interview3", "name": "三面", "color": "#059669"},
+    {"id": "offer", "name": "Offer", "color": "#FBBF24"},
+    {"id": "hired", "name": "已录用", "color": "#10B981"},
+    {"id": "rejected", "name": "已拒绝", "color": "#EF4444"},
+    {"id": "archived", "name": "已归档", "color": "#6B7280"}
 ]
 
 # AI工具列表（60+工具，包含公司和功能介绍）
@@ -791,38 +812,118 @@ def render_hr_version():
             avg_score = sum(c.get('total_score', 0) for c in candidates.values()) / len(candidates) if candidates else 0
             st.markdown(f'<div class="score-card"><div class="metric-label">平均分</div><div class="metric-value">{avg_score:.1f}</div></div>', unsafe_allow_html=True)
         
-        # 候选人列表
-        st.subheader("候选人列表")
-        col1, col2 = st.columns([2, 1])
-        with col1:
-            search = st.text_input("搜索候选人姓名", "")
-        with col2:
-            level_filter = st.multiselect("筛选等级", ["L0", "L1", "L2", "L3"], default=[])
+        # 候选人列表 - 人才库管理
+        st.subheader("📚 人才库管理")
         
+        # 搜索和筛选区域
+        with st.expander("🔍 搜索与筛选", expanded=True):
+            col1, col2, col3, col4 = st.columns([2, 1, 1, 1])
+            with col1:
+                search = st.text_input("搜索姓名/职位/邮箱", "")
+            with col2:
+                level_filter = st.multiselect("等级筛选", ["L0", "L1", "L2", "L3"], default=[])
+            with col3:
+                stage_filter = st.multiselect("面试阶段", [s["name"] for s in INTERVIEW_STAGES], default=[])
+            with col4:
+                tag_filter = st.multiselect("标签筛选", TALENT_TAGS, default=[])
+        
+        # 统计信息
+        total_count = len(candidates)
+        st.caption(f"共 {total_count} 位候选人")
+        
+        # 筛选逻辑
         filtered_candidates = {}
         for cid, candidate in candidates.items():
+            # 姓名搜索
             if search and search.lower() not in candidate.get("name", "").lower():
-                continue
+                # 也搜索职位和邮箱
+                if search.lower() not in candidate.get("position", "").lower():
+                    if search.lower() not in candidate.get("email", "").lower():
+                        continue
+            # 等级筛选
             if level_filter and candidate.get("level") not in level_filter:
                 continue
+            # 面试阶段筛选
+            if stage_filter:
+                candidate_stage = candidate.get("interview_stage", "新简历")
+                if candidate_stage not in stage_filter:
+                    continue
+            # 标签筛选
+            if tag_filter:
+                candidate_tags = candidate.get("tags", [])
+                if not any(tag in candidate_tags for tag in tag_filter):
+                    continue
             filtered_candidates[cid] = candidate
         
+        # 显示筛选结果数量
+        if len(filtered_candidates) != total_count:
+            st.caption(f"筛选结果: {len(filtered_candidates)} 位候选人")
+        
+        # 候选人列表展示
         for cid, candidate in filtered_candidates.items():
             with st.container():
-                col1, col2, col3, col4 = st.columns([2, 1, 1, 1])
+                # 第一行：主要信息
+                col1, col2, col3, col4, col5 = st.columns([2, 1, 1, 1.5, 1])
+                
                 with col1:
                     st.write(f"**{candidate.get('name', '未命名')}**")
-                    st.caption(f"职位: {candidate.get('position', '未指定')} | 评估日期: {candidate.get('eval_date', '未知')}")
+                    st.caption(f"📧 {candidate.get('email', '无邮箱')} | 📅 {candidate.get('eval_date', '未知')}")
+                
                 with col2:
                     level = candidate.get("level", "L0")
                     color = get_level_color(level)
                     st.markdown(f'<span class="level-badge" style="background-color: {color}">{LEVEL_DEFINITIONS[level]["name"]}</span>', unsafe_allow_html=True)
+                
                 with col3:
                     st.write(f"**{candidate.get('total_score', 0)}分**")
+                
                 with col4:
-                    if st.button("查看详情", key=f"view_{cid}"):
+                    # 面试阶段选择
+                    current_stage = candidate.get("interview_stage", "新简历")
+                    stage_names = [s["name"] for s in INTERVIEW_STAGES]
+                    new_stage = st.selectbox(
+                        "阶段",
+                        stage_names,
+                        index=stage_names.index(current_stage) if current_stage in stage_names else 0,
+                        key=f"stage_{cid}",
+                        label_visibility="collapsed"
+                    )
+                    if new_stage != current_stage:
+                        st.session_state.candidates[cid]["interview_stage"] = new_stage
+                        save_candidates(st.session_state.candidates)
+                        st.rerun()
+                
+                with col5:
+                    if st.button("查看详情", key=f"view_{cid}", type="primary"):
                         st.session_state.current_candidate = cid
                         st.rerun()
+                
+                # 第二行：职位和标签
+                col1, col2 = st.columns([1, 3])
+                with col1:
+                    st.caption(f"💼 {candidate.get('position', '未指定职位')}")
+                with col2:
+                    # 显示已有标签
+                    current_tags = candidate.get("tags", [])
+                    if current_tags:
+                        tags_html = " ".join([f'<span style="background:#E8F4FD;color:#007AFF;padding:2px 8px;border-radius:12px;font-size:0.7rem;margin-right:4px;">{tag}</span>' for tag in current_tags])
+                        st.markdown(tags_html, unsafe_allow_html=True)
+                    # 添加标签按钮
+                    remaining_tags = [t for t in TALENT_TAGS if t not in current_tags]
+                    if remaining_tags:
+                        new_tag = st.selectbox(
+                            "+ 标签",
+                            [""] + remaining_tags,
+                            key=f"tag_select_{cid}",
+                            label_visibility="collapsed"
+                        )
+                        if new_tag:
+                            if "tags" not in st.session_state.candidates[cid]:
+                                st.session_state.candidates[cid]["tags"] = []
+                            st.session_state.candidates[cid]["tags"].append(new_tag)
+                            save_candidates(st.session_state.candidates)
+                            st.rerun()
+                
                 st.divider()
     
     # 候选人详情弹窗
@@ -913,7 +1014,50 @@ def render_hr_version():
             st.subheader("综合评价")
             st.write(c.get('overall_notes', '无综合评价'))
             
+            # 协作备注区域
+            st.markdown("---")
+            st.subheader("💬 协作备注")
+            
+            # 显示历史备注
+            comments = c.get('comments', [])
+            if comments:
+                for i, comment in enumerate(comments):
+                    with st.container():
+                        col1, col2 = st.columns([1, 4])
+                        with col1:
+                            st.caption(f"{comment.get('time', '未知时间')}")
+                            st.caption(f"👤 {comment.get('author', '匿名')}")
+                        with col2:
+                            st.info(comment.get('content', ''))
+                        # 删除备注按钮
+                        if st.button("🗑️", key=f"del_comment_{cid}_{i}"):
+                            st.session_state.candidates[cid]['comments'].pop(i)
+                            save_candidates(st.session_state.candidates)
+                            st.rerun()
+            else:
+                st.caption("暂无备注，添加第一条协作备注吧~")
+            
+            # 添加新备注
+            with st.expander("➕ 添加备注"):
+                author = st.text_input("您的姓名", value="HR", key=f"comment_author_{cid}")
+                new_comment = st.text_area("备注内容", placeholder="输入您的评价或面试反馈...", key=f"comment_content_{cid}")
+                if st.button("提交备注", key=f"submit_comment_{cid}"):
+                    if new_comment.strip():
+                        from datetime import datetime
+                        comment_data = {
+                            "author": author,
+                            "content": new_comment.strip(),
+                            "time": datetime.now().strftime("%Y-%m-%d %H:%M")
+                        }
+                        if "comments" not in st.session_state.candidates[cid]:
+                            st.session_state.candidates[cid]["comments"] = []
+                        st.session_state.candidates[cid]["comments"].append(comment_data)
+                        save_candidates(st.session_state.candidates)
+                        st.success("备注添加成功！")
+                        st.rerun()
+            
             # 操作按钮
+            st.markdown("---")
             col1, col2, col3 = st.columns(3)
             with col1:
                 if st.button("关闭详情"):
@@ -1350,19 +1494,78 @@ def render_personal_version():
                         # 构建hover提示内容
                         tooltip_content = p.get('desc', '')
                         tooltip_tools = ' · '.join(p.get('tools', [])[:4])
+                        card_id = f"personality_card_{key}"
                         
+                        # 使用纯CSS实现hover效果（更可靠）
                         st.markdown(f'''
-                        <div style="text-align:center;padding:1.25rem 0.5rem;background:#ffffff;border-radius:16px;border:1px solid #e5e5e7;transition:all 0.3s;position:relative;cursor:help;" 
-                             onmouseover="this.querySelector('.tooltip').style.display='block';" 
-                             onmouseout="this.querySelector('.tooltip').style.display='none';"
-                             onclick="this.querySelector('.tooltip').style.display=this.querySelector('.tooltip').style.display==='block'?'none':'block';">
+                        <style>
+                        #{card_id} {{
+                            text-align: center;
+                            padding: 1.25rem 0.5rem;
+                            background: #ffffff;
+                            border-radius: 16px;
+                            border: 1px solid #e5e5e7;
+                            transition: all 0.3s;
+                            position: relative;
+                            cursor: help;
+                        }}
+                        #{card_id}:hover {{
+                            border-color: #007AFF;
+                            box-shadow: 0 4px 20px rgba(0,122,255,0.15);
+                        }}
+                        #{card_id} .tooltip {{
+                            display: none;
+                            position: absolute;
+                            bottom: calc(100% + 8px);
+                            left: 50%;
+                            transform: translateX(-50%);
+                            width: 240px;
+                            background: rgba(29,29,31,0.98);
+                            color: #ffffff;
+                            padding: 14px;
+                            border-radius: 12px;
+                            font-size: 0.75rem;
+                            line-height: 1.5;
+                            z-index: 1000;
+                            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+                            text-align: left;
+                        }}
+                        #{card_id}:hover .tooltip {{
+                            display: block;
+                        }}
+                        #{card_id} .tooltip::after {{
+                            content: '';
+                            position: absolute;
+                            top: 100%;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            border: 8px solid transparent;
+                            border-top-color: rgba(29,29,31,0.98);
+                        }}
+                        #{card_id} .tooltip-trait {{
+                            font-weight: 600;
+                            margin-bottom: 8px;
+                            color: #007AFF;
+                            font-size: 0.8rem;
+                        }}
+                        #{card_id} .tooltip-desc {{
+                            margin-bottom: 10px;
+                            opacity: 0.95;
+                        }}
+                        #{card_id} .tooltip-tools {{
+                            border-top: 1px solid rgba(255,255,255,0.2);
+                            padding-top: 8px;
+                            font-size: 0.7rem;
+                            opacity: 0.8;
+                        }}
+                        </style>
+                        <div id="{card_id}">
                             <div style="margin-bottom:0.5rem;">{icon_html}</div>
                             <div style="font-size:0.8rem;font-weight:600;color:#1d1d1f;">{p["name"]}</div>
-                            <div class="tooltip" style="display:none;position:absolute;bottom:100%;left:50%;transform:translateX(-50%);width:220px;background:rgba(29,29,31,0.95);color:#ffffff;padding:12px;border-radius:12px;font-size:0.75rem;line-height:1.5;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,0.3);margin-bottom:8px;">
-                                <div style="font-weight:600;margin-bottom:6px;color:#007AFF;">{p.get('trait', '')}</div>
-                                <div style="margin-bottom:8px;opacity:0.9;">{tooltip_content}</div>
-                                <div style="border-top:1px solid rgba(255,255,255,0.2);padding-top:6px;font-size:0.7rem;opacity:0.7;">常用: {tooltip_tools}</div>
-                                <div style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:6px solid rgba(29,29,31,0.95);"></div>
+                            <div class="tooltip">
+                                <div class="tooltip-trait">{p.get('trait', '')}</div>
+                                <div class="tooltip-desc">{tooltip_content}</div>
+                                <div class="tooltip-tools">常用: {tooltip_tools}</div>
                             </div>
                         </div>
                         ''', unsafe_allow_html=True)
