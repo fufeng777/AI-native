@@ -35,9 +35,11 @@ RESUMES_DIR.mkdir(exist_ok=True)
 # 快速判断清单
 QUICK_CHECKLIST = [
     "候选人第一反应是'AI'而不是'人'（接到新任务时的本能指向）",
+    "候选人是否有系统化的提示词库（对Prompt有设计、有优化）",
     "候选人是否拥有'自己的方法论'（对AI的使用有提炼、有优化）",
     "候选人是否改造过自己的工作流（用AI改变了做法）",
     "候选人对AI的吐槽是否具体（能精准指出不靠谱之处）",
+    "候选人是否有事实核查习惯（不盲目相信AI输出）",
     "候选人有没有'AI焦虑'（积极意义上怕掉队，持续关注前沿）"
 ]
 
@@ -45,6 +47,180 @@ QUICK_CHECKLIST = [
 JOB_CATEGORIES = [
     "产品", "运营", "算法", "工程", "设计", "市场", "销售", "人力资源", "财务", "其他"
 ]
+
+# AI Native人才画像模板 - 针对不同岗位的评估侧重点
+TALENT_PROFILES = {
+    "产品": {
+        "name": "AI产品经理",
+        "description": "能将AI能力转化为产品价值，具备AI-First思维和用户洞察",
+        "key_dimensions": ["ai_first_mindset", "problem_reframing", "deep_collaboration"],
+        "dimension_weights": {
+            "ai_first_mindset": 1.2,
+            "prompt_engineering": 0.8,
+            "deep_collaboration": 1.0,
+            "problem_reframing": 1.2,
+            "learning_mode": 0.8,
+            "iteration_agility": 0.8,
+            "boundary_awareness": 0.9,
+            "critical_validation": 1.0
+        },
+        "ideal_tools": ["ChatGPT", "Claude", "Notion AI", "Figma AI"],
+        "interview_focus": ["如何用AI发现用户需求", "AI功能设计案例", "AI产品落地经验"]
+    },
+    "运营": {
+        "name": "AI运营专家",
+        "description": "用AI提升运营效率，擅长内容生成、数据分析和自动化流程",
+        "key_dimensions": ["prompt_engineering", "iteration_agility", "learning_mode"],
+        "dimension_weights": {
+            "ai_first_mindset": 1.0,
+            "prompt_engineering": 1.2,
+            "deep_collaboration": 0.9,
+            "problem_reframing": 0.8,
+            "learning_mode": 1.0,
+            "iteration_agility": 1.2,
+            "boundary_awareness": 0.7,
+            "critical_validation": 0.9
+        },
+        "ideal_tools": ["ChatGPT", "Midjourney", "剪映AI", "Coze"],
+        "interview_focus": ["AI内容生产案例", "自动化运营流程", "提示词优化经验"]
+    },
+    "算法": {
+        "name": "AI算法工程师",
+        "description": "深入理解AI原理，能优化模型、设计智能体、解决技术难题",
+        "key_dimensions": ["deep_collaboration", "boundary_awareness", "critical_validation"],
+        "dimension_weights": {
+            "ai_first_mindset": 1.0,
+            "prompt_engineering": 1.1,
+            "deep_collaboration": 1.2,
+            "problem_reframing": 1.0,
+            "learning_mode": 1.0,
+            "iteration_agility": 0.9,
+            "boundary_awareness": 1.2,
+            "critical_validation": 1.2
+        },
+        "ideal_tools": ["Claude", "GitHub Copilot", "Cursor", "HuggingFace"],
+        "interview_focus": ["模型优化经验", "智能体设计案例", "AI技术边界认知"]
+    },
+    "工程": {
+        "name": "AI原生工程师",
+        "description": "用AI辅助编程，快速交付高质量代码，持续迭代技术栈",
+        "key_dimensions": ["prompt_engineering", "iteration_agility", "learning_mode"],
+        "dimension_weights": {
+            "ai_first_mindset": 1.0,
+            "prompt_engineering": 1.2,
+            "deep_collaboration": 1.0,
+            "problem_reframing": 0.9,
+            "learning_mode": 1.1,
+            "iteration_agility": 1.1,
+            "boundary_awareness": 1.0,
+            "critical_validation": 1.0
+        },
+        "ideal_tools": ["GitHub Copilot", "Cursor", "ChatGPT", "Claude"],
+        "interview_focus": ["AI辅助编程效率", "代码审查AI使用", "技术栈快速迭代"]
+    },
+    "设计": {
+        "name": "AI创意设计师",
+        "description": "融合AI工具进行创意设计，人机协作产出高质量作品",
+        "key_dimensions": ["prompt_engineering", "deep_collaboration", "problem_reframing"],
+        "dimension_weights": {
+            "ai_first_mindset": 1.0,
+            "prompt_engineering": 1.3,
+            "deep_collaboration": 1.1,
+            "problem_reframing": 1.0,
+            "learning_mode": 0.9,
+            "iteration_agility": 1.0,
+            "boundary_awareness": 0.8,
+            "critical_validation": 0.9
+        },
+        "ideal_tools": ["Midjourney", "Stable Diffusion", "DALL-E", "Figma AI"],
+        "interview_focus": ["AI设计工作流", "提示词创作技巧", "人机协作设计案例"]
+    },
+    "市场": {
+        "name": "AI营销专家",
+        "description": "用AI赋能营销全链路，从创意到数据分析全面提效",
+        "key_dimensions": ["prompt_engineering", "ai_first_mindset", "iteration_agility"],
+        "dimension_weights": {
+            "ai_first_mindset": 1.1,
+            "prompt_engineering": 1.2,
+            "deep_collaboration": 0.9,
+            "problem_reframing": 1.0,
+            "learning_mode": 0.9,
+            "iteration_agility": 1.1,
+            "boundary_awareness": 0.8,
+            "critical_validation": 0.9
+        },
+        "ideal_tools": ["ChatGPT", "Midjourney", "Jasper", "HeyGen"],
+        "interview_focus": ["AI营销案例", "内容生产效率提升", "AI创意方法论"]
+    },
+    "销售": {
+        "name": "AI赋能销售",
+        "description": "用AI提升销售效率，客户洞察、话术优化、数据分析",
+        "key_dimensions": ["learning_mode", "deep_collaboration", "ai_first_mindset"],
+        "dimension_weights": {
+            "ai_first_mindset": 1.0,
+            "prompt_engineering": 0.9,
+            "deep_collaboration": 1.1,
+            "problem_reframing": 0.9,
+            "learning_mode": 1.1,
+            "iteration_agility": 1.0,
+            "boundary_awareness": 0.8,
+            "critical_validation": 0.9
+        },
+        "ideal_tools": ["ChatGPT", "Kimi", "Notion AI", "飞书AI"],
+        "interview_focus": ["AI辅助客户分析", "销售话术优化", "CRM智能化使用"]
+    },
+    "人力资源": {
+        "name": "AI HR专家",
+        "description": "用AI革新招聘培训，人才画像、面试辅助、员工发展",
+        "key_dimensions": ["critical_validation", "deep_collaboration", "problem_reframing"],
+        "dimension_weights": {
+            "ai_first_mindset": 1.0,
+            "prompt_engineering": 1.0,
+            "deep_collaboration": 1.1,
+            "problem_reframing": 1.0,
+            "learning_mode": 1.0,
+            "iteration_agility": 0.9,
+            "boundary_awareness": 1.0,
+            "critical_validation": 1.2
+        },
+        "ideal_tools": ["ChatGPT", "Claude", "Kimi", "飞书AI"],
+        "interview_focus": ["AI招聘实践", "人才评估AI化", "培训内容AI生成"]
+    },
+    "财务": {
+        "name": "AI财务分析师",
+        "description": "用AI处理财务数据，报表分析、风险识别、决策支持",
+        "key_dimensions": ["critical_validation", "boundary_awareness", "deep_collaboration"],
+        "dimension_weights": {
+            "ai_first_mindset": 0.9,
+            "prompt_engineering": 1.0,
+            "deep_collaboration": 1.0,
+            "problem_reframing": 0.9,
+            "learning_mode": 0.9,
+            "iteration_agility": 0.9,
+            "boundary_awareness": 1.2,
+            "critical_validation": 1.3
+        },
+        "ideal_tools": ["ChatGPT", "Excel AI", "Kimi", "Claude"],
+        "interview_focus": ["AI财务分析案例", "数据准确性验证", "风险识别AI应用"]
+    },
+    "其他": {
+        "name": "AI通用人才",
+        "description": "具备AI Native基础能力，能快速适应不同岗位需求",
+        "key_dimensions": ["ai_first_mindset", "learning_mode", "iteration_agility"],
+        "dimension_weights": {
+            "ai_first_mindset": 1.0,
+            "prompt_engineering": 1.0,
+            "deep_collaboration": 1.0,
+            "problem_reframing": 1.0,
+            "learning_mode": 1.0,
+            "iteration_agility": 1.0,
+            "boundary_awareness": 1.0,
+            "critical_validation": 1.0
+        },
+        "ideal_tools": ["ChatGPT", "Claude", "Kimi"],
+        "interview_focus": ["AI使用习惯", "学习能力", "AI工具探索"]
+    }
+}
 
 # 个人版趣味等级定义
 FUN_TITLES = {
@@ -953,6 +1129,75 @@ def render_hr_version():
             fig = go.Figure(data=go.Scatterpolar(r=values, theta=categories + [categories[0]], fill='toself', name=c['name']))
             fig.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 100])), showlegend=False, height=400)
             st.plotly_chart(fig, use_container_width=True)
+            
+            # 岗位匹配度分析
+            st.subheader("🎯 岗位匹配度分析")
+            candidate_position = c.get('position', '其他')
+            
+            # 找到最匹配的岗位画像
+            matched_profile = TALENT_PROFILES.get(candidate_position, TALENT_PROFILES.get('其他'))
+            
+            col1, col2 = st.columns([1, 1])
+            with col1:
+                st.info(f"**岗位画像:** {matched_profile['name']}\n\n{matched_profile['description']}")
+            
+            with col2:
+                # 计算加权匹配分数
+                dimension_scores = c.get('dimensions', {})
+                weights = matched_profile['dimension_weights']
+                weighted_sum = 0
+                total_weight = 0
+                for dim_key, weight in weights.items():
+                    score = dimension_scores.get(dim_key, {}).get('score', 50)
+                    weighted_sum += score * weight
+                    total_weight += weight
+                match_score = round(weighted_sum / total_weight, 1)
+                
+                # 匹配度评级
+                if match_score >= 80:
+                    match_level = "🌟 优秀匹配"
+                    match_color = "#10B981"
+                elif match_score >= 60:
+                    match_level = "✅ 良好匹配"
+                    match_color = "#3B82F6"
+                elif match_score >= 40:
+                    match_level = "⚠️ 基本匹配"
+                    match_color = "#F59E0B"
+                else:
+                    match_level = "❌ 匹配度较低"
+                    match_color = "#EF4444"
+                
+                st.markdown(f"""
+                <div style="text-align:center;padding:1rem;background:{match_color}20;border-radius:12px;border:2px solid {match_color}">
+                    <div style="font-size:2.5rem;font-weight:bold;color:{match_color}">{match_score}分</div>
+                    <div style="font-size:1rem;color:{match_color}">{match_level}</div>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            # 关键维度分析
+            st.write("**关键维度表现:**")
+            key_dims = matched_profile['key_dimensions']
+            for dim_key in key_dims:
+                dim_info = AI_NATIVE_DIMENSIONS.get(dim_key, {})
+                score = dimension_scores.get(dim_key, {}).get('score', 0)
+                # 进度条样式
+                bar_color = "#10B981" if score >= 70 else "#F59E0B" if score >= 50 else "#EF4444"
+                st.markdown(f"""
+                <div style="margin-bottom:8px;">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                        <span style="font-weight:500;">{dim_info.get('name', dim_key)}</span>
+                        <span style="color:{bar_color};font-weight:bold;">{score}分</span>
+                    </div>
+                    <div style="background:#E5E7EB;border-radius:4px;height:8px;overflow:hidden;">
+                        <div style="background:{bar_color};height:100%;width:{score}%;transition:width 0.3s;"></div>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            # 面试建议
+            st.write("**面试重点:**")
+            for focus in matched_profile['interview_focus']:
+                st.caption(f"• {focus}")
             
             # AI 分析结果
             ai_analysis = c.get('ai_analysis')
