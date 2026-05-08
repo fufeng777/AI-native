@@ -2815,71 +2815,40 @@ with st.sidebar:
     # 创建居中容器
     st.markdown('<div class="mode-switch-container">', unsafe_allow_html=True)
     
-    # 简约 SVG 图标 (Heroicons 风格)
-    hr_icon_svg = """<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:10px;"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>"""
+    # 使用两列布局 + 原生按钮（最可靠）
+    btn_col1, btn_col2 = st.columns(2)
     
-    user_icon_svg = """<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:10px;"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>"""
-    
-    # 使用HTML创建带图标的按钮，通过URL参数传递点击状态
-    st.markdown(f"""
-    <style>
-    .mode-btn {{
-        width: 100%;
-        padding: 16px 20px;
-        border-radius: 14px;
-        font-size: 15px;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        border: 2px solid transparent;
-        margin-bottom: 12px;
-        text-decoration: none;
-    }}
-    .mode-btn-primary {{
-        background: linear-gradient(135deg, #4a4a4a 0%, #6b6b6b 100%);
-        color: white;
-        border-color: #4a4a4a;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
-    }}
-    .mode-btn-primary:hover {{
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
-    }}
-    .mode-btn-secondary {{
-        background: #f1f5f9;
-        color: #64748b;
-        border-color: #e2e8f0;
-    }}
-    .mode-btn-secondary:hover {{
-        background: #e2e8f0;
-        border-color: #cbd5e1;
-        transform: translateY(-2px);
-    }}
-    </style>
-    <div class="mode-btn {'mode-btn-primary' if is_hr else 'mode-btn-secondary'}" onclick="window.location.href='?switch=hr'">
-        {hr_icon_svg}
-        <span>HR招聘</span>
-    </div>
-    <div class="mode-btn {'mode-btn-secondary' if is_hr else 'mode-btn-primary'}" onclick="window.location.href='?switch=personal'">
-        {user_icon_svg}
-        <span>个人测评</span>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # 检测URL参数切换
-    query_params = st.query_params
-    if "switch" in query_params:
-        switch_val = query_params["switch"]
-        if switch_val == "hr":
+    with btn_col1:
+        # HR招聘按钮
+        if is_hr:
+            # 选中状态 - 灰色渐变
+            st.markdown("""
+            <style>
+            div[data-testid="stHorizontalBlock"] button[kind="primary"]:first-of-type {
+                background: linear-gradient(135deg, #4a4a4a 0%, #6b6b6b 100%) !important;
+                border-color: #4a4a4a !important;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+        if st.button("💼 HR招聘", key="btn_hr", use_container_width=True,
+                     type="primary" if is_hr else "secondary"):
             st.session_state.app_mode = "hr"
-            del query_params["switch"]
             st.rerun()
-        elif switch_val == "personal":
+    
+    with btn_col2:
+        # 个人测评按钮
+        if not is_hr:
+            st.markdown("""
+            <style>
+            div[data-testid="stHorizontalBlock"] button[kind="primary"]:nth-of-type(2) {
+                background: linear-gradient(135deg, #4a4a4a 0%, #6b6b6b 100%) !important;
+                border-color: #4a4a4a !important;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+        if st.button("👤 个人测评", key="btn_personal", use_container_width=True,
+                     type="primary" if not is_hr else "secondary"):
             st.session_state.app_mode = "personal"
-            del query_params["switch"]
             st.rerun()
     
     st.markdown('</div>', unsafe_allow_html=True)
