@@ -2873,11 +2873,11 @@ with st.sidebar:
     query_params = st.query_params
     if "switch" in query_params:
         switch_val = query_params["switch"]
-        if switch_val == "hr" and not is_hr:
+        if switch_val == "hr":
             st.session_state.app_mode = "hr"
             del query_params["switch"]
             st.rerun()
-        elif switch_val == "personal" and is_hr:
+        elif switch_val == "personal":
             st.session_state.app_mode = "personal"
             del query_params["switch"]
             st.rerun()
