@@ -1107,6 +1107,17 @@ def render_hr_version():
         cid = st.session_state.current_candidate
         if cid in st.session_state.candidates:
             c = st.session_state.candidates[cid]
+            
+            # 数据兼容性处理：确保旧数据（6维度）也能显示8维度
+            if 'dimensions' in c:
+                dims = c['dimensions']
+                # 如果缺少新维度，添加默认值
+                if 'prompt_engineering' not in dims:
+                    dims['prompt_engineering'] = {"score": 50, "notes": "（此维度为新增，原数据未包含）"}
+                if 'critical_validation' not in dims:
+                    dims['critical_validation'] = {"score": 50, "notes": "（此维度为新增，原数据未包含）"}
+                c['dimensions'] = dims
+            
             st.markdown("---")
             st.subheader(f"{c['name']} - 详细评估报告")
             
@@ -1121,7 +1132,7 @@ def render_hr_version():
             with col3:
                 st.markdown(f'<div style="font-size: 2rem; font-weight: bold; color: {color}">{c.get("total_score", 0)}分</div>', unsafe_allow_html=True)
             
-            # 雷达图
+            # 雷达图 - 使用8维度
             import plotly.graph_objects as go
             categories = [info['name'] for info in AI_NATIVE_DIMENSIONS.values()]
             values = [c.get('dimensions', {}).get(dim_key, {}).get('score', 0) for dim_key in AI_NATIVE_DIMENSIONS.keys()]
@@ -1328,6 +1339,16 @@ def render_hr_version():
         cid = st.session_state.editing_candidate
         if cid in st.session_state.candidates:
             c = st.session_state.candidates[cid]
+            
+            # 数据兼容性处理：确保旧数据（6维度）也能编辑8维度
+            if 'dimensions' in c:
+                dims = c['dimensions']
+                if 'prompt_engineering' not in dims:
+                    dims['prompt_engineering'] = {"score": 50, "notes": ""}
+                if 'critical_validation' not in dims:
+                    dims['critical_validation'] = {"score": 50, "notes": ""}
+                c['dimensions'] = dims
+            
             st.markdown("---")
             st.subheader(f"编辑候选人评估 - {c['name']}")
             
@@ -1353,8 +1374,8 @@ def render_hr_version():
             
             st.divider()
             
-            # 六维评分编辑
-            st.write("**AI Native 六维评分**")
+            # 八维评分编辑
+            st.write("**AI Native 八维评分**")
             edit_dimensions = {}
             ai_dimensions = c.get('ai_dimensions', {})
             manual_modified = c.get('manual_modified', {})
@@ -1589,7 +1610,7 @@ def render_hr_add_page():
     st.write("面试结束后，回答以下5个问题，即可快速判定:")
     
     checklist = {}
-    checklist_items_keys = ["ai_first_response", "own_methodology", "workflow_reformed", "specific_complaints", "ai_anxiety"]
+    checklist_items_keys = ["ai_first_response", "own_prompt_library", "own_methodology", "workflow_reformed", "specific_complaints", "fact_checking_habit", "ai_anxiety"]
     for i, item in enumerate(QUICK_CHECKLIST, 1):
         # 默认使用AI判断结果
         ai_checked = ai_checklist.get(checklist_items_keys[i-1], False) if ai_checklist else False
