@@ -1211,6 +1211,37 @@ def render_hr_version():
             for focus in matched_profile['interview_focus']:
                 st.caption(f"• {focus}")
             
+            # 简历预览
+            resume_path = c.get('resume_path', '')
+            resume_mime = c.get('resume_mime', '')
+            if resume_path and os.path.exists(resume_path):
+                st.markdown("---")
+                st.subheader("📄 简历预览")
+                try:
+                    if resume_mime and resume_mime.startswith('image/'):
+                        st.image(resume_path, caption=c.get('resume_filename', '简历'), use_container_width=True)
+                    elif resume_mime == 'application/pdf':
+                        import base64
+                        with open(resume_path, 'rb') as f:
+                            pdf_bytes = f.read()
+                        b64_pdf = base64.b64encode(pdf_bytes).decode('utf-8')
+                        st.markdown(f'''
+                        <iframe src="data:application/pdf;base64,{b64_pdf}" 
+                                width="100%" height="600px" 
+                                style="border:1px solid #e5e5e7;border-radius:12px;"
+                                frameborder="0">
+                        </iframe>
+                        ''', unsafe_allow_html=True)
+                        with open(resume_path, 'rb') as f:
+                            st.download_button(
+                                "下载简历",
+                                data=f.read(),
+                                file_name=c.get('resume_filename', 'resume.pdf'),
+                                mime='application/pdf'
+                            )
+                except Exception as e:
+                    st.warning(f"简历预览失败: {e}")
+            
             # AI 分析结果
             ai_analysis = c.get('ai_analysis')
             if ai_analysis:
@@ -1492,11 +1523,23 @@ def render_hr_add_page():
     # 简历上传和 AI 分析
     st.subheader("2. 简历上传与 AI 分析")
     
-    # 上传区域
-    resume_file = st.file_uploader("上传简历 (PDF, DOCX, TXT)", type=["pdf", "docx", "txt"], key="resume_upload")
+    # 上传区域 - 支持PDF、图片、DOCX、TXT
+    resume_file = st.file_uploader(
+        "上传简历 (PDF / 图片 / DOCX / TXT)",
+        type=["pdf", "docx", "txt", "png", "jpg", "jpeg"],
+        key="resume_upload"
+    )
+    
+    resume_bytes = None
+    resume_filename = None
+    resume_mime = None
     
     if resume_file:
         st.success(f"已上传: {resume_file.name}")
+        resume_bytes = resume_file.getvalue()
+        resume_filename = resume_file.name
+        resume_mime = resume_file.type
+        
         try:
             if resume_file.type == "text/plain":
                 resume_text = resume_file.getvalue().decode('utf-8', errors='ignore')
@@ -1508,6 +1551,9 @@ def render_hr_add_page():
                     resume_text = "\n".join([page.extract_text() for page in pdf_reader.pages])
                 except:
                     resume_text = "[PDF文件内容]"
+            elif resume_file.type and resume_file.type.startswith("image/"):
+                # 图片简历 - 提取不到文字，但可以预览
+                resume_text = "[图片简历 - 请查看预览]"
             else:
                 resume_text = "[文档内容]"
         except:
@@ -1545,10 +1591,36 @@ def render_hr_add_page():
         st.markdown("---")
         render_ai_analysis_result(st.session_state.ai_analysis_result)
     
-    # 简历内容
-    if resume_text and resume_text != "[PDF文件内容]":
-        with st.expander("查看简历内容"):
-            st.text_area("简历文本", value=resume_text, height=200, key="resume_text_display")
+    # 简历预览 - 支持PDF和图片
+    if resume_file:
+        st.markdown("---")
+        st.subheader("📄 简历预览")
+        
+        if resume_mime and resume_mime.startswith("image/"):
+            # 图片简历直接显示
+            st.image(resume_bytes, caption=resume_filename, use_container_width=True)
+        elif resume_mime == "application/pdf":
+            # PDF简历 - 使用iframe嵌入预览
+            import base64
+            b64_pdf = base64.b64encode(resume_bytes).decode('utf-8')
+            st.markdown(f'''
+            <iframe src="data:application/pdf;base64,{b64_pdf}" 
+                    width="100%" height="600px" 
+                    style="border:1px solid #e5e5e7;border-radius:12px;"
+                    frameborder="0">
+            </iframe>
+            ''', unsafe_allow_html=True)
+            st.caption("💡 提示：如果PDF无法预览，可以下载后查看")
+            st.download_button(
+                "下载简历 PDF",
+                data=resume_bytes,
+                file_name=resume_filename,
+                mime="application/pdf"
+            )
+        elif resume_text and resume_text not in ["[PDF文件内容]", "[文档内容]", "[图片简历 - 请查看预览]"]:
+            # 纯文本简历
+            with st.expander("查看简历内容"):
+                st.text_area("简历文本", value=resume_text, height=200, key="resume_text_display")
     
     # 人工评分（可选，默认使用AI评分）
     st.divider()
@@ -1638,6 +1710,14 @@ def render_hr_add_page():
             ai_analysis_to_save = st.session_state.ai_analysis_result
             
             candidate_id = f"candidate_{datetime.now().strftime('%Y%m%d%H%M%S')}"
+            
+            # 保存简历原文件到磁盘
+            resume_path = ""
+            if resume_bytes and resume_filename:
+                resume_path = str(RESUMES_DIR / f"{candidate_id}_{resume_filename}")
+                with open(resume_path, "wb") as f:
+                    f.write(resume_bytes)
+            
             st.session_state.candidates[candidate_id] = {
                 "name": name,
                 "position": position,
@@ -1651,7 +1731,10 @@ def render_hr_add_page():
                 "total_score": total_score,
                 "level": level,
                 "eval_date": datetime.now().strftime("%Y-%m-%d %H:%M"),
-                "ai_analysis": ai_analysis_to_save
+                "ai_analysis": ai_analysis_to_save,
+                "resume_path": resume_path,
+                "resume_filename": resume_filename or "",
+                "resume_mime": resume_mime or ""
             }
             
             save_candidates(st.session_state.candidates)
