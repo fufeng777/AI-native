@@ -1221,17 +1221,22 @@ def render_hr_version():
                     if resume_mime and resume_mime.startswith('image/'):
                         st.image(resume_path, caption=c.get('resume_filename', '简历'), use_container_width=True)
                     elif resume_mime == 'application/pdf':
-                        import base64
-                        with open(resume_path, 'rb') as f:
-                            pdf_bytes = f.read()
-                        b64_pdf = base64.b64encode(pdf_bytes).decode('utf-8')
-                        st.markdown(f'''
-                        <iframe src="data:application/pdf;base64,{b64_pdf}" 
-                                width="100%" height="600px" 
-                                style="border:1px solid #e5e5e7;border-radius:12px;"
-                                frameborder="0">
-                        </iframe>
-                        ''', unsafe_allow_html=True)
+                        # PDF渲染为图片预览
+                        try:
+                            import fitz
+                            pdf_doc = fitz.open(resume_path)
+                            
+                            for page_num in range(len(pdf_doc)):
+                                page = pdf_doc[page_num]
+                                mat = fitz.Matrix(2, 2)
+                                pix = page.get_pixmap(matrix=mat)
+                                img_bytes = pix.tobytes("png")
+                                st.image(img_bytes, caption=f"第 {page_num + 1} / {len(pdf_doc)} 页", use_container_width=True)
+                            
+                            pdf_doc.close()
+                        except ImportError:
+                            st.warning("请安装 PyMuPDF 来预览PDF: pip install PyMuPDF")
+                        
                         with open(resume_path, 'rb') as f:
                             st.download_button(
                                 "下载简历",
@@ -1600,17 +1605,27 @@ def render_hr_add_page():
             # 图片简历直接显示
             st.image(resume_bytes, caption=resume_filename, use_container_width=True)
         elif resume_mime == "application/pdf":
-            # PDF简历 - 使用iframe嵌入预览
-            import base64
-            b64_pdf = base64.b64encode(resume_bytes).decode('utf-8')
-            st.markdown(f'''
-            <iframe src="data:application/pdf;base64,{b64_pdf}" 
-                    width="100%" height="600px" 
-                    style="border:1px solid #e5e5e7;border-radius:12px;"
-                    frameborder="0">
-            </iframe>
-            ''', unsafe_allow_html=True)
-            st.caption("💡 提示：如果PDF无法预览，可以下载后查看")
+            # PDF简历 - 渲染为图片预览（更兼容）
+            try:
+                import fitz  # PyMuPDF
+                from io import BytesIO
+                
+                pdf_doc = fitz.open(stream=resume_bytes, filetype="pdf")
+                
+                for page_num in range(len(pdf_doc)):
+                    page = pdf_doc[page_num]
+                    # 渲染为图片 (2x分辨率更清晰)
+                    mat = fitz.Matrix(2, 2)
+                    pix = page.get_pixmap(matrix=mat)
+                    img_bytes = pix.tobytes("png")
+                    st.image(img_bytes, caption=f"第 {page_num + 1} / {len(pdf_doc)} 页", use_container_width=True)
+                
+                pdf_doc.close()
+            except ImportError:
+                st.warning("请安装 PyMuPDF 来预览PDF: pip install PyMuPDF")
+                st.info("暂时无法预览PDF，但可以下载后查看")
+            
+            # 下载按钮
             st.download_button(
                 "下载简历 PDF",
                 data=resume_bytes,
@@ -2675,30 +2690,95 @@ def render_personal_version():
                 st.rerun()
 
 # ==================== 主入口 ====================
-# 侧边栏模式切换
-st.sidebar.markdown("### 选择使用模式")
-
-mode_col1, mode_col2 = st.columns(2)
-with mode_col1:
-    if st.sidebar.button("HR招聘版", use_container_width=True, 
-                         type="primary" if st.session_state.app_mode == "hr" else "secondary"):
-        st.session_state.app_mode = "hr"
-        st.rerun()
-
-with mode_col2:
-    if st.sidebar.button("个人测评版", use_container_width=True,
-                         type="primary" if st.session_state.app_mode == "personal" else "secondary"):
-        st.session_state.app_mode = "personal"
-        st.rerun()
-
-st.sidebar.markdown("---")
-
-# 新增评估页面入口（HR版本）
-if st.session_state.app_mode == "hr":
-    st.sidebar.markdown("### 快捷操作")
-    if st.sidebar.button("+ 新增候选人评估", use_container_width=True):
-        st.session_state.app_mode = "hr_add"
-        st.rerun()
+# 侧边栏 - Edge风格标签页切换
+with st.sidebar:
+    st.markdown("""
+    <style>
+    .mode-tabs {
+        display: flex;
+        background: #f1f5f9;
+        border-radius: 12px;
+        padding: 4px;
+        margin-bottom: 20px;
+    }
+    .mode-tab {
+        flex: 1;
+        text-align: center;
+        padding: 10px 8px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    .mode-tab:hover {
+        background: rgba(255,255,255,0.5);
+    }
+    .mode-tab.active {
+        background: #ffffff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .mode-tab.active .tab-icon {
+        color: #6366f1;
+    }
+    .mode-tab.active .tab-text {
+        color: #1e293b;
+    }
+    .tab-icon {
+        font-size: 18px;
+        margin-bottom: 4px;
+        display: block;
+    }
+    .tab-text {
+        font-size: 12px;
+        color: #64748b;
+    }
+    .sidebar-divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+        margin: 20px 0;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # Edge风格标签页
+    is_hr = st.session_state.app_mode in ["hr", "hr_add"]
+    is_personal = st.session_state.app_mode == "personal"
+    
+    st.markdown(f"""
+    <div class="mode-tabs">
+        <div class="mode-tab {'active' if is_hr else ''}" onclick="window.parent.document.querySelector('button[key=\\'hr_tab\\']').click()">
+            <span class="tab-icon">💼</span>
+            <span class="tab-text">HR招聘</span>
+        </div>
+        <div class="mode-tab {'active' if is_personal else ''}" onclick="window.parent.document.querySelector('button[key=\\'personal_tab\\']').click()">
+            <span class="tab-icon">🎯</span>
+            <span class="tab-text">个人测评</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # 隐藏的按钮用于处理点击
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("HR", key="hr_tab", use_container_width=True, 
+                     type="primary" if is_hr else "secondary"):
+            st.session_state.app_mode = "hr"
+            st.rerun()
+    with col2:
+        if st.button("个人", key="personal_tab", use_container_width=True,
+                     type="primary" if is_personal else "secondary"):
+            st.session_state.app_mode = "personal"
+            st.rerun()
+    
+    st.markdown('<div class="sidebar-divider"></div>', unsafe_allow_html=True)
+    
+    # 快捷操作区
+    if is_hr:
+        st.markdown("### ⚡ 快捷操作")
+        if st.button("➕ 新增候选人评估", use_container_width=True, type="secondary"):
+            st.session_state.app_mode = "hr_add"
+            st.rerun()
 
 # 根据模式渲染不同页面
 if st.session_state.app_mode == "hr":
