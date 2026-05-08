@@ -1347,10 +1347,23 @@ def render_personal_version():
                         icon_html = f'<div style="font-size:1.5rem;text-align:center;">{p.get("emoji", "🤖")}</div>'
                     
                     with cols[j]:
+                        # 构建hover提示内容
+                        tooltip_content = p.get('desc', '')
+                        tooltip_tools = ' · '.join(p.get('tools', [])[:4])
+                        
                         st.markdown(f'''
-                        <div style="text-align:center;padding:1.25rem 0.5rem;background:#ffffff;border-radius:16px;border:1px solid #e5e5e7;transition:all 0.3s;">
+                        <div style="text-align:center;padding:1.25rem 0.5rem;background:#ffffff;border-radius:16px;border:1px solid #e5e5e7;transition:all 0.3s;position:relative;cursor:help;" 
+                             onmouseover="this.querySelector('.tooltip').style.display='block';" 
+                             onmouseout="this.querySelector('.tooltip').style.display='none';"
+                             onclick="this.querySelector('.tooltip').style.display=this.querySelector('.tooltip').style.display==='block'?'none':'block';">
                             <div style="margin-bottom:0.5rem;">{icon_html}</div>
                             <div style="font-size:0.8rem;font-weight:600;color:#1d1d1f;">{p["name"]}</div>
+                            <div class="tooltip" style="display:none;position:absolute;bottom:100%;left:50%;transform:translateX(-50%);width:220px;background:rgba(29,29,31,0.95);color:#ffffff;padding:12px;border-radius:12px;font-size:0.75rem;line-height:1.5;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,0.3);margin-bottom:8px;">
+                                <div style="font-weight:600;margin-bottom:6px;color:#007AFF;">{p.get('trait', '')}</div>
+                                <div style="margin-bottom:8px;opacity:0.9;">{tooltip_content}</div>
+                                <div style="border-top:1px solid rgba(255,255,255,0.2);padding-top:6px;font-size:0.7rem;opacity:0.7;">常用: {tooltip_tools}</div>
+                                <div style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:6px solid rgba(29,29,31,0.95);"></div>
+                            </div>
                         </div>
                         ''', unsafe_allow_html=True)
         
