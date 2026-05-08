@@ -2741,104 +2741,54 @@ with st.sidebar:
     </style>
     """, unsafe_allow_html=True)
     
-    # Edge风格标签页
+    # Edge风格标签页 - 使用 st.segmented_control
     is_hr = st.session_state.app_mode in ["hr", "hr_add"]
-    is_personal = st.session_state.app_mode == "personal"
     
-    # 使用自定义HTML标签页
-    st.markdown(f"""
+    # 自定义样式美化 segmented control
+    st.markdown("""
     <style>
-    .mode-tabs {{
-        display: flex;
+    div[data-testid="stSegmentedControl"] {
         background: #f1f5f9;
         border-radius: 12px;
         padding: 4px;
-        margin-bottom: 20px;
+    }
+    div[data-testid="stSegmentedControl"] > div {
         gap: 4px;
-    }}
-    .mode-tab {{
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 14px 8px;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: all 0.25s ease;
-        border: none;
-        background: transparent;
-        text-decoration: none;
-    }}
-    .mode-tab:hover {{
-        background: rgba(255,255,255,0.6);
-    }}
-    .mode-tab.active {{
-        background: #ffffff;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }}
-    .mode-tab.active .tab-icon {{
-        color: #4f46e5;
-    }}
-    .mode-tab.active .tab-text {{
-        color: #1e293b;
-        font-weight: 600;
-    }}
-    .tab-icon {{
-        font-size: 20px;
-        margin-bottom: 4px;
-        color: #64748b;
-        transition: color 0.25s ease;
-    }}
-    .tab-text {{
-        font-size: 13px;
-        color: #64748b;
-        font-weight: 500;
-        transition: all 0.25s ease;
-    }}
-    </style>
-    <div class="mode-tabs">
-        <a href="?mode=hr" class="mode-tab {'active' if is_hr else ''}">
-            <span class="tab-icon">&#128188;</span>
-            <span class="tab-text">HR招聘</span>
-        </a>
-        <a href="?mode=personal" class="mode-tab {'active' if is_personal else ''}">
-            <span class="tab-icon">&#128100;</span>
-            <span class="tab-text">个人测评</span>
-        </a>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # 检测URL参数切换模式
-    query_params = st.query_params
-    if "mode" in query_params:
-        mode = query_params["mode"]
-        if mode == "hr" and not is_hr:
-            st.session_state.app_mode = "hr"
-            st.rerun()
-        elif mode == "personal" and not is_personal:
-            st.session_state.app_mode = "personal"
-            st.rerun()
-    
-    # 备用：使用隐藏按钮确保功能正常
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("切换到HR", key="switch_hr", use_container_width=True):
-            st.session_state.app_mode = "hr"
-            st.rerun()
-    with col2:
-        if st.button("切换到个人", key="switch_personal", use_container_width=True):
-            st.session_state.app_mode = "personal"
-            st.rerun()
-    
-    # 隐藏备用按钮
-    st.markdown("""
-    <style>
-    button[kind="secondary"][data-testid="baseButton-secondary"] {
-        display: none;
+    }
+    div[data-testid="stSegmentedControl"] button {
+        border-radius: 10px !important;
+        border: none !important;
+        font-weight: 500 !important;
+        transition: all 0.25s ease !important;
+    }
+    div[data-testid="stSegmentedControl"] button:not([aria-selected="true"]):hover {
+        background: rgba(255,255,255,0.6) !important;
+    }
+    div[data-testid="stSegmentedControl"] button[aria-selected="true"] {
+        background: #ffffff !important;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+        color: #4f46e5 !important;
+        font-weight: 600 !important;
     }
     </style>
     """, unsafe_allow_html=True)
+    
+    # 使用 segmented control 实现标签页切换
+    current_mode = "HR招聘" if is_hr else "个人测评"
+    selected_mode = st.segmented_control(
+        "",
+        options=["HR招聘", "个人测评"],
+        default=current_mode,
+        key="mode_segmented"
+    )
+    
+    # 检测切换
+    if selected_mode == "HR招聘" and not is_hr:
+        st.session_state.app_mode = "hr"
+        st.rerun()
+    elif selected_mode == "个人测评" and is_hr:
+        st.session_state.app_mode = "personal"
+        st.rerun()
     
     st.markdown('<div class="sidebar-divider"></div>', unsafe_allow_html=True)
     
