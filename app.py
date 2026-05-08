@@ -2741,70 +2741,104 @@ with st.sidebar:
     </style>
     """, unsafe_allow_html=True)
     
-    # Edge风格标签页 - 使用原生按钮实现点击
+    # Edge风格标签页
     is_hr = st.session_state.app_mode in ["hr", "hr_add"]
     is_personal = st.session_state.app_mode == "personal"
     
-    # Heroicons 风格 SVG 图标
-    briefcase_svg = """<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:4px;"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>"""
-    
-    user_svg = """<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:4px;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></svg>"""
-    
-    # 使用列布局创建标签页效果
-    st.markdown("""
+    # 使用自定义HTML标签页
+    st.markdown(f"""
     <style>
-    div[data-testid="stHorizontalBlock"] {
+    .mode-tabs {{
+        display: flex;
         background: #f1f5f9;
         border-radius: 12px;
         padding: 4px;
-        gap: 4px !important;
-    }
-    div[data-testid="stHorizontalBlock"] > div {
+        margin-bottom: 20px;
+        gap: 4px;
+    }}
+    .mode-tab {{
         flex: 1;
-    }
-    div[data-testid="stHorizontalBlock"] button {
-        width: 100%;
-        height: auto;
-        padding: 12px 8px;
-        border-radius: 10px;
-        border: none;
-        background: transparent;
-        color: #64748b;
-        font-size: 13px;
-        font-weight: 500;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        padding: 14px 8px;
+        border-radius: 10px;
+        cursor: pointer;
         transition: all 0.25s ease;
-    }
-    div[data-testid="stHorizontalBlock"] button:hover {
+        border: none;
+        background: transparent;
+        text-decoration: none;
+    }}
+    .mode-tab:hover {{
         background: rgba(255,255,255,0.6);
-        color: #64748b;
-    }
-    div[data-testid="stHorizontalBlock"] button[kind="primary"] {
+    }}
+    .mode-tab.active {{
         background: #ffffff;
         box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }}
+    .mode-tab.active .tab-icon {{
         color: #4f46e5;
+    }}
+    .mode-tab.active .tab-text {{
+        color: #1e293b;
         font-weight: 600;
-    }
-    div[data-testid="stHorizontalBlock"] button[kind="primary"] svg {
-        stroke: #4f46e5;
+    }}
+    .tab-icon {{
+        font-size: 20px;
+        margin-bottom: 4px;
+        color: #64748b;
+        transition: color 0.25s ease;
+    }}
+    .tab-text {{
+        font-size: 13px;
+        color: #64748b;
+        font-weight: 500;
+        transition: all 0.25s ease;
+    }}
+    </style>
+    <div class="mode-tabs">
+        <a href="?mode=hr" class="mode-tab {'active' if is_hr else ''}">
+            <span class="tab-icon">&#128188;</span>
+            <span class="tab-text">HR招聘</span>
+        </a>
+        <a href="?mode=personal" class="mode-tab {'active' if is_personal else ''}">
+            <span class="tab-icon">&#128100;</span>
+            <span class="tab-text">个人测评</span>
+        </a>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # 检测URL参数切换模式
+    query_params = st.query_params
+    if "mode" in query_params:
+        mode = query_params["mode"]
+        if mode == "hr" and not is_hr:
+            st.session_state.app_mode = "hr"
+            st.rerun()
+        elif mode == "personal" and not is_personal:
+            st.session_state.app_mode = "personal"
+            st.rerun()
+    
+    # 备用：使用隐藏按钮确保功能正常
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("切换到HR", key="switch_hr", use_container_width=True):
+            st.session_state.app_mode = "hr"
+            st.rerun()
+    with col2:
+        if st.button("切换到个人", key="switch_personal", use_container_width=True):
+            st.session_state.app_mode = "personal"
+            st.rerun()
+    
+    # 隐藏备用按钮
+    st.markdown("""
+    <style>
+    button[kind="secondary"][data-testid="baseButton-secondary"] {
+        display: none;
     }
     </style>
     """, unsafe_allow_html=True)
-    
-    tab_col1, tab_col2 = st.columns(2)
-    with tab_col1:
-        if st.button(f"{briefcase_svg} HR招聘", use_container_width=True,
-                     type="primary" if is_hr else "secondary"):
-            st.session_state.app_mode = "hr"
-            st.rerun()
-    with tab_col2:
-        if st.button(f"{user_svg} 个人测评", use_container_width=True,
-                     type="primary" if is_personal else "secondary"):
-            st.session_state.app_mode = "personal"
-            st.rerun()
     
     st.markdown('<div class="sidebar-divider"></div>', unsafe_allow_html=True)
     
