@@ -2816,29 +2816,71 @@ with st.sidebar:
     st.markdown('<div class="mode-switch-container">', unsafe_allow_html=True)
     
     # 简约 SVG 图标 (Heroicons 风格)
-    hr_icon_svg = """<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:8px;"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>"""
+    hr_icon_svg = """<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:10px;"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>"""
     
-    user_icon_svg = """<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:8px;"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>"""
+    user_icon_svg = """<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:10px;"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>"""
     
-    # HR招聘按钮
-    st.markdown(f'<div style="margin-bottom:12px;">', unsafe_allow_html=True)
-    if st.button("HR招聘", key="big_btn_hr", use_container_width=True,
-                 type="primary" if is_hr else "secondary"):
-        st.session_state.app_mode = "hr"
-        st.rerun()
-    # 在按钮后添加图标
-    st.markdown(f'<span style="position:absolute;left:20px;top:50%;transform:translateY(-50%);color:inherit;opacity:0.9;">{hr_icon_svg}</span>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    # 使用HTML创建带图标的按钮，通过URL参数传递点击状态
+    st.markdown(f"""
+    <style>
+    .mode-btn {{
+        width: 100%;
+        padding: 16px 20px;
+        border-radius: 14px;
+        font-size: 15px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        margin-bottom: 12px;
+        text-decoration: none;
+    }}
+    .mode-btn-primary {{
+        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        color: white;
+        border-color: #4f46e5;
+        box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+    }}
+    .mode-btn-primary:hover {{
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(79, 70, 229, 0.45);
+    }}
+    .mode-btn-secondary {{
+        background: #f1f5f9;
+        color: #64748b;
+        border-color: #e2e8f0;
+    }}
+    .mode-btn-secondary:hover {{
+        background: #e2e8f0;
+        border-color: #cbd5e1;
+        transform: translateY(-2px);
+    }}
+    </style>
+    <a href="?switch=hr" class="mode-btn {'mode-btn-primary' if is_hr else 'mode-btn-secondary'}">
+        {hr_icon_svg}
+        <span>HR招聘</span>
+    </a>
+    <a href="?switch=personal" class="mode-btn {'mode-btn-secondary' if is_hr else 'mode-btn-primary'}">
+        {user_icon_svg}
+        <span>个人测评</span>
+    </a>
+    """, unsafe_allow_html=True)
     
-    # 个人测评按钮
-    st.markdown(f'<div style="margin-bottom:12px;position:relative;">', unsafe_allow_html=True)
-    if st.button("个人测评", key="big_btn_personal", use_container_width=True,
-                 type="primary" if not is_hr else "secondary"):
-        st.session_state.app_mode = "personal"
-        st.rerun()
-    # 在按钮后添加图标
-    st.markdown(f'<span style="position:absolute;left:20px;top:50%;transform:translateY(-50%);color:inherit;opacity:0.9;">{user_icon_svg}</span>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    # 检测URL参数切换
+    query_params = st.query_params
+    if "switch" in query_params:
+        switch_val = query_params["switch"]
+        if switch_val == "hr" and not is_hr:
+            st.session_state.app_mode = "hr"
+            del query_params["switch"]
+            st.rerun()
+        elif switch_val == "personal" and is_hr:
+            st.session_state.app_mode = "personal"
+            del query_params["switch"]
+            st.rerun()
     
     st.markdown('</div>', unsafe_allow_html=True)
     
