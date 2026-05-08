@@ -2815,19 +2815,30 @@ with st.sidebar:
     # 创建居中容器
     st.markdown('<div class="mode-switch-container">', unsafe_allow_html=True)
     
+    # 简约 SVG 图标 (Heroicons 风格)
+    hr_icon_svg = """<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:8px;"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>"""
+    
+    user_icon_svg = """<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:8px;"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>"""
+    
     # HR招聘按钮
-    hr_icon = "&#128188;"  # 公文包
-    if st.button(f"{hr_icon} HR招聘", key="big_btn_hr", use_container_width=True,
+    st.markdown(f'<div style="margin-bottom:12px;">', unsafe_allow_html=True)
+    if st.button("HR招聘", key="big_btn_hr", use_container_width=True,
                  type="primary" if is_hr else "secondary"):
         st.session_state.app_mode = "hr"
         st.rerun()
+    # 在按钮后添加图标
+    st.markdown(f'<span style="position:absolute;left:20px;top:50%;transform:translateY(-50%);color:inherit;opacity:0.9;">{hr_icon_svg}</span>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
     
-    # 个人测评按钮  
-    user_icon = "&#128100;"  # 用户
-    if st.button(f"{user_icon} 个人测评", key="big_btn_personal", use_container_width=True,
+    # 个人测评按钮
+    st.markdown(f'<div style="margin-bottom:12px;position:relative;">', unsafe_allow_html=True)
+    if st.button("个人测评", key="big_btn_personal", use_container_width=True,
                  type="primary" if not is_hr else "secondary"):
         st.session_state.app_mode = "personal"
         st.rerun()
+    # 在按钮后添加图标
+    st.markdown(f'<span style="position:absolute;left:20px;top:50%;transform:translateY(-50%);color:inherit;opacity:0.9;">{user_icon_svg}</span>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
     
     st.markdown('</div>', unsafe_allow_html=True)
     
