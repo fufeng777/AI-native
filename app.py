@@ -2745,31 +2745,83 @@ with st.sidebar:
     is_hr = st.session_state.app_mode in ["hr", "hr_add"]
     is_personal = st.session_state.app_mode == "personal"
     
+    # Heroicons 风格 SVG 图标
+    briefcase_icon = """<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>"""
+    
+    user_circle_icon = """<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></svg>"""
+    
     st.markdown(f"""
+    <style>
+    .mode-tabs {{
+        display: flex;
+        background: #f1f5f9;
+        border-radius: 12px;
+        padding: 4px;
+        margin-bottom: 20px;
+        gap: 4px;
+    }}
+    .mode-tab {{
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 16px 12px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        border: none;
+        background: transparent;
+    }}
+    .mode-tab:hover {{
+        background: rgba(255,255,255,0.6);
+    }}
+    .mode-tab.active {{
+        background: #ffffff;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+    }}
+    .mode-tab.active .tab-icon {{
+        color: #4f46e5;
+    }}
+    .mode-tab.active .tab-text {{
+        color: #1e293b;
+        font-weight: 600;
+    }}
+    .tab-icon {{
+        width: 24px;
+        height: 24px;
+        margin-bottom: 6px;
+        color: #64748b;
+        transition: color 0.25s ease;
+    }}
+    .tab-text {{
+        font-size: 13px;
+        color: #64748b;
+        font-weight: 500;
+        transition: all 0.25s ease;
+    }}
+    </style>
     <div class="mode-tabs">
         <div class="mode-tab {'active' if is_hr else ''}" onclick="window.parent.document.querySelector('button[key=\\'hr_tab\\']').click()">
-            <span class="tab-icon">💼</span>
+            <div class="tab-icon">{briefcase_icon}</div>
             <span class="tab-text">HR招聘</span>
         </div>
         <div class="mode-tab {'active' if is_personal else ''}" onclick="window.parent.document.querySelector('button[key=\\'personal_tab\\']').click()">
-            <span class="tab-icon">🎯</span>
+            <div class="tab-icon">{user_circle_icon}</div>
             <span class="tab-text">个人测评</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
     
-    # 隐藏的按钮用于处理点击
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("HR", key="hr_tab", use_container_width=True, 
-                     type="primary" if is_hr else "secondary"):
-            st.session_state.app_mode = "hr"
-            st.rerun()
-    with col2:
-        if st.button("个人", key="personal_tab", use_container_width=True,
-                     type="primary" if is_personal else "secondary"):
-            st.session_state.app_mode = "personal"
-            st.rerun()
+    # 隐藏的按钮用于处理点击（放在最底部，视觉上隐藏）
+    if st.button("HR", key="hr_tab", use_container_width=True, 
+                 type="primary" if is_hr else "secondary"):
+        st.session_state.app_mode = "hr"
+        st.rerun()
+    if st.button("个人", key="personal_tab", use_container_width=True,
+                 type="primary" if is_personal else "secondary"):
+        st.session_state.app_mode = "personal"
+        st.rerun()
     
     st.markdown('<div class="sidebar-divider"></div>', unsafe_allow_html=True)
     
