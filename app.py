@@ -2741,54 +2741,95 @@ with st.sidebar:
     </style>
     """, unsafe_allow_html=True)
     
-    # Edge风格标签页 - 使用 st.segmented_control
+    # Edge风格标签页 - 大按钮 + 图标 + 居中
     is_hr = st.session_state.app_mode in ["hr", "hr_add"]
     
-    # 自定义样式美化 segmented control
+    # 自定义样式 - 大按钮、居中、图标+文字
     st.markdown("""
     <style>
-    div[data-testid="stSegmentedControl"] {
-        background: #f1f5f9;
-        border-radius: 12px;
-        padding: 4px;
+    /* 侧边栏居中容器 */
+    [data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
+        align-items: center;
     }
-    div[data-testid="stSegmentedControl"] > div {
-        gap: 4px;
+    
+    /* 模式切换按钮容器 */
+    .mode-switch-container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+        max-width: 200px;
+        margin: 0 auto 20px auto;
     }
-    div[data-testid="stSegmentedControl"] button {
-        border-radius: 10px !important;
-        border: none !important;
-        font-weight: 500 !important;
-        transition: all 0.25s ease !important;
-    }
-    div[data-testid="stSegmentedControl"] button:not([aria-selected="true"]):hover {
-        background: rgba(255,255,255,0.6) !important;
-    }
-    div[data-testid="stSegmentedControl"] button[aria-selected="true"] {
-        background: #ffffff !important;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
-        color: #4f46e5 !important;
+    
+    /* 大按钮样式 */
+    .mode-switch-container button {
+        width: 100% !important;
+        height: auto !important;
+        padding: 16px 20px !important;
+        border-radius: 14px !important;
+        border: 2px solid transparent !important;
+        font-size: 15px !important;
         font-weight: 600 !important;
+        transition: all 0.3s ease !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 10px !important;
+    }
+    
+    /* 未选中状态 */
+    .mode-switch-container button[kind="secondary"] {
+        background: #f1f5f9 !important;
+        color: #64748b !important;
+        border-color: #e2e8f0 !important;
+    }
+    
+    .mode-switch-container button[kind="secondary"]:hover {
+        background: #e2e8f0 !important;
+        border-color: #cbd5e1 !important;
+        transform: translateY(-2px);
+    }
+    
+    /* 选中状态 */
+    .mode-switch-container button[kind="primary"] {
+        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
+        color: #ffffff !important;
+        border-color: #4f46e5 !important;
+        box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35) !important;
+    }
+    
+    .mode-switch-container button[kind="primary"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(79, 70, 229, 0.45) !important;
+    }
+    
+    /* 图标样式 */
+    .mode-icon {
+        font-size: 20px;
+        line-height: 1;
     }
     </style>
     """, unsafe_allow_html=True)
     
-    # 使用 segmented control 实现标签页切换
-    current_mode = "HR招聘" if is_hr else "个人测评"
-    selected_mode = st.segmented_control(
-        "",
-        options=["HR招聘", "个人测评"],
-        default=current_mode,
-        key="mode_segmented"
-    )
+    # 创建居中容器
+    st.markdown('<div class="mode-switch-container">', unsafe_allow_html=True)
     
-    # 检测切换
-    if selected_mode == "HR招聘" and not is_hr:
+    # HR招聘按钮
+    hr_icon = "&#128188;"  # 公文包
+    if st.button(f"{hr_icon} HR招聘", key="big_btn_hr", use_container_width=True,
+                 type="primary" if is_hr else "secondary"):
         st.session_state.app_mode = "hr"
         st.rerun()
-    elif selected_mode == "个人测评" and is_hr:
+    
+    # 个人测评按钮  
+    user_icon = "&#128100;"  # 用户
+    if st.button(f"{user_icon} 个人测评", key="big_btn_personal", use_container_width=True,
+                 type="primary" if not is_hr else "secondary"):
         st.session_state.app_mode = "personal"
         st.rerun()
+    
+    st.markdown('</div>', unsafe_allow_html=True)
     
     st.markdown('<div class="sidebar-divider"></div>', unsafe_allow_html=True)
     
