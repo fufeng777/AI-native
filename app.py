@@ -800,7 +800,8 @@ def calculate_level(total_score):
 def calculate_score(dimension_scores):
     total = 0.0
     max_total = 0.0
-    weights = [1.0, 1.0, 1.0, 0.8, 0.8, 0.8]
+    # 8维度权重：ai_first_mindset, prompt_engineering, deep_collaboration, problem_reframing, learning_mode, iteration_agility, boundary_awareness, critical_validation
+    weights = [1.0, 1.0, 1.0, 1.0, 0.8, 0.8, 0.8, 0.9]
     for i, dim_key in enumerate(AI_NATIVE_DIMENSIONS.keys()):
         dim_data = dimension_scores.get(dim_key, {})
         # 支持两种格式：{"score": xxx} 或直接是数字
@@ -815,7 +816,7 @@ def calculate_score(dimension_scores):
         except (TypeError, ValueError):
             score = 0.0
             
-        weight = weights[i]
+        weight = weights[i] if i < len(weights) else 1.0
         total += score * weight
         max_total += 100 * weight
     if max_total > 0:
