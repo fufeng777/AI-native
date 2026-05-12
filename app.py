@@ -2815,38 +2815,53 @@ with st.sidebar:
     # 创建居中容器
     st.markdown('<div class="mode-switch-container">', unsafe_allow_html=True)
     
-    # 使用两列布局 + 原生按钮（最可靠）
-    btn_col1, btn_col2 = st.columns(2)
+    # 简约按钮样式
+    st.markdown("""
+    <style>
+    /* 简约按钮样式 */
+    div[data-testid="stHorizontalBlock"]:has(button) {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 3px;
+        gap: 6px !important;
+    }
+    div[data-testid="stHorizontalBlock"]:has(button) button {
+        border: none !important;
+        border-radius: 8px !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        padding: 14px 16px !important;
+        transition: all 0.2s ease !important;
+    }
+    /* 未选中状态 */
+    div[data-testid="stHorizontalBlock"]:has(button) button[kind="secondary"] {
+        background: transparent !important;
+        color: #666666 !important;
+    }
+    div[data-testid="stHorizontalBlock"]:has(button) button[kind="secondary"]:hover {
+        background: #e9ecef !important;
+    }
+    /* 选中状态 - 灰白渐变 */
+    div[data-testid="stHorizontalBlock"]:has(button) button[kind="primary"] {
+        background: linear-gradient(135deg, #e8e8e8 0%, #d4d4d4 100%) !important;
+        color: #333333 !important;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
+    }
+    div[data-testid="stHorizontalBlock"]:has(button) button[kind="primary"]:hover {
+        background: linear-gradient(135deg, #dcdcdc 0%, #c8c8c8 100%) !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
     
+    # 两列按钮
+    btn_col1, btn_col2 = st.columns(2)
     with btn_col1:
-        # HR招聘按钮
-        if is_hr:
-            # 选中状态 - 灰色渐变
-            st.markdown("""
-            <style>
-            div[data-testid="stHorizontalBlock"] button[kind="primary"]:first-of-type {
-                background: linear-gradient(135deg, #4a4a4a 0%, #6b6b6b 100%) !important;
-                border-color: #4a4a4a !important;
-            }
-            </style>
-            """, unsafe_allow_html=True)
-        if st.button("💼 HR招聘", key="btn_hr", use_container_width=True,
+        if st.button("HR招聘", key="btn_hr", use_container_width=True,
                      type="primary" if is_hr else "secondary"):
             st.session_state.app_mode = "hr"
             st.rerun()
-    
     with btn_col2:
-        # 个人测评按钮
-        if not is_hr:
-            st.markdown("""
-            <style>
-            div[data-testid="stHorizontalBlock"] button[kind="primary"]:nth-of-type(2) {
-                background: linear-gradient(135deg, #4a4a4a 0%, #6b6b6b 100%) !important;
-                border-color: #4a4a4a !important;
-            }
-            </style>
-            """, unsafe_allow_html=True)
-        if st.button("👤 个人测评", key="btn_personal", use_container_width=True,
+        if st.button("个人测评", key="btn_personal", use_container_width=True,
                      type="primary" if not is_hr else "secondary"):
             st.session_state.app_mode = "personal"
             st.rerun()
