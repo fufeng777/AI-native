@@ -1925,7 +1925,7 @@ def render_personal_version():
     # ===== 测试阶段 =====
     elif st.session_state.personal_step in [1, 2, 3, 4]:
         step = st.session_state.personal_step
-        categories = ["AI本能反应", "AI社交风格", "AI生活场景", "AI哲学思考"]
+        categories = ["日常习惯", "工作风格", "生活态度", "思维方式"]
         category = categories[step - 1]
         
         # 添加锚点用于滚动定位
@@ -1941,7 +1941,7 @@ def render_personal_version():
             """, unsafe_allow_html=True)
         
         # 极简进度条
-        progress = step / 5
+        progress = step / 4
         st.markdown(f'''
         <div class="minimal-progress">
             <div class="minimal-progress-label">
@@ -1957,109 +1957,61 @@ def render_personal_version():
         # 当前阶段的题目
         step_questions = [q for q in FUN_QUESTIONS if q.get("category") == category]
         
-        # 添加全局样式
+        # 简洁样式
         st.markdown("""
         <style>
         /* 简洁问题卡片 */
         .simple-question-card {
             background: #ffffff;
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            border: 1px solid #f0f0f0;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            border: 1px solid #eeeeee;
         }
         .simple-question-text {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 500;
-            color: #1d1d1f;
-            line-height: 1.6;
-            margin-bottom: 1rem;
+            color: #1a1a1a;
+            line-height: 1.5;
+            margin-bottom: 0.75rem;
         }
-        /* 选项按钮组 */
-        .option-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
+        /* Radio选项样式 */
+        .stRadio > div {
+            gap: 0.5rem;
         }
-        .option-btn {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1px solid #e5e5e7;
-            border-radius: 12px;
-            background: #ffffff;
-            font-size: 0.95rem;
-            color: #333333;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-align: left;
-        }
-        .option-btn:hover {
-            border-color: #999999;
-            background: #fafafa;
-        }
-        .option-btn.selected {
-            border-color: #1d1d1f;
-            background: #1d1d1f;
-            color: #ffffff;
-        }
-        /* 选项内文字 */
-        .option-label {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-        }
-        .option-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #d1d1d6;
-            flex-shrink: 0;
-            margin-top: 6px;
+        .stRadio label {
+            background: #fafafa !important;
+            border: 1px solid #e5e5e5 !important;
+            border-radius: 10px !important;
+            padding: 12px 16px !important;
+            margin: 0 !important;
             transition: all 0.2s ease;
         }
-        .option-btn.selected .option-dot {
-            background: #ffffff;
+        .stRadio label:hover {
+            background: #f0f0f0 !important;
+            border-color: #cccccc !important;
+        }
+        .stRadio label:has(input:checked) {
+            background: #1a1a1a !important;
+            border-color: #1a1a1a !important;
+            color: white !important;
         }
         </style>
         """, unsafe_allow_html=True)
         
         for q in step_questions:
-            # 获取当前保存的答案
-            current_answer = st.session_state.personal_answers.get(q["id"])
-            current_selected = current_answer.get("text") if current_answer else None
-            
             # 极简问题卡片
             st.markdown(f'''
             <div class="simple-question-card">
                 <div class="simple-question-text">{q["question"]}</div>
-                <div class="option-group">
+            </div>
             ''', unsafe_allow_html=True)
             
-            # 使用columns让选项水平排列（两列）
-            options = q["options"]
-            option_cols = st.columns(len(options))
-            
-            for idx, (col, o) in enumerate(zip(option_cols, options)):
-                with col:
-                    is_selected = current_selected == o["text"]
-                    
-                    # 自定义选项按钮
-                    btn_style = "option-btn selected" if is_selected else "option-btn"
-                    btn_id = f"opt_{q['id']}_{idx}"
-                    
-                    st.markdown(f'''
-                    <div class="{btn_style}" id="{btn_id}" onclick="this.classList.toggle('selected'); window.parent.postMessage({{type: 'streamlit:setComponentValue', value: '{o["text"]}', key: '{q["id"]}'}}, '*');">
-                        <div class="option-label">
-                            <div class="option-dot"></div>
-                            <div>{o["text"]}</div>
-                        </div>
-                    </div>
-                    ''', unsafe_allow_html=True)
-            
-            st.markdown('</div></div>', unsafe_allow_html=True)
-            
-            # 隐藏的radio用于实际状态管理
+            # 获取radio的选项
             radio_options = [o["text"] for o in q["options"]]
+            
+            # 检查是否有已保存的答案
+            current_answer = st.session_state.personal_answers.get(q["id"])
             current_index = None
             if current_answer:
                 for idx, o in enumerate(q["options"]):
@@ -2067,8 +2019,9 @@ def render_personal_version():
                         current_index = idx
                         break
             
+            # 使用radio显示选项
             selected = st.radio(
-                " ",
+                "选择最接近你的答案",
                 options=radio_options,
                 key=f"q_{q['id']}",
                 index=current_index,
@@ -2084,23 +2037,6 @@ def render_personal_version():
                         "tag": o.get("tag", ""),
                         "text": o["text"]
                     }
-                    
-                    # 如果选择了"其他"选项，显示文本输入框
-                    if o["text"] == "其他":
-                        other_answer_key = f"other_{q['id']}"
-                        current_other = st.session_state.personal_other_answers.get(q["id"], "")
-                        
-                        other_text = st.text_input(
-                            "请描述你的回答：",
-                            value=current_other,
-                            key=other_answer_key,
-                            placeholder="请输入你的回答..."
-                        )
-                        
-                        if other_text:
-                            st.session_state.personal_other_answers[q["id"]] = other_text
-                        elif other_text == "" and q["id"] in st.session_state.personal_other_answers:
-                            del st.session_state.personal_other_answers[q["id"]]
                     break
         
         # 极简导航按钮
@@ -2117,12 +2053,7 @@ def render_personal_version():
                 for q in step_questions:
                     answer = st.session_state.personal_answers.get(q["id"])
                     if not answer:
-                        # 没有选择任何答案
                         unanswered.append(q["id"])
-                    elif answer.get("text") == "其他":
-                        # 选择了"其他"，检查是否填写了具体内容
-                        if not st.session_state.personal_other_answers.get(q["id"], "").strip():
-                            unanswered.append(q["id"])
                 
                 if unanswered:
                     # 显示警告信息
