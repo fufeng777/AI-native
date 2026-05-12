@@ -2100,6 +2100,7 @@ def render_personal_version():
                         # 读取图标（支持SVG和PNG）
                         icon_path = tool.get('icon', '')
                         icon_html = ""
+                        icon_loaded = False
                         if icon_path:
                             try:
                                 if icon_path.endswith('.svg'):
@@ -2107,14 +2108,18 @@ def render_personal_version():
                                         svg_content = f.read()
                                     svg_content = svg_content.replace('<svg', '<svg width="32" height="32" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.1))"')
                                     icon_html = svg_content
+                                    icon_loaded = True
                                 elif icon_path.endswith('.png'):
                                     import base64
                                     with open(icon_path, 'rb') as f:
                                         img_data = base64.b64encode(f.read()).decode()
                                     icon_html = f'<img src="data:image/png;base64,{img_data}" width="32" height="32" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.1))"/>'
+                                    icon_loaded = True
                             except Exception as e:
-                                icon_html = f'<div style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🤖</div>'
-                        else:
+                                icon_loaded = False
+                        
+                        # 如果图标加载失败，使用emoji
+                        if not icon_loaded:
                             icon_html = f'<div style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🤖</div>'
                         
                         # 检查是否已选择
@@ -2649,11 +2654,28 @@ def render_personal_version():
             tool_cols = st.columns(5)
             for i, tool_name in enumerate(st.session_state.personal_tools):
                 tool = next((t for t in AI_TOOLS_LIST if t["name"] == tool_name), None)
-                icon = tool["icon"] if tool else "🤖"
+                # 尝试加载图标，失败则使用emoji
+                icon_emoji = "🤖"
+                if tool and tool.get('icon'):
+                    try:
+                        icon_path = tool['icon']
+                        if icon_path.endswith('.svg'):
+                            with open(icon_path, 'r', encoding='utf-8') as f:
+                                svg_content = f.read()
+                            svg_content = svg_content.replace('<svg', '<svg width="24" height="24"')
+                            icon_emoji = svg_content
+                        elif icon_path.endswith('.png'):
+                            import base64
+                            with open(icon_path, 'rb') as f:
+                                img_data = base64.b64encode(f.read()).decode()
+                            icon_emoji = f'<img src="data:image/png;base64,{img_data}" width="24" height="24"/>'
+                    except:
+                        icon_emoji = "🤖"
+                
                 with tool_cols[i % 5]:
                     st.markdown(f'''
                     <div style="text-align:center;padding:1rem;background:#ffffff;border-radius:12px;border:1px solid #e5e5e7;">
-                        <div style="font-size:1.5rem;margin-bottom:0.5rem;">{icon}</div>
+                        <div style="font-size:1.5rem;margin-bottom:0.5rem;">{icon_emoji}</div>
                         <div style="font-size:0.75rem;color:#1d1d1f;">{tool_name}</div>
                     </div>
                     ''', unsafe_allow_html=True)
