@@ -1992,9 +1992,9 @@ def render_personal_version():
             border-color: #cccccc !important;
         }
         .stRadio label:has(input:checked) {
-            background: #1a1a1a !important;
-            border-color: #1a1a1a !important;
-            color: white !important;
+            background: linear-gradient(135deg, #e8edf5 0%, #dce4f0 100%) !important;
+            border-color: #c5d1e3 !important;
+            color: #2c3e6b !important;
         }
         </style>
         """, unsafe_allow_html=True)
