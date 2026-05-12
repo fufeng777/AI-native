@@ -1977,34 +1977,121 @@ def render_personal_version():
         # 当前阶段的题目
         step_questions = [q for q in FUN_QUESTIONS if q.get("category") == category]
         
+        # 添加全局样式
+        st.markdown("""
+        <style>
+        /* 简洁问题卡片 */
+        .simple-question-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #f0f0f0;
+        }
+        .simple-question-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #1d1d1f;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        /* 选项按钮组 */
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .option-btn {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #e5e5e7;
+            border-radius: 12px;
+            background: #ffffff;
+            font-size: 0.95rem;
+            color: #333333;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+        .option-btn:hover {
+            border-color: #999999;
+            background: #fafafa;
+        }
+        .option-btn.selected {
+            border-color: #1d1d1f;
+            background: #1d1d1f;
+            color: #ffffff;
+        }
+        /* 选项内文字 */
+        .option-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .option-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #d1d1d6;
+            flex-shrink: 0;
+            margin-top: 6px;
+            transition: all 0.2s ease;
+        }
+        .option-btn.selected .option-dot {
+            background: #ffffff;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+        
         for q in step_questions:
+            # 获取当前保存的答案
+            current_answer = st.session_state.personal_answers.get(q["id"])
+            current_selected = current_answer.get("text") if current_answer else None
+            
             # 极简问题卡片
             st.markdown(f'''
-            <div class="minimal-question">
-                <div style="font-size:1.125rem;font-weight:500;color:#1d1d1f;line-height:1.6;">{q["question"]}</div>
-            </div>
+            <div class="simple-question-card">
+                <div class="simple-question-text">{q["question"]}</div>
+                <div class="option-group">
             ''', unsafe_allow_html=True)
             
-            # 获取radio的选项
-            radio_options = [o["text"] for o in q["options"]]
+            # 使用columns让选项水平排列（两列）
+            options = q["options"]
+            option_cols = st.columns(len(options))
             
-            # 检查是否有已保存的答案
-            current_answer = st.session_state.personal_answers.get(q["id"])
+            for idx, (col, o) in enumerate(zip(option_cols, options)):
+                with col:
+                    is_selected = current_selected == o["text"]
+                    
+                    # 自定义选项按钮
+                    btn_style = "option-btn selected" if is_selected else "option-btn"
+                    btn_id = f"opt_{q['id']}_{idx}"
+                    
+                    st.markdown(f'''
+                    <div class="{btn_style}" id="{btn_id}" onclick="this.classList.toggle('selected'); window.parent.postMessage({{type: 'streamlit:setComponentValue', value: '{o["text"]}', key: '{q["id"]}'}}, '*');">
+                        <div class="option-label">
+                            <div class="option-dot"></div>
+                            <div>{o["text"]}</div>
+                        </div>
+                    </div>
+                    ''', unsafe_allow_html=True)
+            
+            st.markdown('</div></div>', unsafe_allow_html=True)
+            
+            # 隐藏的radio用于实际状态管理
+            radio_options = [o["text"] for o in q["options"]]
             current_index = None
             if current_answer:
-                # 找到当前选择的索引
                 for idx, o in enumerate(q["options"]):
                     if o["text"] == current_answer.get("text"):
                         current_index = idx
                         break
             
-            # 使用radio显示选项，不设置默认值(index=None)
             selected = st.radio(
-                "选择最接近你的答案", 
-                options=radio_options, 
+                " ",
+                options=radio_options,
                 key=f"q_{q['id']}",
                 index=current_index,
-                format_func=lambda x: x,
                 label_visibility="collapsed"
             )
             
@@ -2012,7 +2099,7 @@ def render_personal_version():
             for o in q["options"]:
                 if o["text"] == selected:
                     st.session_state.personal_answers[q["id"]] = {
-                        "dimension": q["dimension"], 
+                        "dimension": q["dimension"],
                         "score": o["score"],
                         "tag": o.get("tag", ""),
                         "text": o["text"]
@@ -2030,11 +2117,9 @@ def render_personal_version():
                             placeholder="请输入你的回答..."
                         )
                         
-                        # 保存其他答案到session_state
                         if other_text:
                             st.session_state.personal_other_answers[q["id"]] = other_text
                         elif other_text == "" and q["id"] in st.session_state.personal_other_answers:
-                            # 如果用户清空了输入，也清空保存的值
                             del st.session_state.personal_other_answers[q["id"]]
                     break
         
